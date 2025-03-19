@@ -11,13 +11,13 @@
       "swagger-*output.json",
       "**/db/todolist.json"
     ],
-    "exec": "npm run generate-swagger && node"
+    "exec": "npm run prestart && node"
   },
   "engines": {
     "node": "22.x"
   },
   "scripts": {
-    "generate-swagger": "cross-env NODE_ENV=local node -r dotenv/config ./swagger.js && cross-env NODE_ENV=local node -r dotenv/config ./swagger-todo.js",
+    "prestart": "node -r dotenv/config ./swagger.js && node -r dotenv/config ./swagger-todo.js",
 
     "test": "cross-env NODE_ENV=local jest --detectOpenHandles",
     "test:silent": "cross-env NODE_ENV=local jest --silent",
