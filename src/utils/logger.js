@@ -1,4 +1,12 @@
 import tracer from 'tracer';
+import fs from 'fs';
+import path from 'path';
+
+// logs 디렉토리 생성
+const logsDir = path.join(process.cwd(), 'logs');
+if (!fs.existsSync(logsDir)) {
+  fs.mkdirSync(logsDir, { recursive: true });
+}
 
 let logger;
 let errorLogger;

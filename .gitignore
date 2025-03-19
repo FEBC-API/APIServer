@@ -1,5 +1,5 @@
 ins
-swagger-output.json
+# swagger-output.json
 *.bak
 .cursor
 .vscode

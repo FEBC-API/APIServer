@@ -11,19 +11,23 @@
       "swagger-*output.json",
       "**/db/todolist.json"
     ],
-    "exec": "npm run prestart && node"
+    "exec": "npm run generate-swagger && node"
   },
   "engines": {
     "node": "22.x"
   },
   "scripts": {
-    "prestart": "node ./swagger.js && node ./swagger-todo.js",
-    "test": "cross-env NODE_ENV=development jest --detectOpenHandles",
-    "test:silent": "cross-env NODE_ENV=development jest --silent",
+    "generate-swagger": "cross-env NODE_ENV=local node -r dotenv/config ./swagger.js && cross-env NODE_ENV=local node -r dotenv/config ./swagger-todo.js",
+
+    "test": "cross-env NODE_ENV=local jest --detectOpenHandles",
+    "test:silent": "cross-env NODE_ENV=local jest --silent",
+
     "local": "cross-env NODE_ENV=local nodemon -r dotenv/config ./src/bin/www.js",
     "local:https": "cross-env NODE_ENV=local nodemon -r dotenv/config ./src/bin/www-https.js",
+    
     "dev": "cross-env NODE_ENV=development nodemon -r dotenv/config ./src/bin/www.js",
     "dev:https": "cross-env NODE_ENV=development nodemon -r dotenv/config ./src/bin/www-https.js",
+
     "start": "cross-env NODE_ENV=production node -r dotenv/config ./src/bin/www.js"
   },
   "dependencies": {
