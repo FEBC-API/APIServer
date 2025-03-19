@@ -1,0 +1,17 @@
+meta {
+  name: DB 초기화
+  type: http
+  seq: 6
+}
+
+delete {
+  url: {{url}}/todolist/init
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "pwd": "todo@@"
+  }
+}
