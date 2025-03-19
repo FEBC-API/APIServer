@@ -25,8 +25,8 @@ app.use(express.static('public'));
 async function loadSwaggerFiles() {
   try {
     
-    // const swaggerFile = await readFile('./swagger-todo-output.json', 'utf8'); // Todo List API 문서
-    const swaggerFile = await readFile('./swagger-output.json', 'utf8'); // Open Market API 문서
+    const swaggerFile = await readFile('./swagger-todo-output.json', 'utf8'); // Todo List API 문서
+    // const swaggerFile = await readFile('./swagger-output.json', 'utf8'); // Open Market API 문서
     const swaggerJson = JSON.parse(swaggerFile);
     app.use('/apidocs', swaggerUi.serve, swaggerUi.setup(swaggerJson, {
       // explorer: true,
