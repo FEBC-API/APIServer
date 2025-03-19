@@ -86,7 +86,7 @@ function onError(error) {
  */
 
 function onListening() {
-  logger.info(`API 서버 구동 완료. ${process.env.API_HOST}`);
+  logger.info(`API 서버 구동 완료. ${process.env.API_HOST}:${port}`);
 }
 
 // socket.io 서버 구동
