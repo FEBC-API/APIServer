@@ -47,7 +47,7 @@ const server = io => {
     }
   };
 
-  io.of('/00-next-level').on('connection', function(socket){
+  io.of('/febc13-chat').on('connection', function(socket){
     logger.debug('클라이언트 접속', socket.id);
     // 클라이언트 접속 종료시
     socket.on('disconnect', function(){
