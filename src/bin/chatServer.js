@@ -104,7 +104,7 @@ const server = io => {
       leaveRoom(socket, success);
     });
 
-    // 클라이언트로부터 채팅 메세지 전송
+    // 클라이언트로부터 채팅 메세지 도착
     socket.on('sendMsg', msg => {
       sendMsg(socket, socket.nickName, msg);
     });
