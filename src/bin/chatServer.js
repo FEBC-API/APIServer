@@ -2,111 +2,162 @@ import logger from '#utils/logger.js';
 import shortid from "shortid";
 
 const server = io => {
-  logger.trace('socketServer start');
-  const getRooms = () => Object.fromEntries(io.roomList || []);
+  // 채팅룸 목록
+  io.roomList = new Map();
 
-  const getMembers = roomId => Object.fromEntries(io.roomList?.get(roomId)?.memberList || []);
+  // 채팅룸 목록 반환
+  const getRooms = () => Object.fromEntries(io.roomList);
 
-  const getRoomInfo = roomId => io.roomList?.get(roomId) || {};
+  // 채팅룸 멤버 목록 반환
+  const getMembers = roomId => {
+    if(!roomId) return {};
+    const roomInfo = io.roomList.get(roomId);
+    if(!roomInfo) return {};
+    return Object.fromEntries(roomInfo.memberList);
+  }
 
-  const sendMsg = (socket, sender, msg) => {
-    socket.nsp.to(socket.roomId).emit('setMsg', { nickName: sender, msg });
-  };
-
-  const joinRoom = (socket, { roomId, user_id, nickName }, success) => {
-    logger.trace(roomId, user_id, nickName);
-    if(io.roomList?.get(roomId)){
-      const memberList = io.roomList.get(roomId).memberList;
-      socket.roomId = roomId;
-      socket.user_id = user_id;
-      socket.nickName = nickName || '게스트' + (memberList.size + 1);
-      memberList.set(socket.id, { user_id, nickName: socket.nickName });
-
-      socket.join(roomId);
-
-      sendMsg(socket, '시스템', `${socket.nickName}님이 입장했습니다.`);
-      socket.nsp.to(roomId).emit('setMembers', getMembers(roomId));
-      
-      success && success();
-    }else{
-      socket.emit('setMsg', { nickName: '시스템', msg: `채팅방이 존재하지 않습니다.` });
-      socket.disconnect();
-    }
-  };
-
-  const leaveRoom = (socket, success) => {
-    if(io.roomList?.get(socket.roomId)){
-      io.roomList?.get(socket.roomId)?.memberList?.delete(socket.id);
-      sendMsg(socket, '시스템', `${socket.nickName}님이 퇴장했습니다.`);
-      socket.leave(socket.roomId);
-      socket.nsp.to(socket.roomId).emit('setMembers', getMembers(socket.roomId));
-      success && success();
-    }else{
-      socket.emit('setMsg', { nickName: '시스템', msg: `채팅방이 존재하지 않습니다.` });
-      socket.disconnect();
-    }
-  };
+  // 채팅룸 정보 반환
+  const getRoomInfo = roomId => {
+    if(!roomId) return {};
+    const roomInfo = io.roomList.get(roomId);
+    if(!roomInfo) return {};
+    console.log('채팅룸 정보', roomId, getMembers(roomId));
+    return { ...roomInfo, memberList: getMembers(roomId) };
+  }
 
   io.of('/febc13-chat').on('connection', function(socket){
-    logger.debug('클라이언트 접속', socket.id);
+    console.log('클라이언트 접속', socket.id);
+
+    // 룸 생성
+
+    socket.on('createRoom', function ({ roomId, user_id, hostName, roomName }, callback) {
+      const newRoomId = roomId || shortid.generate();
+
+      if(!user_id.trim()){
+        user_id = socket.id;
+      }
+      if(!hostName.trim()){
+        hostName = '용쌤';
+      }
+
+
+      const memberList = new Map();
+      memberList.guestNo = 0;
+
+      const roomInfo = {
+        roomId: newRoomId,
+        user_id,
+        hostName,
+        roomName,
+        memberList,
+      };
+
+      const res = {};
+
+      if(io.roomList.has(newRoomId)){
+        res.ok = 0;
+        res.message = `${newRoomId}는 이미 존재하는 roomId 입니다.`;
+        // socket.disconnect();
+      }else{
+        io.roomList.set(newRoomId, roomInfo);
+        res.ok = 1;
+        res.message = `${newRoomId} 채팅방 생성 완료`;
+        res.roomInfo = roomInfo;
+        // 모든 클라이언트에 생성된 룸 정보 전송
+        socket.nsp.emit('rooms', getRooms());
+      }
+
+      callback(res);
+    });
+
+    // 채팅룸에 입장
+    const joinRoom = ({ roomId, user_id, nickName }, callback) => {
+      console.info(roomId, user_id, nickName);
+
+      const res = {};
+
+      const roomInfo = io.roomList.get(roomId);
+      if(roomInfo){
+        // user_id가 채팅방에 존재하는지 확인
+        if(roomInfo.memberList.has(user_id)){
+          res.ok = 0;
+          res.message = `${user_id}는 이미 채팅방에 참여중입니다.`;
+        }else{
+          res.ok = 1;
+          res.message = `${roomId} 채팅방 입장 완료`;
+          res.roomInfo = roomInfo;
+
+          socket.roomId = roomId;
+          socket.user_id = user_id;
+          socket.nickName = nickName || '게스트' + (++roomInfo.memberList.guestNo);
+          roomInfo.memberList.set(user_id, { nickName: socket.nickName, joinTime: new Date() });
+
+          socket.join(roomId);
+
+          console.log(roomInfo.memberList);
+
+          broadcastMsg('시스템', `${socket.nickName}님이 대화에 참여했습니다.`);
+          sendMembers(roomId);
+        }
+
+      }else{
+        res.ok = 0;
+        res.message = `${roomId} 채팅방이 존재하지 않습니다.`;
+      }
+
+      callback?.(res);
+    };
+
+    // 채팅룸에서 나가기
+    const leaveRoom = () => {
+      const myRoom = io.roomList.get(socket.roomId);
+      if(myRoom){
+        myRoom.memberList.delete(socket.user_id);
+        broadcastMsg('시스템', `${socket.nickName}님이 대화에서 나갔습니다.`);
+        socket.leave(socket.roomId);
+        sendMembers(socket.roomId);
+      }
+    };
+
+    // 채팅룸에 있는 모든 클라이언트에 메시지 전송
+    const broadcastMsg = (sender, msg) => {
+      // socket.to(socket.roomId).emit('message', { nickName: sender, msg }); // 자기 자신을 제외
+      socket.nsp.to(socket.roomId).emit('message', { nickName: sender, msg }); // 자기 자신을 포함
+    };
+
+    
+
+    // 채팅룸에 있는 모든 클라이언트에 멤버 목록 전송
+    const sendMembers = roomId => {
+      console.log(roomId, getMembers(roomId));
+      socket.nsp.to(roomId).emit('members', getMembers(roomId));
+    };
+
+    // 클라이언트에 메시지 전송(콜백 방식으로 응답하므로 더이상 사용하지 않음)
+    // const sendMsg = (sender, msg) => {
+    //   socket.emit('message', { nickName: sender, msg });
+    // };
+
     // 클라이언트 접속 종료시
     socket.on('disconnect', function(){
-      leaveRoom(socket);
+      leaveRoom();
     });
 
     // 채팅방 정보 반환
-    socket.on('getRoomInfo', (roomId, callback) => callback(getRoomInfo(roomId)));
+    socket.on('roomInfo', (roomId, callback) => callback(getRoomInfo(roomId)));
 
     // 생성된 모든 룸의 목록 반환
-    socket.on('getRooms', callback => callback(getRooms()));
-
-    // 지정한 룸에 참여한 모든 멤버 목록 반환
-    // socket.on('getMembers', (roomId, callback) => callback(getMembers(roomId)));
-
-    // 룸 생성
-    socket.on("createRoom", function ({ user_id, hostName, roomName, parents_option }) {
-        const roomId = shortid.generate();
-        io.roomList = io.roomList || new Map();
-        io.roomList.set(roomId, {
-          user_id,
-          hostName,
-          roomName,
-          parents_option,
-          memberList: new Map(),
-        });
-
-        // joinRoom(socket, { roomId, user_id, nickName: hostName });
-
-        socket.nsp.emit("setRooms", getRooms());
-
-        // 클라이언트에게 'createRoomResponse' 이벤트를 발생시키고, 채팅방 정보를 보냄
-        socket.emit("createRoomResponse", {
-          success: true,
-          roomList: getRooms(),
-        });
-
-        // callback({
-        //   success: true,
-        //   roomList: getRooms(),
-        // });
-        // console.log(user_id, hostName, roomName, parents_option, callback);
-      }
-    );
-
+    socket.on('rooms', callback => callback(getRooms()));
 
     // 룸에 참여
-    socket.on('joinRoom', (props, success) => {
-      joinRoom(socket, props, success);
-    });
+    socket.on('joinRoom', joinRoom);
 
     // 룸에서 나가기
-    socket.on('leaveRoom', success => {
-      leaveRoom(socket, success);
-    });
+    socket.on('leaveRoom', leaveRoom);
 
     // 클라이언트로부터 채팅 메세지 도착
-    socket.on('sendMsg', msg => {
-      sendMsg(socket, socket.nickName, msg);
+    socket.on('message', msg => {
+      broadcastMsg(socket.nickName, msg);
     });
   });
 };
