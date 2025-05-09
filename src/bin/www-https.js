@@ -100,6 +100,7 @@ function onListening() {
 }
 
 // socket.io 서버 구동
-const io = new Server(server, { cors: { origin: config.cors.origin } } );
+const io = new Server(server, { cors: { origin: '*' } } );
+// const io = new Server(server, { cors: { origin: config.cors.origin } } );
 chatServer(io);
 notificationServer.listen(io);
