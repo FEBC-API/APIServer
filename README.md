@@ -1,6 +1,6 @@
 # Front-End BootCamp Project API Server
 
-- GitHub URL: (https://github.com/uzoolove/api-market)
+- GitHub URL: (https://github.com/FEBC-API/APIServer)
 - API Server URL: (https://api-market.koyeb.app)
 
 ## 오픈마켓 API 서버

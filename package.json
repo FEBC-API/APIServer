@@ -18,16 +18,12 @@
   },
   "scripts": {
     "prestart": "node -r dotenv/config ./swagger.js && node -r dotenv/config ./swagger-todo.js",
-
     "test": "cross-env NODE_ENV=local jest --detectOpenHandles",
     "test:silent": "cross-env NODE_ENV=local jest --silent",
-
     "local": "cross-env NODE_ENV=local nodemon -r dotenv/config ./src/bin/www.js",
     "local:https": "cross-env NODE_ENV=local nodemon -r dotenv/config ./src/bin/www-https.js",
-    
     "dev": "cross-env NODE_ENV=development nodemon -r dotenv/config ./src/bin/www.js",
     "dev:https": "cross-env NODE_ENV=development nodemon -r dotenv/config ./src/bin/www-https.js",
-
     "start": "cross-env NODE_ENV=production node -r dotenv/config ./src/bin/www.js"
   },
   "dependencies": {
@@ -43,6 +39,7 @@
     "express-rate-limit": "^7.5.0",
     "express-validator": "^7.0.1",
     "greenlock-express": "^4.0.3",
+    "http-proxy-middleware": "^3.0.5",
     "jsonwebtoken": "^9.0.2",
     "lodash": "^4.17.21",
     "lowdb": "^7.0.1",
