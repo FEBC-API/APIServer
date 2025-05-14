@@ -11,12 +11,19 @@ import config from './config/index.js';
 import rateLimit from 'express-rate-limit';
 import moment from 'moment';
 import { readFile } from 'fs/promises';
+import proxy from '#bin/proxy.js';
+
 
 var app = express();
 
 const blacklistedIps = new Map();
 
 app.use(morgan('dev'));
+
+
+// 프록시 서버 구동
+app.use('/proxy', proxy);
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
