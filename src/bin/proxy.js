@@ -1,10 +1,10 @@
 import { createProxyMiddleware } from 'http-proxy-middleware';
-import express from 'express';
 
 // CORS 헤더 추가 함수
 const addCorsHeaders = (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
+  res.setHeader('Access-Control-Max-Age', 60*60*24*7); // preflight 요청 생략하는 캐시 시간 7일
   
   const requestedHeaders = req.headers['access-control-request-headers'];
   if (requestedHeaders) {
@@ -37,7 +37,6 @@ const proxyMiddleware = createProxyMiddleware({
 // 커스텀 미들웨어 생성
 const customProxy = (req, res, next) => {
   if (req.method === 'OPTIONS') {
-    console.log('OPTIONS는 proxy가 응답');
     // CORS 헤더 추가
     addCorsHeaders(req, res);
     res.writeHead(204); // No Content
