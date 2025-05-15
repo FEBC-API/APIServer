@@ -27,6 +27,8 @@ const server = io => {
       if(!roomId) return {};
       const rooms = namespaceRooms.get(namespace);
       const roomInfo = rooms?.get(roomId);
+      console.log('roomInfo', roomInfo);
+      console.log('roomInfo.memberList', roomInfo.memberList);
       if(!roomInfo) return {};
       return Object.fromEntries(roomInfo.memberList);
     };
@@ -37,6 +39,7 @@ const server = io => {
       const rooms = namespaceRooms.get(namespace);
       const roomInfo = rooms?.get(roomId);
       if(!roomInfo) return {};
+      console.log('채팅룸 정보', roomId, getMembers(roomId));
       return { ...roomInfo, memberList: getMembers(roomId) };
     };
 
@@ -78,14 +81,22 @@ const server = io => {
       };
 
       // 룸 생성
-      socket.on('createRoom', function ({ roomId, user_id, hostName, roomName }, callback) {
+      socket.on('createRoom', function ({ roomId, user_id, hostName, roomName } = {}, callback) {
+        // 필수 파라미터 검증
+        if (!roomName) {
+          return callback?.({
+            ok: 0,
+            message: '필수 파라미터가 누락되었습니다. (user_id, hostName, roomName은 필수입니다)'
+          });
+        }
+
         const newRoomId = roomId || shortid.generate();
         const rooms = namespaceRooms.get(namespace);
 
-        if(!user_id.trim()) {
+        if(!user_id?.trim()) {
           user_id = socket.id;
         }
-        if(!hostName.trim()) {
+        if(!hostName?.trim()) {
           hostName = '용쌤';
         }
 
@@ -114,11 +125,19 @@ const server = io => {
           socket.nsp.emit('rooms', getRooms());
         }
 
-        callback(res);
+        callback?.(res);
       });
 
       // 채팅룸 입장
-      const joinRoom = ({ roomId, user_id, nickName }, callback) => {
+      const joinRoom = ({ roomId, user_id, nickName } = {}, callback) => {
+        // 필수 파라미터 검증
+        if (!roomId || !user_id) {
+          return callback?.({
+            ok: 0,
+            message: '필수 파라미터가 누락되었습니다. (roomId와 user_id는 필수입니다)'
+          });
+        }
+
         const rooms = namespaceRooms.get(namespace);
         const res = {};
 
@@ -128,17 +147,17 @@ const server = io => {
             res.ok = 0;
             res.message = `${user_id}는 이미 채팅방에 참여중입니다.`;
           } else {
-            res.ok = 1;
-            res.message = `${roomId} 채팅방 입장 완료`;
-            res.roomInfo = roomInfo;
-
             socket.roomId = roomId;
             socket.user_id = user_id;
-            socket.nickName = nickName || '게스트' + (++roomInfo.memberList.guestNo);
+            socket.nickName = nickName?.trim() || '게스트' + (++roomInfo.memberList.guestNo);
             roomInfo.memberList.set(user_id, { 
               nickName: socket.nickName, 
               joinTime: new Date().toISOString()
             });
+
+            res.ok = 1;
+            res.message = `${roomId} 채팅방 입장 완료`;
+            res.roomInfo = getRoomInfo(roomId);
 
             socket.join(roomId);
             
