@@ -201,6 +201,7 @@ const server = io => {
   //   }
   // });
 
+  handleNamespace('/febc13-chat');
   handleNamespace('/febc13-chat/team01');
   handleNamespace('/febc13-chat/team02');
 };
