@@ -17,8 +17,9 @@ const server = io => {
     
     // 네임스페이스별 룸 목록 가져오기
     const getRooms = () => {
-      const rooms = namespaceRooms.get(namespace);
-      console.log('rooms', rooms);
+      const rooms = Array.from(namespaceRooms.get(namespace).entries()).map(([roomId, roomInfo]) => {
+        return [roomId, { ...roomInfo, memberList: getMembers(roomId) }]; 
+      });
       return rooms ? Object.fromEntries(rooms) : {};
     };
 
