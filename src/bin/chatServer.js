@@ -140,11 +140,12 @@ const server = io => {
           });
         }
 
+        const rooms = namespaceRooms.get(namespace);
         const res = {};
 
-        const roomInfo = getRoomInfo(roomId);
+        const roomInfo = rooms.get(roomId);
         if(roomInfo) {
-          if(Object.keys(roomInfo.memberList).length >= roomInfo.capacity ) {
+          if(roomInfo.memberList.size >= roomInfo.capacity ) {
             res.ok = 0;
             res.message = `정원 ${roomInfo.capacity}명이 다 찼습니다.`;
           } else if(roomInfo.memberList.has(user_id)) {
