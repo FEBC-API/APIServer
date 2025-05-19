@@ -1,4 +1,4 @@
-import logger from '#utils/logger.js';
+// import logger from '#utils/logger.js';
 import shortid from "shortid";
 
 const server = io => {
@@ -82,7 +82,7 @@ const server = io => {
       };
 
       // 룸 생성
-      socket.on('createRoom', function ({ roomId, user_id, hostName, roomName } = {}, callback) {
+      socket.on('createRoom', function ({ roomId, user_id, hostName, roomName, capacity=99 } = {}, callback) {
         // 필수 파라미터 검증
         if (!roomName) {
           return callback?.({
@@ -109,6 +109,7 @@ const server = io => {
           user_id,
           hostName,
           roomName,
+          capacity,
           memberList,
           createdAt: new Date().toISOString()
         };
@@ -139,18 +140,21 @@ const server = io => {
           });
         }
 
-        const rooms = namespaceRooms.get(namespace);
         const res = {};
 
-        const roomInfo = rooms.get(roomId);
+        const roomInfo = getRoomInfo(roomId);
         if(roomInfo) {
-          if(roomInfo.memberList.has(user_id)) {
+          if(Object.keys(roomInfo.memberList).length >= roomInfo.capacity ) {
+            res.ok = 0;
+            res.message = `정원 ${roomInfo.capacity}명이 다 찼습니다.`;
+          } else if(roomInfo.memberList.has(user_id)) {
             res.ok = 0;
             res.message = `${user_id}는 이미 채팅방에 참여중입니다.`;
           } else {
             socket.roomId = roomId;
             socket.user_id = user_id;
             socket.nickName = nickName?.trim() || '게스트' + (++roomInfo.memberList.guestNo);
+
             roomInfo.memberList.set(user_id, { 
               nickName: socket.nickName, 
               joinTime: new Date().toISOString()
