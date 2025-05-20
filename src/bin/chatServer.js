@@ -131,9 +131,10 @@ const server = io => {
       });
 
       // 채팅룸 입장
-      const joinRoom = ({ roomId, user_id, nickName } = {}, callback) => {
+      // const joinRoom = ({ roomId, user_id, nickName } = {}, callback) => {
+      const joinRoom = (params = {}, callback) => {
         // 필수 파라미터 검증
-        if (!roomId || !user_id) {
+        if (!params.roomId || !params.user_id) {
           return callback?.({
             ok: 0,
             message: '필수 파라미터가 누락되었습니다. (roomId와 user_id는 필수입니다)'
@@ -143,36 +144,39 @@ const server = io => {
         const rooms = namespaceRooms.get(namespace);
         const res = {};
 
-        const roomInfo = rooms.get(roomId);
+        const roomInfo = rooms.get(params.roomId);
         if(roomInfo) {
           if(roomInfo.memberList.size >= roomInfo.capacity ) {
             res.ok = 0;
             res.message = `정원 ${roomInfo.capacity}명이 다 찼습니다.`;
-          } else if(roomInfo.memberList.has(user_id)) {
+          } else if(roomInfo.memberList.has(params.user_id)) {
             res.ok = 0;
-            res.message = `${user_id}는 이미 채팅방에 참여중입니다.`;
+            res.message = `${params.user_id}는 이미 채팅방에 참여중입니다.`;
           } else {
-            socket.roomId = roomId;
-            socket.user_id = user_id;
-            socket.nickName = nickName?.trim() || '게스트' + (++roomInfo.memberList.guestNo);
+            socket.roomId = params.roomId;
+            socket.user_id = params.user_id;
+            socket.nickName = params.nickName?.trim() || '게스트' + (++roomInfo.memberList.guestNo);
 
-            roomInfo.memberList.set(user_id, { 
+            roomInfo.memberList.set(params.user_id, { 
               nickName: socket.nickName, 
               joinTime: new Date().toISOString()
             });
 
             res.ok = 1;
-            res.message = `${roomId} 채팅방 입장 완료`;
-            res.roomInfo = getRoomInfo(roomId);
+            res.message = `${params.roomId} 채팅방 입장 완료`;
+            res.roomInfo = getRoomInfo(params.roomId);
 
-            socket.join(roomId);
+            socket.join(params.roomId);
             
-            broadcastMsg('시스템', `${socket.nickName}님이 대화에 참여했습니다.`);
-            sendMembers(roomId);
+            // broadcastMsg('시스템', `${socket.nickName}님이 대화에 참여했습니다.`);
+            params.action = 'joinRoom';
+            params.msg = `${socket.nickName}님이 대화에 참여했습니다.`;
+            broadcastMsg('시스템', params);
+            sendMembers(params.roomId);
           }
         } else {
           res.ok = 0;
-          res.message = `${roomId} 채팅방이 존재하지 않습니다.`;
+          res.message = `${params.roomId} 채팅방이 존재하지 않습니다.`;
         }
 
         callback?.(res);
