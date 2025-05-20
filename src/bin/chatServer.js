@@ -169,12 +169,12 @@ const server = io => {
             socket.join(params.roomId);
             
             // broadcastMsg('시스템', `${socket.nickName}님이 대화에 참여했습니다.`);
-            const res = {
+            const message = {
               action: 'joinRoom',
               msg: `${socket.nickName}님이 대화에 참여했습니다.`,
               params,
             };
-            broadcastMsg('시스템', res);
+            broadcastMsg('시스템', message);
             sendMembers(params.roomId);
           }
         } else {
