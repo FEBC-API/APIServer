@@ -59,10 +59,10 @@ const server = io => {
           sendMembers(socket.roomId);
 
           // 방에 아무도 없으면 방 삭제 (선택사항)
-          if(myRoom.memberList.size === 0) {
-            rooms.delete(socket.roomId);
-            socket.nsp.emit('rooms', getRooms());
-          }
+          // if(myRoom.memberList.size === 0) {
+          //   rooms.delete(socket.roomId);
+          //   socket.nsp.emit('rooms', getRooms());
+          // }
         }
       };
 
