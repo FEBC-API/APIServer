@@ -28,8 +28,6 @@ const server = io => {
       if(!roomId) return {};
       const rooms = namespaceRooms.get(namespace);
       const roomInfo = rooms?.get(roomId);
-      console.log('roomInfo', roomInfo);
-      console.log('roomInfo.memberList', roomInfo.memberList);
       if(!roomInfo) return {};
       return Object.fromEntries(roomInfo.memberList);
     };
@@ -40,7 +38,6 @@ const server = io => {
       const rooms = namespaceRooms.get(namespace);
       const roomInfo = rooms?.get(roomId);
       if(!roomInfo) return {};
-      console.log('채팅룸 정보', roomId, getMembers(roomId));
       return { ...roomInfo, memberList: getMembers(roomId) };
     };
 
@@ -58,11 +55,12 @@ const server = io => {
           socket.leave(socket.roomId);
           sendMembers(socket.roomId);
 
-          // 방에 아무도 없으면 방 삭제 (선택사항)
-          // if(myRoom.memberList.size === 0) {
-          //   rooms.delete(socket.roomId);
-          //   socket.nsp.emit('rooms', getRooms());
-          // }
+          // 방 생성시 autoClose: true 지정했을 경우 방에 아무도 없으면 방 삭제
+          if(myRoom.autoColse && myRoom.memberList.size === 0) {
+            rooms.delete(socket.roomId);
+            socket.nsp.emit('rooms', getRooms());
+          }
+          
         }
       };
 
@@ -77,12 +75,11 @@ const server = io => {
 
       // 채팅룸에 있는 모든 클라이언트에 멤버 목록 전송
       const sendMembers = roomId => {
-        console.log(`[${namespace}][${roomId}] 멤버 목록 전송`, getMembers(roomId));
         socket.nsp.to(roomId).emit('members', getMembers(roomId));
       };
 
       // 룸 생성
-      socket.on('createRoom', function ({ roomId, user_id, hostName, roomName, capacity=99 } = {}, callback) {
+      socket.on('createRoom', function ({ roomId, user_id, hostName, roomName, capacity=99, autoColse=false } = {}, callback) {
         // 필수 파라미터 검증
         if (!roomName) {
           return callback?.({
@@ -110,6 +107,7 @@ const server = io => {
           hostName,
           roomName,
           capacity,
+          autoColse,
           memberList,
           createdAt: new Date().toISOString()
         };
