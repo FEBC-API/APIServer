@@ -46,6 +46,20 @@ const server = io => {
       const rooms = namespaceRooms.get(namespace);
       if (!rooms) return;
       
+      // 각 방별로 접속자들에게 메시지 전송
+      rooms.forEach((room, roomId) => {
+        const message = {
+          action: 'cleanRooms',
+          msg: '방이 삭제되었습니다.'
+        };
+
+        io.of(namespace).to(roomId).emit('message', {
+          nickName: '시스템',
+          msg: message,
+          timestamp: new Date().toISOString()
+        });
+      });
+
       // 방에 있는 모든 사용자들의 roomId 초기화
       io.of(namespace).sockets.forEach(socket => {
         if (socket.roomId) {
