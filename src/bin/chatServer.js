@@ -41,6 +41,28 @@ const server = io => {
       return { ...roomInfo, memberList: getMembers(roomId) };
     };
 
+    // 모든 방에 접속된 사용자 연결을 끊고 방 삭제
+    const cleanRooms = () => {
+      const rooms = namespaceRooms.get(namespace);
+      if (!rooms) return;
+      
+      // 방에 있는 모든 사용자들의 roomId 초기화
+      io.of(namespace).sockets.forEach(socket => {
+        if (socket.roomId) {
+          socket.leave(socket.roomId);
+          socket.roomId = null;
+          socket.user_id = null;
+          socket.nickName = null;
+        }
+      });
+      
+      // 모든 방 정보 초기화
+      rooms.clear();
+      
+      // 해당 네임스페이스의 모든 클라이언트에게 빈 방 목록 전송
+      io.of(namespace).emit('rooms', getRooms());
+    }
+
     io.of(namespace).on('connection', function(socket) {
       console.log(`[${namespace}] 클라이언트 접속`, socket.id);
 
@@ -195,6 +217,7 @@ const server = io => {
       socket.on('message', msg => {
         broadcastMsg(socket.nickName, msg);
       });
+      socket.on('cleanRooms', cleanRooms);
     });
   };
 
