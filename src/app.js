@@ -32,16 +32,27 @@ app.use(express.static('public'));
 async function loadSwaggerFiles() {
   try {
     
-    const swaggerFile = await readFile('./swagger-todo-output.json', 'utf8'); // Todo List API 문서
-    // const swaggerFile = await readFile('./swagger-output.json', 'utf8'); // Open Market API 문서
-    const swaggerJson = JSON.parse(swaggerFile);
-    app.use('/apidocs', swaggerUi.serve, swaggerUi.setup(swaggerJson, {
+    const todoSwaggerFile = await readFile('./swagger-todo-output.json', 'utf8'); // Todo List API 문서
+    const marketSwaggerFile = await readFile('./swagger-output.json', 'utf8'); // Open Market API 문서
+    const todoSwaggerJson = JSON.parse(todoSwaggerFile);
+    const marketSwaggerJson = JSON.parse(marketSwaggerFile);
+
+    const swaggerOptions = {
+      docExpansion: 'list', // none, list, full
+      defaultModelsExpandDepth: -1,
+      displayRequestDuration: true,
+    }
+
+    // Todo API 문서용 별도 인스턴스
+    app.use('/todo/apidocs', swaggerUi.serveFiles(todoSwaggerJson), swaggerUi.setup(todoSwaggerJson, {
       // explorer: true,
-      swaggerOptions: {
-        docExpansion: 'list', // none, list, full
-        defaultModelsExpandDepth: -1,
-        displayRequestDuration: true,
-      }
+      swaggerOptions
+    }));
+
+    // Market API 문서용 별도 인스턴스  
+    app.use('/market/apidocs', swaggerUi.serveFiles(marketSwaggerJson), swaggerUi.setup(marketSwaggerJson, {
+      // explorer: true,
+      swaggerOptions
     }));
 
   } catch (error) {
@@ -113,7 +124,7 @@ app.use(function(req, res, next){
 });
 
 // 500 에러
-app.use(function(err, req, res, next){
+app.use(function(err, req, res){
   logger.error(err.status === 404 ? req.method + ' ' +err.message : err.stack+'\n\n');
   if(err.cause){
     logger.error(err.cause);
