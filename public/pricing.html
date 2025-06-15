@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pricing - FEBC API Server</title>
+  <link rel="stylesheet" href="common.css">
+  <style>
+    .navbar {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      padding: 0;
+    }
+
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+    }
+
+    .nav-logo {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: #2563eb;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .nav-logo:hover {
+      color: #1d4ed8;
+    }
+
+    .nav-menu {
+      display: flex;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      gap: 2rem;
+      align-items: center;
+    }
+
+    .nav-item {
+      position: relative;
+    }
+
+    .nav-link {
+      text-decoration: none;
+      color: #64748b;
+      font-weight: 500;
+      font-size: 0.95rem;
+      padding: 0.5rem 0;
+      transition: color 0.2s ease;
+      position: relative;
+    }
+
+    .nav-link:hover, .nav-link.active {
+      color: #2563eb;
+    }
+
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: #2563eb;
+      transition: width 0.2s ease;
+    }
+
+    .nav-link:hover::after, .nav-link.active::after {
+      width: 100%;
+    }
+
+    .nav-auth {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .nav-login {
+      color: #64748b;
+      text-decoration: none;
+      font-weight: 500;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      transition: all 0.2s ease;
+    }
+
+    .nav-login:hover {
+      color: #2563eb;
+      background: rgba(37, 99, 235, 0.1);
+    }
+
+    .nav-signup {
+      background: #2563eb;
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+      padding: 0.75rem 1.5rem;
+      border-radius: 6px;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 4px rgba(37, 99, 235, 0.2);
+    }
+
+    .nav-signup:hover {
+      background: #1d4ed8;
+      box-shadow: 0 4px 8px rgba(37, 99, 235, 0.3);
+      transform: translateY(-1px);
+    }
+
+    .pricing-hero {
+      text-align: center;
+      padding: 5rem 2rem 3rem;
+      background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+      color: white;
+    }
+
+    .pricing-hero h1 {
+      font-size: 3rem;
+      font-weight: 800;
+      margin-bottom: 1rem;
+    }
+
+    .pricing-hero p {
+      font-size: 1.2rem;
+      opacity: 0.9;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .pricing-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 4rem 2rem;
+    }
+
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 2rem;
+      margin-top: 3rem;
+    }
+
+    .pricing-card {
+      background: white;
+      border-radius: 16px;
+      padding: 2.5rem;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      border: 2px solid #f1f5f9;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .pricing-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+      border-color: #2563eb;
+    }
+
+    .pricing-card.featured {
+      border-color: #2563eb;
+      transform: scale(1.05);
+    }
+
+    .pricing-card.featured::before {
+      content: '가장 인기';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: #2563eb;
+      color: white;
+      padding: 0.5rem;
+      text-align: center;
+      font-weight: 600;
+      font-size: 0.875rem;
+    }
+
+    .pricing-card.featured {
+      margin-top: 1rem;
+    }
+
+    .plan-name {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #1e293b;
+      margin-bottom: 0.5rem;
+    }
+
+    .plan-description {
+      color: #64748b;
+      margin-bottom: 2rem;
+      line-height: 1.6;
+    }
+
+    .plan-price {
+      display: flex;
+      align-items: baseline;
+      margin-bottom: 2rem;
+    }
+
+    .price-amount {
+      font-size: 3rem;
+      font-weight: 800;
+      color: #1e293b;
+    }
+
+    .price-period {
+      font-size: 1rem;
+      color: #64748b;
+      margin-left: 0.5rem;
+    }
+
+    .price-note {
+      font-size: 0.875rem;
+      color: #64748b;
+      margin-top: 0.5rem;
+    }
+
+    .plan-features {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 2rem 0;
+    }
+
+    .plan-features li {
+      display: flex;
+      align-items: flex-start;
+      margin-bottom: 1rem;
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+
+    .plan-features li::before {
+      content: '✓';
+      color: #22c55e;
+      font-weight: bold;
+      margin-right: 0.75rem;
+      margin-top: 0.1rem;
+    }
+
+    .plan-features li.limitation::before {
+      content: '⚠️';
+      margin-right: 0.5rem;
+    }
+
+    .plan-features li.limitation {
+      color: #f59e0b;
+      font-weight: 500;
+    }
+
+    .plan-button {
+      width: 100%;
+      padding: 1rem 2rem;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-decoration: none;
+      display: block;
+      text-align: center;
+    }
+
+    .plan-button.primary {
+      background: #2563eb;
+      color: white;
+    }
+
+    .plan-button.primary:hover {
+      background: #1d4ed8;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3);
+    }
+
+    .plan-button.secondary {
+      background: #f8fafc;
+      color: #2563eb;
+      border: 2px solid #2563eb;
+    }
+
+    .plan-button.secondary:hover {
+      background: #2563eb;
+      color: white;
+    }
+
+    .faq-section {
+      background: #f8fafc;
+      padding: 4rem 2rem;
+      margin-top: 4rem;
+    }
+
+    .faq-container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .faq-title {
+      text-align: center;
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: #1e293b;
+      margin-bottom: 3rem;
+    }
+
+    .faq-item {
+      background: white;
+      border-radius: 12px;
+      margin-bottom: 1rem;
+      overflow: hidden;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    }
+
+    .faq-question {
+      padding: 1.5rem;
+      background: white;
+      border: none;
+      width: 100%;
+      text-align: left;
+      font-weight: 600;
+      font-size: 1.1rem;
+      color: #1e293b;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .faq-question:hover {
+      background: #f8fafc;
+    }
+
+    .faq-answer {
+      padding: 0 1.5rem 1.5rem;
+      color: #64748b;
+      line-height: 1.6;
+    }
+
+    @media (max-width: 768px) {
+      .nav-container {
+        padding: 1rem;
+      }
+
+      .pricing-hero h1 {
+        font-size: 2rem;
+      }
+
+      .pricing-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+
+      .pricing-card.featured {
+        transform: none;
+        margin-top: 0;
+      }
+
+      .pricing-container {
+        padding: 2rem 1rem;
+      }
+    }
+  </style>
+  <script type="text/javascript">
+    const apiUrl = location.origin;
+
+    window.addEventListener('DOMContentLoaded', () => {
+      document.body.innerHTML = document.body.innerHTML.replace(/<%= apiUrl %>|&lt;%= apiUrl %&gt;/g, apiUrl);
+    });
+  </script>
+</head>
+
+<body class="todo-theme">
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="<%= apiUrl %>/" class="nav-logo">
+        🚀 FEBC API
+      </a>
+      
+      <ul class="nav-menu">
+        <li class="nav-item">
+          <a href="#" class="nav-link">플랜</a>
+        </li>
+        <li class="nav-item">
+          <a href="<%= apiUrl %>/pricing.html" class="nav-link active">가격</a>
+        </li>
+        <li class="nav-item">
+          <a href="#" class="nav-link">문서</a>
+        </li>
+        <li class="nav-item">
+          <a href="#" class="nav-link">지원</a>
+        </li>
+        <li class="nav-auth">
+          <a href="#" class="nav-login">로그인</a>
+          <a href="#" class="nav-signup">회원가입</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="pricing-hero">
+    <h1>간단하고 투명한 가격</h1>
+    <p>API 요구사항에 맞는 완벽한 플랜을 선택하세요. 무료로 시작해서 성장에 따라 확장하세요.</p>
+  </div>
+
+  <div class="pricing-container">
+    <div class="pricing-grid">
+      <!-- Free Plan -->
+      <div class="pricing-card">
+        <div class="plan-name">무료</div>
+        <div class="plan-description">API 시작과 테스트에 완벽한 플랜</div>
+        <div class="plan-price">
+          <span class="price-amount">무료</span>
+        </div>
+        <div class="price-note">1년간 사용 가능</div>
+        
+        <ul class="plan-features">
+          <li>월 10,000 API 요청</li>
+          <li>Todo List API 접근</li>
+          <li>OpenMarket API 접근</li>
+          <li>WebSocket 연결 (최대 10개)</li>
+          <li>기본 문서 및 가이드</li>
+          <li>커뮤니티 지원</li>
+          <li class="limitation">10초에 100번 요청 초과 시 1시간 IP 차단</li>
+        </ul>
+        
+        <a href="#" class="plan-button secondary">무료로 시작하기</a>
+      </div>
+
+      <!-- Pro Plan -->
+      <div class="pricing-card featured">
+        <div class="plan-name">프로</div>
+        <div class="plan-description">성장하는 비즈니스와 개발팀을 위한 플랜</div>
+        <div class="plan-price">
+          <span class="price-amount">29,000원</span>
+          <span class="price-period">/ 월</span>
+        </div>
+        <div class="price-note">연간 결제 시 20% 할인</div>
+        
+        <ul class="plan-features">
+          <li>월 100,000 API 요청</li>
+          <li>모든 API 접근</li>
+          <li>WebSocket 연결 (최대 100개)</li>
+          <li>우선 지원</li>
+          <li>고급 분석 및 모니터링</li>
+          <li>사용자 정의 Rate Limiting</li>
+          <li>99.9% SLA 보장</li>
+          <li>개발팀 협업 도구</li>
+        </ul>
+        
+        <a href="#" class="plan-button primary">프로 체험 시작</a>
+      </div>
+
+      <!-- Enterprise Plan -->
+      <div class="pricing-card">
+        <div class="plan-name">엔터프라이즈</div>
+        <div class="plan-description">맞춤형 요구사항이 있는 대규모 조직을 위한 플랜</div>
+        <div class="plan-price">
+          <span class="price-amount">맞춤형</span>
+        </div>
+        <div class="price-note">맞춤형 가격 책정</div>
+        
+        <ul class="plan-features">
+          <li>무제한 API 요청</li>
+          <li>전용 인프라</li>
+          <li>무제한 WebSocket 연결</li>
+          <li>24/7 전담 지원</li>
+          <li>맞춤형 API 개발</li>
+          <li>온프레미스 배포 옵션</li>
+          <li>99.99% SLA 보장</li>
+          <li>고급 보안 및 컴플라이언스</li>
+          <li>전담 계정 매니저</li>
+        </ul>
+        
+        <a href="#" class="plan-button secondary">영업팀 문의</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="faq-section">
+    <div class="faq-container">
+      <h2 class="faq-title">자주 묻는 질문</h2>
+      
+      <div class="faq-item">
+        <button class="faq-question">
+          무료 플랜의 제한사항은 무엇인가요?
+          <span>+</span>
+        </button>
+        <div class="faq-answer">
+          무료 플랜은 월 10,000번의 API 요청과 10초에 100번 요청 제한이 있습니다. 
+          이 제한을 초과할 경우 해당 IP에서 1시간 동안 요청이 차단됩니다. 
+          무료 플랜은 1년간 사용 가능합니다.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">
+          플랜을 언제든지 변경할 수 있나요?
+          <span>+</span>
+        </button>
+        <div class="faq-answer">
+          네, 언제든지 플랜을 업그레이드하거나 다운그레이드할 수 있습니다. 
+          변경사항은 다음 결제 주기부터 적용됩니다.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">
+          API 키는 어떻게 관리하나요?
+          <span>+</span>
+        </button>
+        <div class="faq-answer">
+          대시보드에서 API 키를 생성, 관리, 삭제할 수 있습니다. 
+          각 API 키마다 권한과 사용량을 개별적으로 설정할 수 있습니다.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">
+          환불 정책은 어떻게 되나요?
+          <span>+</span>
+        </button>
+        <div class="faq-answer">
+          유료 플랜에 대해 30일 환불 보장을 제공합니다. 
+          서비스에 만족하지 않으시면 언제든지 전액 환불받으실 수 있습니다.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <p>© FrontEnd BootCamp API Server</p>
+  </div>
+</body>
+
+</html> 

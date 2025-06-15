@@ -4,46 +4,142 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>OpenMarket API</title>
-  <style>
-    /* 코드 영역 스타일 */
-    pre {
-        background-color: #f5f5f5; /* 배경색 */
-        border: 1px solid #ddd; /* 테두리 */
-        border-radius: 4px; /* 둥근 모서리 */
-        padding: 10px; /* 여백 */
-        overflow: auto; /* 스크롤 가능 */
-    }
-  </style>
+  <title>OpenMarket API Server</title>
+  <link rel="stylesheet" href="../common.css">
   <script type="text/javascript">
     const apiUrl = location.origin;
-    const githubUrl = 'https://github.com/uzoolove/api-market';
+    const githubUrl = 'https://github.com/FEBC-API/APIServer';
     const brunoUrl = githubUrl + '/blob/main/server/api/bruno/openmarket';
 
     window.addEventListener('DOMContentLoaded', () => {
-      console.log(document.body.innerHTML);
       document.body.innerHTML = document.body.innerHTML.replace(/<%= apiUrl %>|&lt;%= apiUrl %&gt;/g, apiUrl)
                                                         .replace(/<%= brunoUrl %>|&lt;%= brunoUrl %&gt;/g, brunoUrl);
     });
   </script>
 </head>
 
-<body>
-  <h1>OpenMarket API Server</h1>
-  <p>API 문서: <a href="<%= apiUrl %>/apidocs"><%= apiUrl %>/apidocs</a></p>
-  <div>
-    <h2>최신 버전: <span>v1.0.0</span></h2>
-  </div>
+<body class="market-theme">
+  <div class="container">
+    <div class="header">
+      <div class="header-content">
+        <h1>OpenMarket API Server</h1>
+        <p>전자상거래 플랫폼을 위한 RESTful API 서버</p>
+        <div class="badge">OpenMarket API v1.0.0</div>
+      </div>
+    </div>
 
+    <div class="content">
+      <div class="api-link-section">
+        <a href="<%= apiUrl %>/" class="home-link">
+          <span class="link-text">메인페이지로 이동</span>
+          <span class="arrow">→</span>
+        </a>
+        
+        <a href="<%= apiUrl %>/market/apidocs" class="api-link">
+          <span class="link-text">API 문서로 이동</span>
+          <span class="arrow">→</span>
+        </a>
+      </div>
 
-  <div>
-    <h2>변경 사항</h2>
+      <div class="changelog-section">
+        <h2>변경 사항</h2>
+        
+        <div class="version-item">
+          <h3 id="v1.0.0">v1.0.0 - 2025.04.01</h3>
+          <ul>
+            <li>최초 배포 - 온라인 쇼핑몰의 시작!</li>
+            <li>상품 CRUD(생성, 조회, 수정, 삭제) 기능 제공</li>
+            <li>주문 관리 시스템</li>
+            <li>사용자 인증 및 권한 관리</li>
+            <li>장바구니 기능</li>
+            <li>북마크(찜하기) 기능</li>
+            <li>구매 후기 시스템</li>
+            <li>게시판 기능</li>
+            <li>실시간 알림 기능</li>
+          </ul>
+        </div>
+      </div>
 
+      <div class="features-section">
+        <h2>주요 기능</h2>
+        
+        <div class="feature-grid">
+          <div class="feature-item">
+            <div class="feature-icon">🛒</div>
+            <h3>상품 관리</h3>
+            <p>상품 등록, 수정, 삭제 및 카테고리별 조회 기능을 제공합니다.</p>
+            <code>GET /market/products</code>
+          </div>
+          
+          <div class="feature-item">
+            <div class="feature-icon">👤</div>
+            <h3>회원 인증</h3>
+            <p>회원가입, 로그인, 프로필 관리, 카카오/구글/깃허브 로그인을 제공합니다.</p>
+            <code>POST /market/auth/login</code>
+          </div>
+          
+          <div class="feature-item">
+            <div class="feature-icon">📦</div>
+            <h3>주문 관리</h3>
+            <p>주문 생성, 조회, 상태 변경, 배송 관리 기능을 제공합니다.</p>
+            <code>POST /market/orders</code>
+          </div>
+          
+          <div class="feature-item">
+            <div class="feature-icon">🛍️</div>
+            <h3>장바구니</h3>
+            <p>장바구니 상품 추가, 삭제, 수량 변경 기능을 제공합니다.</p>
+            <code>POST /market/carts</code>
+          </div>
+          
+          <div class="feature-item">
+            <div class="feature-icon">❤️</div>
+            <h3>북마크(찜하기)</h3>
+            <p>상품, 사용자, 게시글에 대한 북마크 관리 기능을 제공합니다.</p>
+            <code>POST /market/bookmarks</code>
+          </div>
+          
+          <div class="feature-item">
+            <div class="feature-icon">⭐</div>
+            <h3>구매 후기</h3>
+            <p>상품 구매 후기 작성, 조회, 관리 기능을 제공합니다.</p>
+            <code>POST /market/orders/:_id/products/:product_id/replies</code>
+          </div>
+          
+          <div class="feature-item">
+            <div class="feature-icon">💬</div>
+            <h3>게시판</h3>
+            <p>QnA, 공지사항 등 다양한 게시판 기능을 제공합니다.</p>
+            <code>GET /market/posts</code>
+          </div>
+          
+          <div class="feature-item">
+            <div class="feature-icon">📊</div>
+            <h3>통계 조회</h3>
+            <p>판매자별, 상품별, 일별 매출 및 주문 통계를 제공합니다.</p>
+            <code>GET /market/admin/orders/statics</code>
+          </div>
+          
+          <div class="feature-item">
+            <div class="feature-icon">📁</div>
+            <h3>파일 관리</h3>
+            <p>상품 이미지, 프로필 사진 등 파일 업로드 기능을 제공합니다.</p>
+            <code>POST /market/files</code>
+          </div>
+          
+          <div class="feature-item">
+            <div class="feature-icon">🔔</div>
+            <h3>알림 메시지</h3>
+            <p>주문, QnA 등에 대한 실시간 알림 기능을 제공합니다.</p>
+            <code>GET /market/notifications</code>
+          </div>
+        </div>
+      </div>
+    </div>
 
-    <h3 id="v1.0.0">v1.0.0 - 2025.04.01</h3>
-    <ul>
-      <li>최초 배포</li>
-    </ul>
+    <div class="footer">
+      <p>© OpenMarket API Server</p>
+    </div>
   </div>
 </body>
 
