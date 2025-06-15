@@ -7,7 +7,7 @@
 import http from 'node:http';
 import https from 'node:https';
 import fs from 'node:fs';
-import chatServer from '#bin/chatServer.js';
+import chatServer from '#bin/webSocketServer.js';
 import { Server }  from 'socket.io';
 import app from '#app.js';
 import logger from '#utils/logger.js';

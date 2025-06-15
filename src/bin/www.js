@@ -9,7 +9,7 @@ import app from '#app.js';
 import logger from '#utils/logger.js';
 import config from '#config/index.js';
 import { Server }  from 'socket.io';
-import chatServer from '#bin/chatServer.js';
+import webSocketServer from '#bin/webSocketServer.js';
 import notificationServer from '#bin/notificationServer.js';
 
 /**
@@ -92,5 +92,5 @@ function onListening() {
 // socket.io 서버 구동
 const io = new Server(server, { cors: { origin: '*' } } );
 // const io = new Server(server, { cors: { origin: config.cors.origin } } );
-chatServer(io);
+webSocketServer(io);
 notificationServer.listen(io);
