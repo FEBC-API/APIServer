@@ -52,6 +52,8 @@ export const cors = {
     /.*stackblitz\.com/,
     /.*webcontainer\.io/,
     /.*devtunnels\.ms/,
+    /.*github\.io/,
+    /.*github\.dev/,
     ...(process.env.APP_HOST ? [new RegExp(process.env.APP_HOST)] : [])
   ]
 };
