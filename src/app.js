@@ -108,9 +108,9 @@ app.use(
 app.use(
   // '/api',
   async function (req, res, next) {
-    const delayMs = Number(req.query.delay);
-    if (delayMs > 0) {
-      await timer.setTimeout(delayMs);
+    const delay = Number(req.query.delay);
+    if (delay > 0) {
+      await timer.setTimeout(delay);
     }
     next();
   },
