@@ -43,10 +43,8 @@ export const jwt = {
 
 export const cors = {
   origin: [
-    /localhost/,
-    /127.0.0.1/,
-    /127.0.0.1:8080/,
-    /127.0.0.1:3000/,
+    /localhost$/,
+    /127.0.0.1$/,
     /netlify.app$/,
     /vercel.app$/,
     /koyeb.app$/,
