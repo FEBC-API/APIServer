@@ -27,6 +27,6 @@ module.exports = {
     "sourceType": "module"
   },
   "rules": {
-    // "no-unused-vars": 2
+    "no-unused-vars": "warn"
   }
 }
