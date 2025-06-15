@@ -250,9 +250,9 @@ const server = io => {
   //   }
   // });
 
-  handleNamespace(`/websocket/sample`);
+  handleNamespace(`/ws/sample`);
   DBConfig.clientIds.forEach(clientId => {
-    handleNamespace(`/websocket/${clientId}`);
+    handleNamespace(`/ws/${clientId}`);
   });
 };
 

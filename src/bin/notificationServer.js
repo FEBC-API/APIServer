@@ -5,7 +5,7 @@ import { getDb } from '#utils/dbUtil.js';
 const clients = new Map();
 const listen = io => {
   DBConfig.clientIds.forEach(clientId => {
-    io.of(`/${clientId}`).on('connection', function(socket){
+    io.of(`/noti/${clientId}`).on('connection', function(socket){
       logger.debug('클라이언트 접속', clientId, socket.id);
   
       socket.on('setUserId', async (userId, callback) => {
