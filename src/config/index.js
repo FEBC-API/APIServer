@@ -43,15 +43,15 @@ export const jwt = {
 
 export const cors = {
   origin: [
-    /localhost$/,
-    /127.0.0.1$/,
-    /netlify.app$/,
-    /vercel.app$/,
-    /koyeb.app$/,
-    /codepen.io$/,
-    /stackblitz.com$/,
-    /webcontainer.io$/,
-    /devtunnels.ms$/,
+    /localhost/,
+    /127\.0\.0\.1/,
+    /.*netlify\.app/,
+    /.*vercel\.app/,
+    /.*koyeb\.app/,
+    /.*codepen\.io/,
+    /.*stackblitz\.com/,
+    /.*webcontainer\.io/,
+    /.*devtunnels\.ms/,
     ...(process.env.APP_HOST ? [new RegExp(process.env.APP_HOST)] : [])
   ]
 };
