@@ -1,5 +1,6 @@
 // import logger from '#utils/logger.js';
 import shortid from "shortid";
+import { db as DBConfig } from '#config/index.js';
 
 const server = io => {
   // 서비스별 룸 관리를 위한 Map
@@ -50,7 +51,7 @@ const server = io => {
       rooms.forEach((room, roomId) => {
         const message = {
           action: 'cleanRooms',
-          msg: '방이 삭제되었습니다.'
+          msg: 'Room이 삭제되었습니다.'
         };
 
         io.of(namespace).to(roomId).emit('message', {
@@ -87,7 +88,7 @@ const server = io => {
         
         if(myRoom) {
           myRoom.memberList.delete(socket.user_id);
-          broadcastMsg('시스템', `${socket.nickName}님이 대화에서 나갔습니다.`);
+          broadcastMsg('시스템', `${socket.nickName}님이 나갔습니다.`);
           socket.leave(socket.roomId);
           sendMembers(socket.roomId);
 
@@ -156,7 +157,7 @@ const server = io => {
         } else {
           rooms.set(newRoomId, roomInfo);
           res.ok = 1;
-          res.message = `${newRoomId} 채팅방 생성 완료`;
+          res.message = `${newRoomId} Room 생성 완료`;
           res.roomInfo = roomInfo;
           socket.nsp.emit('rooms', getRooms());
         }
@@ -185,7 +186,7 @@ const server = io => {
             res.message = `정원 ${roomInfo.capacity}명이 다 찼습니다.`;
           } else if(roomInfo.memberList.has(params.user_id)) {
             res.ok = 0;
-            res.message = `${params.user_id}는 이미 채팅방에 참여중입니다.`;
+            res.message = `${params.user_id}는 이미 참여중입니다.`;
           } else {
             socket.roomId = params.roomId;
             socket.user_id = params.user_id;
@@ -197,7 +198,7 @@ const server = io => {
             });
 
             res.ok = 1;
-            res.message = `${params.roomId} 채팅방 입장 완료`;
+            res.message = `${params.roomId} Room 입장 완료`;
             res.roomInfo = getRoomInfo(params.roomId);
 
             socket.join(params.roomId);
@@ -205,7 +206,7 @@ const server = io => {
             // broadcastMsg('시스템', `${socket.nickName}님이 대화에 참여했습니다.`);
             const message = {
               action: 'joinRoom',
-              msg: `${socket.nickName}님이 대화에 참여했습니다.`,
+              msg: `${socket.nickName}님이 입장했습니다.`,
               params,
             };
             broadcastMsg('시스템', message);
@@ -213,7 +214,7 @@ const server = io => {
           }
         } else {
           res.ok = 0;
-          res.message = `${params.roomId} 채팅방이 존재하지 않습니다.`;
+          res.message = `${params.roomId} Room이 존재하지 않습니다.`;
         }
 
         callback?.(res);
@@ -249,9 +250,10 @@ const server = io => {
   //   }
   // });
 
-  handleNamespace('/febc13-chat');
-  handleNamespace('/febc13-chat/team01');
-  handleNamespace('/febc13-chat/team02');
+  handleNamespace(`/websocket/sample`);
+  DBConfig.clientIds.forEach(clientId => {
+    handleNamespace(`/websocket/${clientId}`);
+  });
 };
 
 
