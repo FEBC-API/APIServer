@@ -51,6 +51,7 @@ export const cors = {
     /codepen.io$/,
     /stackblitz.com$/,
     /webcontainer.io$/,
+    /devtunnels.ms$/,
     ...(process.env.APP_HOST ? [new RegExp(process.env.APP_HOST)] : [])
   ]
 };
