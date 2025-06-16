@@ -23,7 +23,7 @@ const doc = {
   },
   host: process.env.API_HOST,
   basePath: '/todo',
-  schemes: ['http', 'https'],
+  schemes: process.env.NODE_ENV === 'production' ? ['https'] : ['http'],
   tags: [
     {
       name: 'Todo List',
