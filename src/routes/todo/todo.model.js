@@ -1,8 +1,8 @@
 import _ from 'lodash';
 import dayjs from 'dayjs';
-import 'dayjs/locale/ko';
-import utc from 'dayjs/plugin/utc';
-import timezone from 'dayjs/plugin/timezone';
+import 'dayjs/locale/ko.js';
+import utc from 'dayjs/plugin/utc.js';
+import timezone from 'dayjs/plugin/timezone.js';
 import fs from 'node:fs/promises';
 import path from 'path';
 import { fileURLToPath } from 'url';
