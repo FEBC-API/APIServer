@@ -1,6 +1,8 @@
 import _ from 'lodash';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ko';
+import utc from 'dayjs/plugin/utc';
+import timezone from 'dayjs/plugin/timezone';
 import fs from 'node:fs/promises';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -8,8 +10,13 @@ import { fileURLToPath } from 'url';
 import { JSONFilePreset  } from 'lowdb/node';
 import initData from './db/initData.js';
 
-// 한국어 로케일 설정
+// dayjs 플러그인 설정
+dayjs.extend(utc);
+dayjs.extend(timezone);
+
+// 한국어 로케일과 타임존 설정
 dayjs.locale('ko');
+dayjs.tz.setDefault('Asia/Seoul');
 
 let db;
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -66,7 +73,7 @@ export async function findById(_id){
 // 할일 등록
 export async function create(todo){
   const nextId = ++db.data.nextId.items;
-  let createdAt = dayjs().format('YYYY.MM.DD HH:mm:ss');
+  let createdAt = dayjs().tz().format('YYYY.MM.DD HH:mm:ss');
   const newTodo = {
     _id: nextId,
     ...todo,
@@ -86,7 +93,7 @@ export async function update(_id, todo){
     return;
   }
   const oldTodo = db.data.items[index];
-  const updatedAt = dayjs().format('YYYY.MM.DD HH:mm:ss');
+  const updatedAt = dayjs().tz().format('YYYY.MM.DD HH:mm:ss');
   const newTodo = {...oldTodo, ...todo, updatedAt};
   db.data.items.splice(index, 1, newTodo);
   return newTodo;
