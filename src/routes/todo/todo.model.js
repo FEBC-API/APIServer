@@ -1,11 +1,15 @@
 import _ from 'lodash';
-import moment from 'moment';
+import dayjs from 'dayjs';
+import 'dayjs/locale/ko';
 import fs from 'node:fs/promises';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
 import { JSONFilePreset  } from 'lowdb/node';
 import initData from './db/initData.js';
+
+// 한국어 로케일 설정
+dayjs.locale('ko');
 
 let db;
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -51,18 +55,18 @@ export async function list({ keyword, page, limit } = {}){
   }
   await db.write();
   return {items, pagination};
-};
+}
 
 // 할일 상세 조회
 export async function findById(_id){
   const item = _.find(db.data.items, {_id});
   return item;
-};
+}
 
 // 할일 등록
 export async function create(todo){
   const nextId = ++db.data.nextId.items;
-  let createdAt = moment().format('YYYY.MM.DD HH:mm:ss');
+  let createdAt = dayjs().format('YYYY.MM.DD HH:mm:ss');
   const newTodo = {
     _id: nextId,
     ...todo,
@@ -73,7 +77,7 @@ export async function create(todo){
   db.data.items.push(newTodo);
   await db.write();
   return newTodo;
-};
+}
 
 // 할일 수정
 export async function update(_id, todo){
@@ -82,18 +86,18 @@ export async function update(_id, todo){
     return;
   }
   const oldTodo = db.data.items[index];
-  const updatedAt = moment().format('YYYY.MM.DD HH:mm:ss');
+  const updatedAt = dayjs().format('YYYY.MM.DD HH:mm:ss');
   const newTodo = {...oldTodo, ...todo, updatedAt};
   db.data.items.splice(index, 1, newTodo);
   return newTodo;
-};
+}
 
 // 할일 삭제
 export async function remove(_id){
   const result = _.remove(db.data.items, todo => todo._id == _id);
   await db.write();
   return result.length;
-};
+}
 
 // DB 초기화
 export async function init(){
@@ -109,4 +113,4 @@ export async function init(){
     console.error('DB 초기화 중 오류 발생:', error);
     throw error;
   }
-};
+}
