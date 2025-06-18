@@ -125,7 +125,8 @@ app.use(function(req, res, next){
 });
 
 // 500 에러
-app.use(function(err, req, res){
+app.use(function(err, req, res, next){
+  console.log('APP.............................');
   logger.error(err.status === 404 ? req.method + ' ' +err.message : err.stack+'\n\n');
   if(err.cause){
     logger.error(err.cause);
