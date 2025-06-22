@@ -11,6 +11,7 @@ const initData = {
       title: "Javascript 공부",
       content: "열심히 하자",
       done: true, 
+      important: true,
       createdAt: getTime(-3, 5),
       updatedAt: getTime(-3, 6),
     },
@@ -19,6 +20,7 @@ const initData = {
       title: "Closure 자세히 공부",
       content: "제일 어려웠음",
       done: false,
+      important: false,
       createdAt: getTime(-3, 7),
       updatedAt: getTime(-3, 9),
     },
@@ -27,6 +29,7 @@ const initData = {
       title: "Promise 복습",
       content: "async/await도 같이 공부",
       done: false,
+      important: true,
       createdAt: getTime(-2, 1),
       updatedAt: getTime(-2, 5),
     },
@@ -35,13 +38,14 @@ const initData = {
       title: "React 예습",
       content: "수업 전에 기본 개념부터 미리 확인.",
       done: false,
+      important: false,
       createdAt: getTime(-1, 12),
       updatedAt: getTime(-1, 14),
     }
   ],
   users: [],
   nextId: {
-    items: 4,
+    items: 5,
     users: 1
   }
 };

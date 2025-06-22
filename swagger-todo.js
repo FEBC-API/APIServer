@@ -68,6 +68,7 @@ const doc = {
         title: 'Javascript 공부',
         content: '열심히 하자',
         done: false,
+        important: false,
         createdAt: getTime(),
         updatedAt: getTime(),
       }
@@ -79,6 +80,7 @@ const doc = {
           _id: 3,
           title: 'Promise 복습',
           done: false,
+          important: false,
           createdAt: getTime(-2, 1),
           updatedAt: getTime(-2, 5),
         }
@@ -97,6 +99,7 @@ const doc = {
           _id: 3,
           title: 'Promise 복습',
           done: false,
+          important: false,
           createdAt: getTime(-2, 1),
           updatedAt: getTime(-2, 5),
         }

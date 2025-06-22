@@ -43,7 +43,13 @@ export async function list({ keyword, page, limit } = {}){
   // content 속성 제거
   items = items.map(item => _.omit(item, 'content'));
 
-  // _id의 내림차순 정렬
+  // important가 true인 항목을 맨 앞으로, 그 다음 _id의 내림차순 정렬
+  // items = _.sortBy(items, [
+  //   item => !item.important, // important가 true인 항목이 먼저 오도록
+  //   item => -item._id        // _id의 내림차순
+  // ]);
+
+  // // _id의 내림차순 정렬
   items = _.sortBy(items, item => -item._id);
   
   let pagination = {};
@@ -76,8 +82,9 @@ export async function create(todo){
   let createdAt = dayjs().tz().format('YYYY.MM.DD HH:mm:ss');
   const newTodo = {
     _id: nextId,
-    ...todo,
     done: false,
+    important: false,
+    ...todo,
     createdAt,
     updatedAt: createdAt,
   };
