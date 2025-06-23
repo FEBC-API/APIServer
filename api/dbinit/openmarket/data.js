@@ -995,7 +995,7 @@ export const initData = async (clientId, nextSeq) => {
           name: '제이지',
           image: 'user-jayg.webp'
         },
-        title: '크기가 얼만만한가요?',
+        title: '크기가 얼마만한가요?',
         content: '아이가 6살인데 가지고 놀기 적당한 크기인가요?',
         replies: [
           {
