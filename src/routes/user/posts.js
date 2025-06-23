@@ -789,14 +789,18 @@ router.post('/:_id/replies', jwtAuth.auth('user', true), [ // 익명 허용
     const post = await postModel.findById(clientId, { _id, userId: req.user?._id });
     if (post) {
       const reply = req.body;
-      // reply._id = (_.maxBy(post.replies, '_id')?._id || 0) + 1;
-      reply.user = {
-        _id: req.user?._id,
-        name: req.user?.name || reply.name, // 익명댓글일 경우 name 속성에 작성자 이름
-        email: req.user?.email,
-        image: req.user?.image
-      };
-      // reply.user_id = req.user._id;
+      if(req.user){ // 로그인된 사용자
+        reply.user = {
+          _id: req.user._id,
+          name: req.user.name,
+          email: req.user.email,
+          image: req.user.image
+        };
+      }else{
+        reply.user = {
+          name: reply.name || '익명', // 익명댓글일 경우 name 속성에 작성자 이름
+        }
+      }
       const item = await postModel.createReply(clientId, _id, reply);
       res.status(201).json({ ok: 1, item });
     } else {
