@@ -999,7 +999,7 @@ export const initData = async (clientId, nextSeq) => {
         content: '아이가 6살인데 가지고 놀기 적당한 크기인가요?',
         replies: [
           {
-            _id: 1,
+            _id: await nextSeq('reply'),
             user_id: 2,
             user: {
               _id: 2,
@@ -1012,7 +1012,7 @@ export const initData = async (clientId, nextSeq) => {
             updatedAt: getTime(-2, -60 * 60 * 2),
           },
           {
-            _id: 2,
+            _id: await nextSeq('reply'),
             user_id: 4,
             user: {
               _id: 4,
@@ -1025,7 +1025,7 @@ export const initData = async (clientId, nextSeq) => {
             updatedAt: getTime(-2, -60 * 60 * 1),
           },
           {
-            _id: 3,
+            _id: await nextSeq('reply'),
             user_id: 2,
             user: {
               _id: 2,
