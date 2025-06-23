@@ -11,7 +11,10 @@ if (process.env.NODE_ENV) {
 import swaggerAutogen from 'swagger-autogen';
 import moment from 'moment';
 
-function getTime(days = 0, hours = 0) {
+function getRandomDate() {
+  // 오늘~7일 전 사이 무작위 날짜
+  const days = -Math.floor(Math.random() * 7);
+  const hours = Math.floor(Math.random() * 24);
   return moment().add(days, 'd').add(hours, 'h').format('YYYY.MM.DD HH:mm:ss');
 }
 
@@ -24,7 +27,7 @@ const doc = {
   },
   host: process.env.API_HOST,
   basePath: '/market',
-  // schemes: ['http', 'https'],
+  schemes: ['https', 'http'],
 
   tags: [
     {
@@ -423,8 +426,8 @@ const doc = {
           "_id": 17,
           "active": true,
           "buyQuantity": 0,
-          "createdAt": "2024.04.08 20:25:39",
-          "updatedAt": "2024.04.08 20:25:39"
+          "createdAt": getRandomDate(),
+          "updatedAt": getRandomDate()
         }
       },
 
@@ -448,8 +451,8 @@ const doc = {
                 "originalname": "부가티.png"
               }
             ],
-            "createdAt": "2024.03.18 13:59:44",
-            "updatedAt": "2024.03.29 17:59:44",
+            "createdAt": getRandomDate(),
+            "updatedAt": getRandomDate(),
             "extra": {
               "isNew": false,
               "isBest": true,
@@ -519,8 +522,8 @@ const doc = {
             }
           ],
           "content": "\n          <div class=\"product-detail\">\n            <p>레고 테크닉 42151 부가티 볼리드 상세 설명</p>\n          </div>",
-          "createdAt": "2024.03.13 16:43:39",
-          "updatedAt": "2024.03.24 20:43:39",
+          "createdAt": getRandomDate(),
+          "updatedAt": getRandomDate(),
           "extra": {
             "isNew": false,
             "isBest": true,
@@ -538,8 +541,8 @@ const doc = {
             "address": "서울시 강남구 도곡동 789",
             "type": "seller",
             "loginType": "email",
-            "createdAt": "2024.03.06 23:13:39",
-            "updatedAt": "2024.03.16 23:23:39",
+            "createdAt": getRandomDate(),
+            "updatedAt": getRandomDate(),
             "extra": {
               "confirm": false,
               "birthday": "11-24",
@@ -573,7 +576,7 @@ const doc = {
           "shippingFees": 3000,
           "show": true,
           "extra.isNew": false,
-          "updatedAt": "2024.04.11 11:55:00"
+          "updatedAt": getRandomDate()
         }
       },
 
@@ -609,7 +612,7 @@ const doc = {
           },
           "user_id": 2,
           "_id": 4,
-          "createdAt": "2023.11.22 08:41:28",
+          "createdAt": getRandomDate(),
           "cost": {
             "products": 205000,
             "shippingFees": 6000,
@@ -641,7 +644,7 @@ const doc = {
                   "extra": {
                     "title": "추천하지 않습니다."
                   },
-                  "createdAt": "2024.04.05 01:46:27"
+                  "createdAt": getRandomDate()
                 }
               }
             ],
@@ -658,8 +661,8 @@ const doc = {
               "name": "회사",
               "value": "서울시 강남구 신사동 234"
             },
-            "createdAt": "2024.04.01 08:46:27",
-            "updatedAt": "2024.04.01 08:46:27"
+            "createdAt": getRandomDate(),
+            "updatedAt": getRandomDate()
           }
         ],
         "pagination": {
@@ -718,8 +721,8 @@ const doc = {
             "trackingNumber": "364495958003",
             "url": "https://trace.cjlogistics.com/next/tracking.html?wblNo=364495958003"
           },
-          "createdAt": "2024.04.03 17:46:27",
-          "updatedAt": "2024.04.06 10:46:27"
+          "createdAt": getRandomDate(),
+          "updatedAt": getRandomDate()
         }
       },
 
@@ -759,8 +762,8 @@ const doc = {
             "trackingNumber": "364495958003",
             "url": "https://trace.cjlogistics.com/next/tracking.html?wblNo=364495958003"
           },
-          "createdAt": "2024.04.05 03:05:48",
-          "updatedAt": "2024.04.07 20:05:48",
+          "createdAt": getRandomDate(),
+          "updatedAt": getRandomDate(),
           "user": {
             "_id": 2,
             "email": "s1@market.com",
@@ -797,7 +800,7 @@ const doc = {
           "_id": 2,
           "state": "OS110",
           "memo": "2개 상품 모두 동작하지 않습니다. 반품 요청합니다.",
-          "updatedAt": "2024.04.08 07:47:00"
+          "updatedAt": getRandomDate()
         }
       },
 
@@ -813,7 +816,7 @@ const doc = {
           "product_id": 3,
           "state": "OS110",
           "memo": "레고 클래식 상품이 동작하지 않습니다. 반품 요청합니다.",
-          "updatedAt": "2024.04.08 07:55:34"
+          "updatedAt": getRandomDate()
         }
       },
 
@@ -839,7 +842,7 @@ const doc = {
             "trackingNumber": "364746065376",
             "url": "https://trace.cjlogistics.com/next/tracking.html?wblNo=364746065376"
           },
-          "updatedAt": "2024.04.08 22:37:09"
+          "updatedAt": getRandomDate()
         }
       },
 
@@ -864,7 +867,7 @@ const doc = {
             "trackingNumber": "364746065376",
             "url": "https://trace.cjlogistics.com/next/tracking.html?wblNo=364746065376"
           },
-          "updatedAt": "2024.04.08 22:53:26"
+          "updatedAt": getRandomDate()
         }
       },
 
@@ -890,7 +893,7 @@ const doc = {
           },
           "user_id": 4,
           "_id": 5,
-          "createdAt": "2024.04.08 09:15:38"
+          "createdAt": getRandomDate()
         }
       },
 
@@ -906,7 +909,7 @@ const doc = {
             },
             "rating": 5,
             "content": "아이가 좋아해요.",
-            "createdAt": "2024.04.16 08:59:44",
+            "createdAt": getRandomDate(),
             "product": {
               "_id": 2,
               "image": {
@@ -929,7 +932,7 @@ const doc = {
           "extra": {
             "title": "배송 불만"
           },
-          "createdAt": "2024.04.08 09:15:38",
+          "createdAt": getRandomDate(),
           "product": {
             "_id": 3,
             "image": {
@@ -969,7 +972,7 @@ const doc = {
                 },
                 "rating": 5,
                 "content": "아이가 좋아해요.",
-                "createdAt": "2024.04.02 23:46:27"
+                "createdAt": getRandomDate()
               },
               {
                 "_id": 2,
@@ -980,7 +983,7 @@ const doc = {
                 },
                 "rating": 4,
                 "content": "배송이 좀 느려요.",
-                "createdAt": "2024.04.04 10:46:27"
+                "createdAt": getRandomDate()
               }
             ]
           }
@@ -1046,8 +1049,8 @@ const doc = {
             "_id": 1,
             "product_id": 1,
             "quantity": 2,
-            "createdAt": "2024.04.01 08:36:39",
-            "updatedAt": "2024.04.01 08:36:39",
+            "createdAt": getRandomDate(),
+            "updatedAt": getRandomDate(),
             "product": {
               "_id": 1,
               "name": "캥거루 스턴트 독 로봇완구",
@@ -1095,8 +1098,8 @@ const doc = {
             "_id": 5,
             "product_id": 4,
             "quantity": 2,
-            "createdAt": "2024.04.08 09:50:51",
-            "updatedAt": "2024.04.08 10:02:35",
+            "createdAt": getRandomDate(),
+            "updatedAt": getRandomDate(),
             "product": {
               "_id": 4,
               "name": "레고 테크닉 42151 부가티 볼리드",
@@ -1160,7 +1163,7 @@ const doc = {
           "target_id": 4,
           "memo": "다음에 재구매",
           "_id": 9,
-          "createdAt": "2024.04.08 16:47:46"
+          "createdAt": getRandomDate()
         }
       },
 
@@ -1177,14 +1180,14 @@ const doc = {
                 "image": "/files/00-sample/user-neo.webp"
               },
               "memo": "항상 배송도 빨리해주고 좋습니다.",
-              "createdAt": "2024.10.28 10:22:02"
+              "createdAt": getRandomDate()
             }
           ],
           "user": [
             {
               "_id": 19,
               "memo": "항상 배송도 빨리해주고 좋습니다.",
-              "createdAt": "2024.08.21 09:25:39",
+              "createdAt": getRandomDate(),
               "user": {
                 "_id": 2,
                 "name": "네오",
@@ -1196,7 +1199,7 @@ const doc = {
             {
               "_id": 24,
               "memo": "항상 배송도 빨리해주고 좋습니다.",
-              "createdAt": "2024.08.21 11:38:38",
+              "createdAt": getRandomDate(),
               "user": {
                 "_id": 1,
                 "name": "무지",
@@ -1210,7 +1213,7 @@ const doc = {
             {
               "_id": 22,
               "memo": "잘 구매했습니다.",
-              "createdAt": "2024.08.21 11:05:28",
+              "createdAt": getRandomDate(),
               "product": {
                 "_id": 3,
                 "name": "레고 클래식 라지 조립 박스 10698",
@@ -1231,7 +1234,7 @@ const doc = {
             {
               "_id": 23,
               "memo": "크기 문의",
-              "createdAt": "2024.08.21 11:05:36",
+              "createdAt": getRandomDate(),
               "post": {
                 "_id": 1,
                 "type": "qna",
@@ -1254,7 +1257,7 @@ const doc = {
             "_id": 9,
             "user_id": 4,
             "memo": "다음에 재구매",
-            "createdAt": "2024.04.08 16:47:46",
+            "createdAt": getRandomDate(),
             "product": {
               "_id": 4,
               "name": "레고 테크닉 42151 부가티 볼리드",
@@ -1286,7 +1289,7 @@ const doc = {
           "_id": 9,
           "user_id": 4,
           "memo": "다음에 재구매",
-          "createdAt": "2024.04.08 16:47:46",
+          "createdAt": getRandomDate(),
           "product": {
             "_id": 4,
             "name": "레고 테크닉 42151 부가티 볼리드",
@@ -1331,8 +1334,8 @@ const doc = {
                 "originalname": "레고 클래식.jpg"
               }
             ],
-            "createdAt": "2024.03.04 08:50:28",
-            "updatedAt": "2024.03.29 14:31:28",
+            "createdAt": getRandomDate(),
+            "updatedAt": getRandomDate(),
             "extra": {
               "isNew": true,
               "isBest": true,
@@ -1370,8 +1373,8 @@ const doc = {
             "name": "제이지"
           },
           "_id": 6,
-          "createdAt": "2024.04.09 08:13:00",
-          "updatedAt": "2024.04.09 08:13:00"
+          "createdAt": getRandomDate(),
+          "updatedAt": getRandomDate()
         }
       },
 
@@ -1390,8 +1393,8 @@ const doc = {
             "title": "크기가 얼만만한가요?",
             "content": "아이가 6살인데 가지고 놀기 적당한 크기인가요?",
             "image": "robot.png",
-            "createdAt": "2024.04.08 21:08:10",
-            "updatedAt": "2024.04.08 21:08:10",
+            "createdAt": getRandomDate(),
+            "updatedAt": getRandomDate(),
             "product": {
               "name": "캥거루 스턴트 독 로봇완구",
               "image": {
@@ -1426,8 +1429,8 @@ const doc = {
             "type": "user",
             "loginType": "email",
             "image": "/files/00-openmarket/user-jayg.webp",
-            "createdAt": "2024.10.08 07:42:03",
-            "updatedAt": "2024.10.17 20:12:03",
+            "createdAt": getRandomDate(),
+            "updatedAt": getRandomDate(),
             "extra": {
               "birthday": "11-30",
               "membershipClass": "MC02",
@@ -1479,8 +1482,8 @@ const doc = {
               "image": "/files/00-sample/user-jayg.webp"
             },
             "isRead": false,
-            "createdAt": "2024.08.22 13:51:45",
-            "updatedAt": "2024.08.22 13:51:45"
+            "createdAt": getRandomDate(),
+            "updatedAt": getRandomDate()
           },
           {
             "_id": 20,
@@ -1499,8 +1502,8 @@ const doc = {
               "image": "/files/00-sample/user-jayg.webp"
             },
             "isRead": false,
-            "createdAt": "2024.08.22 13:31:10",
-            "updatedAt": "2024.08.22 13:31:10"
+            "createdAt": getRandomDate(),
+            "updatedAt": getRandomDate()
           }
         ],
         "pagination": {
@@ -1657,8 +1660,8 @@ const doc = {
           "loginType": "email",
           "phone": "01011112222",
           "address": "서울시 강남구 역삼동 123",
-          "createdAt": "2023.11.21 16:25:54",
-          "updatedAt": "2023.11.21 16:25:54",
+          "createdAt": getRandomDate(),
+          "updatedAt": getRandomDate(),
           "notifications": 2,
           "token": {
             "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOjUsInR5cGUiOiJ1c2VyIiwiaWF0IjoxNzAwNTUxNTcyLCJleHAiOjE3MDA1NTIxNzIsImlzcyI6IkZFU1AwMSJ9.TmYTk4w-iQYjPK172AkSuH7587XZPPoFARTdg-fFGgA",
@@ -1675,7 +1678,7 @@ const doc = {
           "image": "http://k.kakaocdn.net/dn/p4NUj/btsFiuTSVb6/Q4YkWkx4t1AFkFA3rtq6ZK/img_110x110.jpg",
           "kakao": {
             "id": 1234567890,
-            "connected_at": "2024-04-13T15:52:13Z",
+            "connected_at": "2025-06-13T15:52:13Z",
             "kakao_account": {
               "profile_nickname_needs_agreement": false,
               "profile_image_needs_agreement": false,
@@ -1689,8 +1692,8 @@ const doc = {
             }
           },
           "loginType": "kakao",
-          "createdAt": "2023.11.21 16:25:54",
-          "updatedAt": "2023.11.21 16:25:54",
+          "createdAt": getRandomDate(),
+          "updatedAt": getRandomDate(),
           "token": {
             "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOjUsInR5cGUiOiJ1c2VyIiwiaWF0IjoxNzAwNTUxNTcyLCJleHAiOjE3MDA1NTIxNzIsImlzcyI6IkZFU1AwMSJ9.TmYTk4w-iQYjPK172AkSuH7587XZPPoFARTdg-fFGgA",
             "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE3MDA1NTE1NzIsImV4cCI6MTcwMzE0MzU3MiwiaXNzIjoiRkVTUDAxIn0.FSUXGwl3M5xnKpc_gkzdQfJ1FT_9IzwhO_X0iLHzXcE"
@@ -1725,8 +1728,8 @@ const doc = {
           exp: 1723539598,
           providerAccountId: '117745819340134301470'
         },
-        createdAt: '2024.08.13 14:48:17',
-        updatedAt: '2024.08.13 14:48:17',
+        createdAt: getRandomDate(),
+        updatedAt: getRandomDate(),
         notifications: 1,
         token: {
           accessToken: 'eyJhbGciOiJIUzI1NaIsInR5cCI6IkpXVCJ9.eyJfaWQiOjYsInR5cGUiOiJ1c2VyIiwibmFtZSI6Iuygleq4uOyaqSIsImltYWdlIjoiaHR0cHM6Ly9saDMuZ29vZ2xldXNlcmNvbnRlbnQuY29tL2EvQUNnOG9jSmZQOVpaU1FvVWs3TXRuc2pfU3hnRU1yMHkyZHJ5WUpWbXJ5YTBFci1kZE5TeDBRPXM5Ni1jIiwibG9naW5UeXBlIjoiZ29vZ2xlIiwiaWF0IjoxNzIzNTg1NTQ4LCJleHAiOjE3MjM2NzE5NDgsImlzcyI6IkZFU1AifQ.gBHQ0fnrVASir5wtBvHH92LVCn097QHwUDhphFEb6Zw',
@@ -1772,8 +1775,8 @@ const doc = {
           public_gists: 0,
           followers: 37,
           following: 0,
-          created_at: '2014-05-16T05:37:01Z',
-          updated_at: '2024-07-11T04:24:23Z',
+          created_at: '2024-05-16T05:37:01Z',
+          updated_at: '2025-06-11T04:24:23Z',
           private_gists: 1,
           total_private_repos: 29,
           owned_private_repos: 29,
@@ -1788,8 +1791,8 @@ const doc = {
           },
           providerAccountId: '7599169'
         },
-        createdAt: '2024.08.13 15:33:54',
-        updatedAt: '2024.08.13 15:33:54',
+        createdAt: getRandomDate(),
+        updatedAt: getRandomDate(),
         notifications: 0,
         token: {
           accessToken: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOjcsInR5cGUiOiJ1c2VyIiwibmFtZSI6IktpbHlvbmcgSmVvbmciLCJpbWFnZSI6Imh0dHBzOi8vYXZhdGFycy5naXRodWJ1c2VyY29udGVudC5jb20vdS83NTk5NTY5P3Y9NCIsImxvZ2luVHlwZSI6ImdpdGh1YiIsImlhdCI6MTcyMzU4NTc2NywiZXhwIjoxNzIzNjcyMTY3LCJpc3MiOiJGRVNQIn0.S_Mag8MO7pgO0W7O0y9tbu96JEHY2krBNTFqhyzCyAs',
@@ -2098,8 +2101,8 @@ const doc = {
           public_gists: 0,
           followers: 37,
           following: 0,
-          created_at: '2014-05-16T05:37:01Z',
-          updated_at: '2024-07-11T04:24:23Z',
+          created_at: '2024-05-16T05:37:01Z',
+          updated_at: '2025-06-11T04:24:23Z',
           private_gists: 1,
           total_private_repos: 29,
           owned_private_repos: 29,
@@ -2125,8 +2128,8 @@ const doc = {
           "phone": "01011112222",
           "address": "서울시 강남구 역삼동 123",
           "_id": 5,
-          "createdAt": "2023.11.21 14:31:15",
-          "updatedAt": "2023.11.21 14:31:15"
+          "createdAt": getRandomDate(),
+          "updatedAt": getRandomDate()
         }
       },
 
@@ -2160,8 +2163,8 @@ const doc = {
             }]
           },
           "_id": 5,
-          "createdAt": "2023.11.21 14:33:41",
-          "updatedAt": "2023.11.21 14:33:41"
+          "createdAt": getRandomDate(),
+          "updatedAt": getRandomDate()
         }
       },
 
@@ -2189,8 +2192,8 @@ const doc = {
             exp: 1723539598,
             providerAccountId: '117745819340134301470'
           },
-          createdAt: '2024.08.14 06:56:10',
-          updatedAt: '2024.08.14 06:56:10'
+          createdAt: getRandomDate(),
+          updatedAt: getRandomDate()
         }
       },
 
@@ -2235,8 +2238,8 @@ const doc = {
             public_gists: 0,
             followers: 37,
             following: 0,
-            created_at: '2014-05-16T05:37:01Z',
-            updated_at: '2024-07-11T04:24:23Z',
+            created_at: '2024-05-16T05:37:01Z',
+            updated_at: '2025-06-11T04:24:23Z',
             private_gists: 1,
             total_private_repos: 29,
             owned_private_repos: 29,
@@ -2251,8 +2254,8 @@ const doc = {
             },
             providerAccountId: '7599169'
           },
-          createdAt: '2024.08.14 07:01:39',
-          updatedAt: '2024.08.14 07:01:39'
+          createdAt: getRandomDate(),
+          updatedAt: getRandomDate()
         }
       },
 
@@ -2283,8 +2286,8 @@ const doc = {
               },
               "content": "크기는 상품 상세정보에 나와 있습니다.",
               "like": 5,
-              "createdAt": "2024.08.11 22:03:51",
-              "updatedAt": "2024.08.12 16:03:51"
+              "createdAt": getRandomDate(),
+              "updatedAt": getRandomDate()
             },
             {
               "_id": 2,
@@ -2297,12 +2300,12 @@ const doc = {
               },
               "content": "어디있나 모르겠어요.",
               "like": 7,
-              "createdAt": "2024.08.12 08:03:51",
-              "updatedAt": "2024.08.12 17:03:51"
+              "createdAt": getRandomDate(),
+              "updatedAt": getRandomDate()
             }
           ],
-          "createdAt": "2024.04.08 21:08:10",
-          "updatedAt": "2024.04.08 21:08:10"
+          "createdAt": getRandomDate(),
+          "updatedAt": getRandomDate()
         }
       },
 
@@ -2334,8 +2337,8 @@ const doc = {
               },
               "content": "크기는 상품 상세정보에 나와 있습니다.",
               "like": 5,
-              "createdAt": "2024.08.11 22:03:51",
-              "updatedAt": "2024.08.12 16:03:51"
+              "createdAt": getRandomDate(),
+              "updatedAt": getRandomDate()
             },
             {
               "_id": 2,
@@ -2348,12 +2351,12 @@ const doc = {
               },
               "content": "어디있나 모르겠어요.",
               "like": 7,
-              "createdAt": "2024.08.12 08:03:51",
-              "updatedAt": "2024.08.12 17:03:51"
+              "createdAt": getRandomDate(),
+              "updatedAt": getRandomDate()
             }
           ],
-          "createdAt": "2024.08.11 16:03:51",
-          "updatedAt": "2024.08.11 16:03:51",
+          "createdAt": getRandomDate(),
+          "updatedAt": getRandomDate(),
           "product": {
             "name": [
               "캥거루 스턴트 독 로봇완구"
@@ -2401,8 +2404,8 @@ const doc = {
           },
           "_id": 20,
           "isRead": false,
-          "createdAt": "2024.08.22 13:31:10",
-          "updatedAt": "2024.08.22 13:31:10"
+          "createdAt": getRandomDate(),
+          "updatedAt": getRandomDate()
         }
       },
 
@@ -2419,8 +2422,8 @@ const doc = {
           "type": "user",
           "loginType": "email",
           "image": "user-jayg.webp",
-          "createdAt": "2024.03.31 20:29:44",
-          "updatedAt": "2024.04.10 08:59:44",
+          "createdAt": getRandomDate(),
+          "updatedAt": getRandomDate(),
           "posts": 2,
           "bookmark": {
             "products": 2,
@@ -2445,8 +2448,8 @@ const doc = {
           "type": "user",
           "loginType": "email",
           "image": "user-jayg.webp",
-          "createdAt": "2024.03.31 20:29:44",
-          "updatedAt": "2024.04.10 08:59:44",
+          "createdAt": getRandomDate(),
+          "updatedAt": getRandomDate(),
           "extra": {
             "birthday": "11-30",
             "membershipClass": "MC02",
@@ -2508,7 +2511,7 @@ const doc = {
         "item": {
           "name": "길드래곤",
           "phone": "01099998888",
-          "updatedAt": "2023.11.21 20:16:53"
+          "updatedAt": getRandomDate()
         }
       },
 
@@ -2546,7 +2549,7 @@ const doc = {
               }
             ]
           },
-          "updatedAt": "2023.11.21 20:13:33"
+          "updatedAt": getRandomDate()
         }
       },
 
@@ -2630,8 +2633,8 @@ const doc = {
           "state": "OS020",
           "user_id": 4,
           "_id": 5,
-          "createdAt": "2024.04.07 10:40:44",
-          "updatedAt": "2024.04.07 10:40:44",
+          "createdAt": getRandomDate(),
+          "updatedAt": getRandomDate(),
           "cost": {
             "products": 57320,
             "shippingFees": 2500,
@@ -2698,8 +2701,8 @@ const doc = {
           "state": "OS020",
           "user_id": 4,
           "_id": 7,
-          "createdAt": "2024.04.07 10:36:18",
-          "updatedAt": "2024.04.07 10:36:18",
+          "createdAt": getRandomDate(),
+          "updatedAt": getRandomDate(),
           "cost": {
             "products": 57320,
             "shippingFees": 2500,
@@ -2744,7 +2747,7 @@ const doc = {
           "extra": {
             "image": "sample-hulk.png"
           },
-          "updatedAt": "2024.04.12 09:28:41"
+          "updatedAt": getRandomDate()
         }
       },
 
@@ -2765,7 +2768,7 @@ const doc = {
           "extra": {
             "title": "고객응대가 좋아요"
           },
-          "updatedAt": "2025.01.09 17:54:13"
+          "updatedAt": getRandomDate()
         }
       },
 
@@ -2779,8 +2782,8 @@ const doc = {
               "name": "네오"
             },
             "content": "높이 60cm 입니다.",
-            "createdAt": "2024.04.09 14:08:10",
-            "updatedAt": "2024.04.10 03:08:10"
+            "createdAt": getRandomDate(),
+            "updatedAt": getRandomDate()
           }
         ],
         "pagination": {
@@ -2805,8 +2808,8 @@ const doc = {
             "image": "/files/00-sample/user-jayg.webp"
           },
           "_id": 10,
-          "createdAt": "2024.08.20 10:16:06",
-          "updatedAt": "2024.08.20 10:16:06"
+          "createdAt": getRandomDate(),
+          "updatedAt": getRandomDate()
         }
       },
 
@@ -2822,8 +2825,8 @@ const doc = {
           "name": "익명의 제보자",
           "user": {},
           "_id": 10,
-          "createdAt": "2024.08.20 10:16:06",
-          "updatedAt": "2024.08.20 10:16:06"
+          "createdAt": getRandomDate(),
+          "updatedAt": getRandomDate()
         }
       },
 
@@ -2880,7 +2883,7 @@ const doc = {
           {
             "totalQuantity": 2,
             "totalSales": 34520,
-            "date": "2024.10.22"
+            "date": getRandomDate().slice(0, 10)
           },
         ]
       },
