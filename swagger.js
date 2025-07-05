@@ -339,15 +339,20 @@ const doc = {
       error422: {
         "ok": 0,
         "message": "잘못된 입력값이 있습니다.",
-        "errors": [
-          {
+        "errors": {
+          "email": {
             "type": "field",
             "value": "swaggermarket.com",
             "msg": "이메일 형식에 맞지 않습니다.",
-            "path": "email",
+            "location": "body"
+          },
+          "password": {
+            "type": "field",
+            "value": "1234",
+            "msg": "비밀번호는 8자 이상이어야 합니다.",
             "location": "body"
           }
-        ]
+        }
       },
       error500: {
         "ok": 0,

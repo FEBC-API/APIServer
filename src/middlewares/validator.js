@@ -13,7 +13,12 @@ const validator = {
       let msg = errors.array().map(error => `${error.msg}(${error.param}: ${error.value})`).join('\n');
       let customMsg = errors.array().map(error => `${error.msg}(${error.param})`).join('<br>');
       logger.debug(msg, customMsg);
-      next(createError(422, '잘못된 입력값이 있습니다.', { errors: errors.array() }));
+      // errors.array()를 객체로 변환
+      const errorObj = {};
+      errors.array().forEach(error => {
+        errorObj[error.path] = error;
+      });
+      next(createError(422, '잘못된 입력값이 있습니다.', { errors: errorObj }));
     }
   }
 };

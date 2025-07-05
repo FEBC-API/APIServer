@@ -17,7 +17,7 @@ export const initData = async (clientId, nextSeq) => {
         address: '서울시 강남구 역삼동 123',
         type: 'admin',
         loginType: 'email',
-        image: `/files/${clientId}/user-muzi.webp`,
+        image: `/files/${clientId}/user-muzi.png`,
         createdAt: getTime(-100, -60 * 60 * 3),
         updatedAt: getTime(-100, -60 * 60 * 3),
         extra: {
@@ -46,7 +46,7 @@ export const initData = async (clientId, nextSeq) => {
         address: '서울시 강남구 삼성동 456',
         type: 'seller',
         loginType: 'email',
-        image: `/files/${clientId}/user-neo.webp`,
+        image: `/files/${clientId}/user-neo.png`,
         createdAt: getTime(-50),
         updatedAt: getTime(-30, -60 * 60 * 3),
         extra: {
@@ -75,7 +75,7 @@ export const initData = async (clientId, nextSeq) => {
         address: '서울시 강남구 도곡동 789',
         type: 'seller',
         loginType: 'email',
-        image: `/files/${clientId}/user-apeach.webp`,
+        image: `/files/${clientId}/user-apeach.png`,
         createdAt: getTime(-40, -60 * 30),
         updatedAt: getTime(-30, -60 * 20),
         extra: {
@@ -853,7 +853,7 @@ export const initData = async (clientId, nextSeq) => {
         user: {
           _id: 2,
           name: '네오',
-          image: 'user-neo.webp'
+          image: 'user-neo.png'
         },
         order_id: 4,
         product_id: 2,
@@ -974,7 +974,7 @@ export const initData = async (clientId, nextSeq) => {
         user: {
           _id: 2,
           name: '네오',
-          image: `/files/${clientId}/user-neo.webp`
+          image: `/files/${clientId}/user-neo.png`
         },
         type: 'product',
         target_id: 4,
@@ -1000,11 +1000,10 @@ export const initData = async (clientId, nextSeq) => {
         replies: [
           {
             _id: await nextSeq('reply'),
-            user_id: 2,
             user: {
               _id: 2,
               name: '네오',
-              image: 'user-neo.webp'
+              image: 'user-neo.png'
             },
             content: '크기는 상품 상세정보에 나와 있습니다.',
             like: 5,
@@ -1013,7 +1012,6 @@ export const initData = async (clientId, nextSeq) => {
           },
           {
             _id: await nextSeq('reply'),
-            user_id: 4,
             user: {
               _id: 4,
               name: '제이지',
@@ -1026,11 +1024,10 @@ export const initData = async (clientId, nextSeq) => {
           },
           {
             _id: await nextSeq('reply'),
-            user_id: 2,
             user: {
               _id: 2,
               name: '네오',
-              image: 'user-neo.webp'
+              image: 'user-neo.png'
             },
             content: '높이 60cm 입니다.',
             like: 3,
@@ -1066,7 +1063,7 @@ export const initData = async (clientId, nextSeq) => {
         user: {
           _id: 2,
           name: '네오',
-          image: 'user-neo.webp'
+          image: 'user-neo.png'
         },
         title: '배송 빨리 보내주세요.',
         content: '양품으로 보내주세요.',
@@ -1080,7 +1077,7 @@ export const initData = async (clientId, nextSeq) => {
         user: {
           _id: 1,
           name: '무지',
-          image: 'user-muzi.webp'
+          image: 'user-muzi.png'
         },
         title: '배송지연 안내',
         content: '크리스마스 물류 증가로 인해 평소보다 2~3일 지연될 예정입니다.',
@@ -1094,7 +1091,7 @@ export const initData = async (clientId, nextSeq) => {
         user: {
           _id: 1,
           name: '무지',
-          image: 'user-muzi.webp'
+          image: 'user-muzi.png'
         },
         title: '배송비 인상 안내',
         content: '택배사 배송비 인상으로 인해 기존 3,000원에서 3,500원으로 인상됩니다.',
