@@ -1,10 +1,6 @@
 import { MongoClient } from 'mongodb';
 
 async function getDB(clientId) {  
-  // const url = `${process.env.DB_URL}/${clientId}?authSource=${clientId}`;
-
-  // const url = `mongodb://${clientId}:${clientId}!!@${process.env.DB_URL}?authSource=${clientId}`;
-  // const url = `mongodb://${process.env.DB_URL}/${clientId}`; // localhost
   const url = process.env.DB_URL;
 
   console.log(`DB 접속 시도`, url);
