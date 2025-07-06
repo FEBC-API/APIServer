@@ -1,6 +1,6 @@
 {
   "version": "1",
-  "name": "team API 테스트",
+  "name": "팀별 API 테스트",
   "type": "collection",
   "ignore": [
     "node_modules",
