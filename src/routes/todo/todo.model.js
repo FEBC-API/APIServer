@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc.js';
 import timezone from 'dayjs/plugin/timezone.js';
 import fs from 'node:fs/promises';
 import path from 'path';
@@ -8,10 +9,11 @@ import { fileURLToPath } from 'url';
 import { JSONFilePreset  } from 'lowdb/node';
 import initData from './db/initData.js';
 
-// dayjs 타임존 플러그인 설정
+// timezone 플러그인은 utc 플러그인 설정 후 사용
+dayjs.extend(utc);
 dayjs.extend(timezone);
 
-// 타임존을 서울로 설정
+// 서울 타임존 설정
 dayjs.tz.setDefault('Asia/Seoul');
 
 let db;
