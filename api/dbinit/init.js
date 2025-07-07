@@ -14,8 +14,9 @@ if (process.env.NODE_ENV) {
 
 const imageUpload = process.env.IMAGE_UPLOAD || 'update';
 const clientId = process.env.CLIENT_ID;
+const targetDir = process.env.TARGET_DIR;
 const { db, client, nextSeq } = await getDB(clientId);
-const sampleFileFolder = `./${clientId}/uploadFiles`;
+const sampleFileFolder = `./${targetDir}/uploadFiles`;
 const bucket = new GridFSBucket(db, {
   bucketName: 'upload'
 });
@@ -121,7 +122,7 @@ async function dropDatabase(){
   }
 }
 
-import(`./${clientId}/data.js`).then(async ({ initData }) => {
+import(`./${targetDir}/data.js`).then(async ({ initData }) => {
   if(imageUpload === 'always'){
     await db.dropDatabase(); // 전체 삭제
   }else{
