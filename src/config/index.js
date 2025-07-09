@@ -13,6 +13,7 @@ export const db = {
   url: process.env.DB_URL,
   clientIds: [
     ...['sample', 'board', 'brunch', 'nike', 'openmarket',],
+    ...['01-TriFly'], // FESP 2기
     ...['febc13-js13-emjf', 'febc13-js14-emjf'],
     ...new Array(16).fill(0).map((_, index) => `febc13-final${index.toString().padStart(2, '0')}-emjf`),
   ],
