@@ -17,7 +17,7 @@ export const initData = async (clientId, nextSeq) => {
         address: '서울시 강남구 역삼동 123',
         type: 'admin',
         loginType: 'email',
-        image: `/files/${clientId}/user-muzi.png`,
+        image: `files/${clientId}/user-muzi.png`,
         createdAt: getTime(-100, -60 * 60 * 3),
         updatedAt: getTime(-100, -60 * 60 * 3),
         extra: {
@@ -46,7 +46,7 @@ export const initData = async (clientId, nextSeq) => {
         address: '서울시 강남구 삼성동 456',
         type: 'seller',
         loginType: 'email',
-        image: `/files/${clientId}/user-neo.png`,
+        image: `files/${clientId}/user-neo.png`,
         createdAt: getTime(-50),
         updatedAt: getTime(-30, -60 * 60 * 3),
         extra: {
@@ -75,7 +75,7 @@ export const initData = async (clientId, nextSeq) => {
         address: '서울시 강남구 도곡동 789',
         type: 'seller',
         loginType: 'email',
-        image: `/files/${clientId}/user-apeach.png`,
+        image: `files/${clientId}/user-apeach.png`,
         createdAt: getTime(-40, -60 * 30),
         updatedAt: getTime(-30, -60 * 20),
         extra: {
@@ -105,7 +105,7 @@ export const initData = async (clientId, nextSeq) => {
         address: '서울시 강남구 논현동 222',
         type: 'user',
         loginType: 'email',
-        image: `/files/${clientId}/user-jayg.webp`,
+        image: `files/${clientId}/user-jayg.webp`,
         createdAt: getTime(-20, -60 * 30),
         updatedAt: getTime(-10, -60 * 60 * 12),
         extra: {
@@ -140,7 +140,7 @@ export const initData = async (clientId, nextSeq) => {
         buyQuantity: 310,
         mainImages: [
           {
-            path: `/files/${clientId}/sample-dog.jpg`,
+            path: `files/${clientId}/sample-dog.jpg`,
             name: 'sample-dog.jpg',
             originalname: '스턴트 독.jpg',
           },
@@ -170,7 +170,7 @@ export const initData = async (clientId, nextSeq) => {
         buyQuantity: 198,
         mainImages: [
           {
-            path: `/files/${clientId}/sample-diver.jpg`,
+            path: `files/${clientId}/sample-diver.jpg`,
             name: 'sample-diver.jpg',
             originalname: '헬로카봇.jpg',
           },
@@ -200,7 +200,7 @@ export const initData = async (clientId, nextSeq) => {
         buyQuantity: 99,
         mainImages: [
           {
-            path: `/files/${clientId}/sample-classic.jpg`,
+            path: `files/${clientId}/sample-classic.jpg`,
             name: 'sample-classic.jpg',
             originalname: '레고 클래식.jpg',
           },
@@ -230,7 +230,7 @@ export const initData = async (clientId, nextSeq) => {
         buyQuantity: 89,
         mainImages: [
           {
-            path: `/files/${clientId}/sample-bugatti.png`,
+            path: `files/${clientId}/sample-bugatti.png`,
             name: 'sample-bugatti.png',
             originalname: '부가티.png',
           },
@@ -260,7 +260,7 @@ export const initData = async (clientId, nextSeq) => {
         buyQuantity: 98,
         mainImages: [
           {
-            path: `/files/${clientId}/sample-minecraft.png`,
+            path: `files/${clientId}/sample-minecraft.png`,
             name: 'sample-minecraft.png',
             originalname: '마인크래프트.png',
           },
@@ -291,7 +291,7 @@ export const initData = async (clientId, nextSeq) => {
         buyQuantity: 99,
         mainImages: [
           {
-            path: `/files/${clientId}/sample-hulk.png`,
+            path: `files/${clientId}/sample-hulk.png`,
             name: 'sample-hulk.png',
             originalname: '헐크.png',
           },
@@ -321,7 +321,7 @@ export const initData = async (clientId, nextSeq) => {
         buyQuantity: 98,
         mainImages: [
           {
-            path: `/files/${clientId}/sample-halligalli.jpg`,
+            path: `files/${clientId}/sample-halligalli.jpg`,
             name: 'sample-halligalli.jpg',
             originalname: '할리갈리.jpg',
           },
@@ -351,7 +351,7 @@ export const initData = async (clientId, nextSeq) => {
         buyQuantity: 97,
         mainImages: [
           {
-            path: `/files/${clientId}/sample-rummikub.png`,
+            path: `files/${clientId}/sample-rummikub.png`,
             name: 'sample-rummikub.png',
             originalname: '루미큐브.png',
           },
@@ -381,7 +381,7 @@ export const initData = async (clientId, nextSeq) => {
         buyQuantity: 96,
         mainImages: [
           {
-            path: `/files/${clientId}/sample-jjangu.jpg`,
+            path: `files/${clientId}/sample-jjangu.jpg`,
             name: 'sample-jjangu.jpg',
             originalname: '짱구.jpg',
           },
@@ -412,7 +412,7 @@ export const initData = async (clientId, nextSeq) => {
         buyQuantity: 95,
         mainImages: [
           {
-            path: `/files/${clientId}/sample-rapunzel.jpg`,
+            path: `files/${clientId}/sample-rapunzel.jpg`,
             name: 'sample-rapunzel.jpg',
             originalname: '라푼젤.jpg',
           },
@@ -442,12 +442,12 @@ export const initData = async (clientId, nextSeq) => {
         buyQuantity: 94,
         mainImages: [
           {
-            path: `/files/${clientId}/sample-skibidi01.jpg`,
+            path: `files/${clientId}/sample-skibidi01.jpg`,
             name: 'sample-skibidi01.jpg',
             originalname: '피규어1.jpg',
           },
           {
-            path: `/files/${clientId}/sample-skibidi02.jpg`,
+            path: `files/${clientId}/sample-skibidi02.jpg`,
             name: 'sample-skibidi02.jpg',
             originalname: '피규어2.jpg',
           },
@@ -483,7 +483,7 @@ export const initData = async (clientId, nextSeq) => {
         buyQuantity: 800,
         mainImages: [
           {
-            path: `/files/${clientId}/sample-skibidi11.jpg`,
+            path: `files/${clientId}/sample-skibidi11.jpg`,
             name: 'sample-skibidi11.jpg',
             originalname: '토일렛.jpg',
           },
@@ -518,7 +518,7 @@ export const initData = async (clientId, nextSeq) => {
         buyQuantity: 94,
         mainImages: [
           {
-            path: `/files/${clientId}/sample-skibidi21.jpg`,
+            path: `files/${clientId}/sample-skibidi21.jpg`,
             name: 'sample-skibidi21.jpg',
             originalname: '스키비디.jpg',
           },
@@ -551,17 +551,17 @@ export const initData = async (clientId, nextSeq) => {
         buyQuantity: 298,
         mainImages: [
           {
-            path: `/files/${clientId}/sample-pushpop01.jpg`,
+            path: `files/${clientId}/sample-pushpop01.jpg`,
             name: 'sample-pushpop01.jpg',
             originalname: '푸쉬팝1.jpg',
           },
           {
-            path: `/files/${clientId}/sample-pushpop02.jpg`,
+            path: `files/${clientId}/sample-pushpop02.jpg`,
             name: 'sample-pushpop02.jpg',
             originalname: '푸쉬팝2.jpg',
           },
           {
-            path: `/files/${clientId}/sample-pushpop03.jpg`,
+            path: `files/${clientId}/sample-pushpop03.jpg`,
             name: 'sample-pushpop03.jpg',
             originalname: '푸쉬팝3.jpg',
           },
@@ -595,7 +595,7 @@ export const initData = async (clientId, nextSeq) => {
         buyQuantity: 0,
         mainImages: [
           {
-            path: `/files/${clientId}/sample-pushpop01.jpg`,
+            path: `files/${clientId}/sample-pushpop01.jpg`,
             name: 'sample-pushpop01.jpg',
             originalname: '샤넬.jpg',
           },
@@ -620,7 +620,7 @@ export const initData = async (clientId, nextSeq) => {
         active: true,
         mainImages: [
           {
-            path: `/files/${clientId}/sample-pushpop03.jpg`,
+            path: `files/${clientId}/sample-pushpop03.jpg`,
             name: 'sample-pushpop03.jpg',
             originalname: '샤넬.jpg',
           },
@@ -648,7 +648,7 @@ export const initData = async (clientId, nextSeq) => {
             state: 'OS020',
             name: '헬로카봇 스톰다이버',
             image: {
-              path: `/files/${clientId}/sample-diver.jpg`,
+              path: `files/${clientId}/sample-diver.jpg`,
               name: 'sample-diver.jpg',
               originalname: '헬로카봇.jpg',
             },
@@ -684,7 +684,7 @@ export const initData = async (clientId, nextSeq) => {
             state: 'OS010',
             name: '레고 클래식 라지 조립 박스 10698',
             image: {
-              path: `/files/${clientId}/sample-classic.jpg`,
+              path: `files/${clientId}/sample-classic.jpg`,
               name: 'sample-classic.jpg',
               originalname: '레고 클래식.jpg',
             },
@@ -697,7 +697,7 @@ export const initData = async (clientId, nextSeq) => {
             state: 'OS010',
             name: '레고 테크닉 42151 부가티 볼리드',
             image: {
-              path: `/files/${clientId}/sample-bugatti.png`,
+              path: `files/${clientId}/sample-bugatti.png`,
               name: 'sample-bugatti.png',
               originalname: '부가티.png',
             },
@@ -733,7 +733,7 @@ export const initData = async (clientId, nextSeq) => {
             state: 'OS110',
             name: '레고 테크닉 42151 부가티 볼리드',
             image: {
-              path: `/files/${clientId}/sample-bugatti.png`,
+              path: `files/${clientId}/sample-bugatti.png`,
               name: 'sample-bugatti.png',
               originalname: '부가티.png',
             },
@@ -800,7 +800,7 @@ export const initData = async (clientId, nextSeq) => {
             state: 'OS310',
             name: '헬로카봇 스톰다이버',
             image: {
-              path: `/files/${clientId}/sample-diver.jpg`,
+              path: `files/${clientId}/sample-diver.jpg`,
               name: 'sample-diver.jpg',
               originalname: '헬로카봇.jpg',
             },
@@ -922,7 +922,7 @@ export const initData = async (clientId, nextSeq) => {
         user: {
           _id: 4,
           name: '제이지',
-          image: `/files/${clientId}/user-jayg.webp`
+          image: `files/${clientId}/user-jayg.webp`
         },
         type: 'product',
         target_id: 2,
@@ -935,7 +935,7 @@ export const initData = async (clientId, nextSeq) => {
         user: {
           _id: 4,
           name: '제이지',
-          image: `/files/${clientId}/user-jayg.webp`
+          image: `files/${clientId}/user-jayg.webp`
         },
         type: 'product',
         target_id: 4,
@@ -948,7 +948,7 @@ export const initData = async (clientId, nextSeq) => {
         user: {
           _id: 4,
           name: '제이지',
-          image: `/files/${clientId}/user-jayg.webp`
+          image: `files/${clientId}/user-jayg.webp`
         },
         type: 'user',
         target_id: 2,
@@ -961,7 +961,7 @@ export const initData = async (clientId, nextSeq) => {
         user: {
           _id: 4,
           name: '제이지',
-          image: `/files/${clientId}/user-jayg.webp`
+          image: `files/${clientId}/user-jayg.webp`
         },
         type: 'post',
         target_id: 1,
@@ -974,7 +974,7 @@ export const initData = async (clientId, nextSeq) => {
         user: {
           _id: 2,
           name: '네오',
-          image: `/files/${clientId}/user-neo.png`
+          image: `files/${clientId}/user-neo.png`
         },
         type: 'product',
         target_id: 4,

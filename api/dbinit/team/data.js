@@ -17,7 +17,7 @@ export const initData = async (clientId, nextSeq) => {
         address: '서울시 강남구 역삼동 123',
         type: 'admin',
         loginType: 'email',
-        image: `/files/${clientId}/user-muzi.png`,
+        image: `files/${clientId}/user-muzi.png`,
         createdAt: getTime(-100, -60 * 60 * 3),
         updatedAt: getTime(-100, -60 * 60 * 3),
         extra: {
@@ -33,7 +33,7 @@ export const initData = async (clientId, nextSeq) => {
         address: '서울시 강남구 삼성동 456',
         type: 'seller',
         loginType: 'email',
-        image: `/files/${clientId}/user-neo.png`,
+        image: `files/${clientId}/user-neo.png`,
         createdAt: getTime(-50),
         updatedAt: getTime(-30, -60 * 60 * 3),
         extra: {
@@ -77,7 +77,7 @@ export const initData = async (clientId, nextSeq) => {
         user: {
           _id: 2,
           name: '네오',
-          image: `/files/${clientId}/user-neo.png`
+          image: `files/${clientId}/user-neo.png`
         },
         title: '회원 가입했어요.',
         content: '잘 부탁드려요.',

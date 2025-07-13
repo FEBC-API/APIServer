@@ -33,7 +33,7 @@ router.post('/', [
     }]
 
     #swagger.requestBody = {
-      description: "회원 정보가 저장된 객체입니다.<br>email: 이메일(필수)<br>password: 비밀번호(필수)<br>name: 이름(필수)<br>phone: 전화번호(선택)<br>address: 주소(선택)<br>type: 회원 구분(필수, 구매회원: user, 판매회원: seller)<br>extra: 추가 데이터(선택). 추가하고 싶은 아무 속성이나 지정",
+      description: "회원 정보가 저장된 객체입니다.<br>type: 회원 구분(필수, 구매회원: user, 판매회원: seller)<br>email: 이메일(필수)<br>password: 비밀번호(필수)<br>name: 이름(필수)<br>image: 회원 이미지(선택, file api로 업로드한 후 응답받은 이미지 명)<br>phone: 전화번호(선택)<br>address: 주소(선택)<br>extra: 추가 데이터(선택). 추가하고 싶은 아무 속성이나 지정",
       required: true,
       content: {
         "application/json": {

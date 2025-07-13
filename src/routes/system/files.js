@@ -121,7 +121,7 @@ router.post('/', multerUpload, handleError, async function(req, res, next) {
     result.item = req.files.map(file => ({
       originalname: file.originalname,
       name: file.filename,
-      path: `/files/${getClientId(req)}/${file.filename}`,
+      path: `files/${getClientId(req)}/${file.filename}`,
     }));
 
     res.status(201).json(result);

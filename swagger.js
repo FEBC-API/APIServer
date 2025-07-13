@@ -380,7 +380,7 @@ const doc = {
         "name": "ZOZOFO 테이블 게임 축구 보드 사커 게임기 보드게임 2인경기 완구 가족모임 미니 월드컵 스포츠 어린이 크리스마스 선물 생일 선물",
         "mainImages": [
           {
-            "path ": "/files/00-sample/sample-football.jpg",
+            "path ": "files/openmarket/sample-football.jpg",
             "name ": "sample-football.jpg",
             "originalname": "사커게임.png"
           }
@@ -409,7 +409,7 @@ const doc = {
           "name": "ZOZOFO 테이블 게임 축구 보드 사커 게임기 보드게임 2인경기 완구 가족모임 미니 월드컵 스포츠 어린이 크리스마스 선물 생일 선물",
           "mainImages": [
             {
-              "path ": "/files/00-sample/sample-football.jpg",
+              "path ": "files/openmarket/sample-football.jpg",
               "name ": "sample-football.jpg",
               "originalname": "사커게임.png"
             }
@@ -451,7 +451,7 @@ const doc = {
             "buyQuantity": 89,
             "mainImages": [
               {
-                "path": "/files/00-sample/sample-bugatti.png",
+                "path": "files/openmarket/sample-bugatti.png",
                 "name": "sample-bugatti.png",
                 "originalname": "부가티.png"
               }
@@ -521,7 +521,7 @@ const doc = {
           "buyQuantity": 89,
           "mainImages": [
             {
-              "path": "/files/00-sample/sample-bugatti.png",
+              "path": "files/openmarket/sample-bugatti.png",
               "name": "sample-bugatti.png",
               "originalname": "부가티.png"
             }
@@ -639,7 +639,7 @@ const doc = {
                 "seller_id": 2,
                 "state": "OS020",
                 "name": "헬로카봇 스톰다이버",
-                "image": "/files/sample-diver.jpg",
+                "image": "files/sample-diver.jpg",
                 "quantity": 2,
                 "price": 34520,
                 "review_id": 3,
@@ -702,7 +702,7 @@ const doc = {
               "seller_id": 3,
               "state": "OS110",
               "name": "레고 테크닉 42151 부가티 볼리드",
-              "image": "/files/sample-bugatti.png",
+              "image": "files/sample-bugatti.png",
               "quantity": 1,
               "price": 45000,
               "review_id": 1
@@ -743,7 +743,7 @@ const doc = {
               "seller_id": 2,
               "state": "OS310",
               "name": "헬로카봇 스톰다이버",
-              "image": "/files/sample-diver.jpg",
+              "image": "files/sample-diver.jpg",
               "quantity": 1,
               "price": 17260,
               "review_id": 2
@@ -918,7 +918,7 @@ const doc = {
             "product": {
               "_id": 2,
               "image": {
-                "path": "/files/00-sample/sample-diver.jpg",
+                "path": "files/openmarket/sample-diver.jpg",
                 "name": "sample-diver.jpg",
                 "originalname": "헬로카봇.jpg"
               },
@@ -941,7 +941,7 @@ const doc = {
           "product": {
             "_id": 3,
             "image": {
-              "url": "/files/sample-classic.jpg",
+              "url": "files/sample-classic.jpg",
               "fileName": "sample-classic.jpg",
               "orgName": "레고 클래식.jpg"
             },
@@ -963,7 +963,7 @@ const doc = {
             "price": 17260,
             "name": "헬로카봇 스톰다이버",
             "image": {
-              "url": "/files/sample-diver.jpg",
+              "url": "files/sample-diver.jpg",
               "fileName": "sample-diver.jpg",
               "orgName": "헬로카봇.jpg"
             },
@@ -973,7 +973,7 @@ const doc = {
                 "user": {
                   "_id": 4,
                   "name": "제**",
-                  "image": "/files/user-jayg.webp"
+                  "image": "files/user-jayg.webp"
                 },
                 "rating": 5,
                 "content": "아이가 좋아해요.",
@@ -984,7 +984,7 @@ const doc = {
                 "user": {
                   "_id": 2,
                   "name": "네**",
-                  "image": "/files/user-neo.webp"
+                  "image": "files/user-neo.webp"
                 },
                 "rating": 4,
                 "content": "배송이 좀 느려요.",
@@ -1019,7 +1019,7 @@ const doc = {
               "seller_id": 3,
               "name": "레고 테크닉 42151 부가티 볼리드",
               "image": {
-                "url": "/files/sample-bugatti.png",
+                "url": "files/sample-bugatti.png",
                 "fileName": "sample-bugatti.png",
                 "orgName": "부가티.png"
               },
@@ -1064,7 +1064,7 @@ const doc = {
               "quantity": 320,
               "buyQuantity": 310,
               "image": {
-                "url": "/files/sample-dog.jpg",
+                "url": "files/sample-dog.jpg",
                 "fileName": "sample-dog.jpg",
                 "orgName": "스턴트 독.jpg"
               },
@@ -1113,7 +1113,7 @@ const doc = {
               "quantity": 100,
               "buyQuantity": 89,
               "image": {
-                "url": "/files/sample-bugatti.png",
+                "url": "files/sample-bugatti.png",
                 "fileName": "sample-bugatti.png",
                 "orgName": "부가티.png"
               },
@@ -1182,7 +1182,7 @@ const doc = {
                 "_id": 2,
                 "name": "AB",
                 "email": "w1@gmail.com",
-                "image": "/files/00-sample/user-neo.webp"
+                "image": "files/openmarket/user-neo.webp"
               },
               "memo": "항상 배송도 빨리해주고 좋습니다.",
               "createdAt": getRandomDate()
@@ -1197,7 +1197,7 @@ const doc = {
                 "_id": 2,
                 "name": "네오",
                 "email": "s1@market.com",
-                "image": "/files/00-sample/user-neo.webp",
+                "image": "files/openmarket/user-neo.webp",
                 "type": "seller"
               }
             },
@@ -1209,7 +1209,7 @@ const doc = {
                 "_id": 1,
                 "name": "무지",
                 "email": "admin@market.com",
-                "image": "/files/00-sample/user-muzi.webp",
+                "image": "files/openmarket/user-muzi.webp",
                 "type": "admin"
               }
             }
@@ -1227,7 +1227,7 @@ const doc = {
                 "buyQuantity": 99,
                 "mainImages": [
                   {
-                    "path": "/files/00-sample/sample-classic.jpg",
+                    "path": "files/openmarket/sample-classic.jpg",
                     "name": "sample-classic.jpg",
                     "originalname": "레고 클래식.jpg"
                   }
@@ -1270,7 +1270,7 @@ const doc = {
               "quantity": 100,
               "buyQuantity": 89,
               "image": {
-                "url": "/files/sample-bugatti.png",
+                "url": "files/sample-bugatti.png",
                 "fileName": "sample-bugatti.png",
                 "orgName": "부가티.png"
               },
@@ -1302,7 +1302,7 @@ const doc = {
             "quantity": 100,
             "buyQuantity": 89,
             "image": {
-              "url": "/files/sample-bugatti.png",
+              "url": "files/sample-bugatti.png",
               "fileName": "sample-bugatti.png",
               "orgName": "부가티.png"
             },
@@ -1334,7 +1334,7 @@ const doc = {
             "buyQuantity": 99,
             "mainImages": [
               {
-                "path ": "/files/00-sample/sample-classic.jpg",
+                "path ": "files/openmarket/sample-classic.jpg",
                 "name ": "sample-classic.jpg",
                 "originalname": "레고 클래식.jpg"
               }
@@ -1403,7 +1403,7 @@ const doc = {
             "product": {
               "name": "캥거루 스턴트 독 로봇완구",
               "image": {
-                "url": "/files/sample-dog.jpg",
+                "url": "files/sample-dog.jpg",
                 "fileName": "sample-dog.jpg",
                 "orgName": "스턴트 독.jpg"
               }
@@ -1433,7 +1433,7 @@ const doc = {
             "address": "서울시 강남구 논현동 222",
             "type": "user",
             "loginType": "email",
-            "image": "/files/00-openmarket/user-jayg.webp",
+            "image": "files/openmarket/user-jayg.webp",
             "createdAt": getRandomDate(),
             "updatedAt": getRandomDate(),
             "extra": {
@@ -1484,7 +1484,7 @@ const doc = {
               "_id": 4,
               "name": "제이지",
               "email": "u1@market.com",
-              "image": "/files/00-sample/user-jayg.webp"
+              "image": "files/openmarket/user-jayg.webp"
             },
             "isRead": false,
             "createdAt": getRandomDate(),
@@ -1504,7 +1504,7 @@ const doc = {
               "_id": 4,
               "name": "제이지",
               "email": "u1@market.com",
-              "image": "/files/00-sample/user-jayg.webp"
+              "image": "files/openmarket/user-jayg.webp"
             },
             "isRead": false,
             "createdAt": getRandomDate(),
@@ -1525,12 +1525,12 @@ const doc = {
           {
             "originalname": "sample-cat.jpg",
             "name": "nQYGBCVZZ.jpg",
-            "path": "/files/00-sample/nQYGBCVZZ.jpg"
+            "path": "files/openmarket/nQYGBCVZZ.jpg"
           },
           {
             "originalname": "sample-dog.jpg",
             "name": "Gb4OJkEX2k.jpg",
-            "path": "/files/00-sample/Gb4OJkEX2k.jpg"
+            "path": "files/openmarket/Gb4OJkEX2k.jpg"
           }
         ]
       },
@@ -2012,7 +2012,7 @@ const doc = {
         phone: '01011112222',
         address: '서울시 강남구 역삼동 123',
         type: 'user',
-        image: "/files/00-sample/profile.jpg",
+        image: "files/openmarket/profile.jpg",
       },
 
       createUserWithExtra: {
@@ -2023,7 +2023,7 @@ const doc = {
         address: '서울시 강남구 역삼동 123',
         type: 'user',
         image: {
-          "path ": "/files/00-sample/profile.jpg",
+          "path ": "files/openmarket/profile.jpg",
           "name ": "profile.jpg",
           "originalname": "사커게임.png"
         },
@@ -2151,7 +2151,7 @@ const doc = {
             "age": '넣으면 됩니다.',
             "address": ['배열도', '가능하고'],
             "image": {
-              "path ": "/files/00-sample/profile.jpg",
+              "path ": "files/openmarket/profile.jpg",
               "name ": "profile.jpg",
               "originalname": "사커게임.png"
             },
@@ -2369,7 +2369,7 @@ const doc = {
             "mainImages": [
               [
                 {
-                  "path": "/files/00-sample/sample-dog.jpg",
+                  "path": "files/openmarket/sample-dog.jpg",
                   "name": "sample-dog.jpg",
                   "originalname": "스턴트 독.jpg"
                 }
@@ -2405,7 +2405,7 @@ const doc = {
             "_id": 4,
             "name": "제이지",
             "email": "u1@market.com",
-            "image": "/files/00-sample/user-jayg.webp"
+            "image": "files/openmarket/user-jayg.webp"
           },
           "_id": 20,
           "isRead": false,
@@ -2598,7 +2598,7 @@ const doc = {
               "seller_id": 2,
               "name": "캥거루 스턴트 독 로봇완구",
               "image": {
-                "url": "/files/sample-dog.jpg",
+                "url": "files/sample-dog.jpg",
                 "fileName": "sample-dog.jpg",
                 "orgName": "스턴트 독.jpg"
               },
@@ -2619,7 +2619,7 @@ const doc = {
               "seller_id": 2,
               "name": "헬로카봇 스톰다이버",
               "image": {
-                "url": "/files/sample-diver.jpg",
+                "url": "files/sample-diver.jpg",
                 "fileName": "sample-diver.jpg",
                 "orgName": "헬로카봇.jpg"
               },
@@ -2662,7 +2662,7 @@ const doc = {
               "seller_id": 2,
               "name": "캥거루 스턴트 독 로봇완구",
               "image": {
-                "url": "/files/sample-dog.jpg",
+                "url": "files/sample-dog.jpg",
                 "fileName": "sample-dog.jpg",
                 "orgName": "스턴트 독.jpg"
               },
@@ -2683,7 +2683,7 @@ const doc = {
               "seller_id": 2,
               "name": "헬로카봇 스톰다이버",
               "image": {
-                "url": "/files/sample-diver.jpg",
+                "url": "files/sample-diver.jpg",
                 "fileName": "sample-diver.jpg",
                 "orgName": "헬로카봇.jpg"
               },
@@ -2810,7 +2810,7 @@ const doc = {
           "user": {
             "_id": 4,
             "name": "제이지",
-            "image": "/files/00-sample/user-jayg.webp"
+            "image": "files/openmarket/user-jayg.webp"
           },
           "_id": 10,
           "createdAt": getRandomDate(),
@@ -2855,7 +2855,7 @@ const doc = {
             "seller": {
               "_id": 3,
               "name": "어피치",
-              "image": "/files/00-openmarket/user-apeach.webp"
+              "image": "files/openmarket/user-apeach.webp"
             }
           }
         ]
@@ -2873,7 +2873,7 @@ const doc = {
               "name": "레고 테크닉 42151 부가티 볼리드",
               "price": 45000,
               "image": {
-                "path": "/files/00-openmarket/sample-bugatti.png",
+                "path": "files/openmarket/sample-bugatti.png",
                 "name": "sample-bugatti.png",
                 "originalname": "부가티.png"
               }
