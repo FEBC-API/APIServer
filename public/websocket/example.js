@@ -1,3 +1,4 @@
+/* global io */
 // WebSocket 클라이언트 예제
 class WebSocketClient {
     constructor() {
@@ -33,12 +34,18 @@ class WebSocketClient {
             sendBtn: document.getElementById('sendBtn'),
             
             memberCount: document.getElementById('memberCount'),
-            memberList: document.getElementById('memberList')
+            memberList: document.getElementById('memberList'),
+            // Room 목록 패널
+            roomListPanel: document.getElementById('roomListPanel')
         };
+        // 사용자 ID를 'user-' + 무작위 6자리 영숫자 문자열로 자동 설정
+        this.elements.userId.value = 'user-' + Math.random().toString(36).slice(2, 8);
+        // 닉네임을 '테스터-' + 무작위 4자리 숫자로 자동 설정
+        this.elements.nickName.value = '테스터-' + Math.floor(1000 + Math.random() * 9000);
     }
 
     setDefaultServerUrl() {
-        this.elements.serverUrl.value = `${window.location.origin}/websocket/sample`;
+        this.elements.serverUrl.value = `${window.location.origin}/ws/sample`;
     }
 
     bindEvents() {
@@ -95,6 +102,10 @@ class WebSocketClient {
             this.isConnected = true;
             this.updateConnectionStatus(true);
             this.addMessage('시스템', `서버에 연결되었습니다. Socket ID: ${this.socket.id}`, 'system');
+            // 연결 시 Room 목록 요청 (콜백으로 받아오기)
+            this.socket.emit('rooms', (roomList) => {
+                this.renderRoomList(roomList);
+            });
         });
 
         this.socket.on('disconnect', () => {
@@ -114,6 +125,7 @@ class WebSocketClient {
 
         this.socket.on('rooms', (roomList) => {
             this.addMessage('시스템', `서버 Room 목록 업데이트: ${Object.keys(roomList).length}개`, 'system');
+            this.renderRoomList(roomList);
         });
 
         this.socket.on('connect_error', (error) => {
@@ -143,7 +155,7 @@ class WebSocketClient {
         this.socket.emit('createRoom', roomData, (response) => {
             if (response.ok) {
                 this.currentRoomId = response.roomInfo.roomId;
-                this.addMessage('시스템', `서버 Room 생성 성공: ${response.roomInfo.roomName}`, 'system');
+                this.addMessage('시스템', `서버 Room 생성 성공: ${response.roomInfo.roomName} - ${response.roomInfo.roomId}`, 'system');
                 this.updateButtonStates();
             } else {
                 this.addMessage('시스템', `서버 Room 생성 실패: ${response.message}`, 'system');
@@ -151,25 +163,57 @@ class WebSocketClient {
         });
     }
 
-    joinRoom() {
+    // Room 목록 렌더링 함수 추가
+    renderRoomList(roomList) {
+        const panel = this.elements.roomListPanel;
+        panel.innerHTML = '';
+        const roomArray = Object.values(roomList);
+        if (roomArray.length === 0) {
+            panel.innerHTML = '<div style="color:#6b7280;">서버 Room이 없습니다.</div>';
+            return;
+        }
+        roomArray.forEach(room => {
+            const div = document.createElement('div');
+            div.style.display = 'flex';
+            div.style.alignItems = 'center';
+            div.style.justifyContent = 'space-between';
+            div.style.padding = '8px 0';
+            div.style.borderBottom = '1px solid #e5e7eb';
+            div.innerHTML = `
+                <span><b>${room.roomName}</b> <span style='color:#6b7280;font-size:0.9em;'>(${room.roomId})</span> <span style='color:#10b981;'>[${room.memberCount||0}/${room.capacity||'제한없음'}]</span></span>
+                <button class='btn btn-success btn-join-room' data-room-id='${room.roomId}'>입장</button>
+            `;
+            panel.appendChild(div);
+        });
+        // 입장 버튼 이벤트 바인딩
+        panel.querySelectorAll('.btn-join-room').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const roomId = btn.getAttribute('data-room-id');
+                this.joinRoom(roomId);
+            });
+        });
+    }
+
+    // joinRoom 오버로드: roomId 파라미터 있으면 해당 Room으로 입장
+    joinRoom(roomId) {
         if (!this.isConnected) {
             this.addMessage('시스템', '먼저 서버에 연결해주세요.', 'system');
             return;
         }
-
-        if (!this.currentRoomId) {
-            this.addMessage('시스템', '먼저 서버 Room을 생성해주세요.', 'system');
+        // roomId가 명시적으로 들어오면 해당 Room으로 입장, 아니면 기존 방식
+        const targetRoomId = roomId || this.currentRoomId;
+        if (!targetRoomId) {
+            this.addMessage('시스템', '입장할 서버 Room을 선택하거나 생성해주세요.', 'system');
             return;
         }
-
         const joinData = {
-            roomId: this.currentRoomId,
+            roomId: targetRoomId,
             user_id: this.elements.userId.value.trim(),
             nickName: this.elements.nickName.value.trim()
         };
-
         this.socket.emit('joinRoom', joinData, (response) => {
             if (response.ok) {
+                this.currentRoomId = response.roomInfo.roomId;
                 this.addMessage('시스템', `서버 Room 입장 성공: ${response.roomInfo.roomName}`, 'system');
                 this.updateButtonStates();
                 this.elements.messageInput.disabled = false;
