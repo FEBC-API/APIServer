@@ -226,7 +226,7 @@ const server = io => {
       });
 
       socket.on('roomInfo', (roomId, callback) => callback(getRoomInfo(roomId)));
-      socket.on('rooms', callback => callback(getRooms()));
+      socket.on('rooms', callback => callback?.(getRooms()));
       socket.on('joinRoom', joinRoom);
       socket.on('leaveRoom', leaveRoom);
       socket.on('message', msg => {
