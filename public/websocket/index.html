@@ -76,16 +76,23 @@
           </div>
           
           <div class="feature-item">
+            <div class="feature-icon">📋</div>
+            <h3>서버 Room 목록 조회</h3>
+            <p>서버에 존재하는 모든 Room 목록을 조회할 수 있습니다.</p>
+            <code>socket.emit('rooms', callback)</code>
+          </div>
+
+          <div class="feature-item">
             <div class="feature-icon">🚪</div>
             <h3>서버 Room 입장</h3>
-            <p>기존 서버 Room에 입장하여 실시간 통신에 참여할 수 있습니다.</p>
+            <p>서버 Room에 입장하여 실시간 통신에 참여할 수 있습니다.</p>
             <code>socket.emit('joinRoom', {...})</code>
           </div>
           
           <div class="feature-item">
             <div class="feature-icon">💬</div>
             <h3>실시간 메시지</h3>
-            <p>서버 Room 내 모든 클라이언트에게 실시간으로 데이터를 전송합니다.</p>
+            <p>서버 Room 내 모든 클라이언트에게 실시간으로 데이터를 전송할 수 있습니다.</p>
             <code>socket.emit('message', 'data')</code>
           </div>
           
@@ -117,9 +124,9 @@
 
         <div class="namespace-item">
           <h4>사용 가능한 네임스페이스</h4>
-          <p>다음 네임스페이스에 연결하여 웹소켓 서비스를 이용할 수 있습니다:</p>
+          <p>다음 네임스페이스에 연결하여 웹소켓 서비스를 이용할 수 있습니다.(실제 개발시에는 sample 대신 부여받은 client-id 입력)</p>
           <ul>
-            <li><code>/websocket/sample</code> - 샘플 네임스페이스</li>
+            <li><code>/ws/sample</code> - 샘플 네임스페이스</li>
           </ul>
         </div>
 
@@ -130,7 +137,7 @@
 &lt;script src="https://cdn.socket.io/4.5.0/socket.io.min.js"&gt;&lt;/script&gt;
 
 // 네임스페이스에 연결
-const socket = io('<%= apiUrl %>/websocket/sample');
+const socket = io('<%= apiUrl %>/ws/sample');
 
 // 연결 상태 확인
 socket.on('connect', () => {
@@ -175,6 +182,7 @@ socket.emit('joinRoom', {
     console.log('서버 Room 입장 실패:', response.message);
   }
 });
+// 또는, 예제 UI에서 Room 목록의 '입장' 버튼을 눌러 바로 입장할 수 있습니다.
           </pre>
         </div>
 
@@ -253,7 +261,7 @@ socket.emit('cleanRooms');
     &lt;button onclick="sendMessage()"&gt;전송&lt;/button&gt;
 
     &lt;script&gt;
-        const socket = io('<%= apiUrl %>/websocket/sample');
+        const socket = io('<%= apiUrl %>/ws/sample');
         
         // 룸 생성 후 입장
         socket.emit('createRoom', {
@@ -315,7 +323,7 @@ socket.emit('cleanRooms');
             <ol style="color: #374151; margin: 0; padding-left: 20px;">
               <li>예제 페이지에서 "연결" 버튼 클릭</li>
               <li>"서버 Room 생성" 버튼으로 새 Room 생성</li>
-              <li>"서버 Room 입장" 버튼으로 Room에 입장</li>
+              <li>"서버 Room 목록"에서 입장하고 싶은 Room 옆의 <b>입장</b> 버튼을 클릭하여 해당 Room에 입장</li>
               <li>메시지 입력창에서 실시간 메시지 전송 테스트</li>
               <li>여러 탭을 열어서 다중 사용자 테스트 가능</li>
             </ol>
