@@ -42,6 +42,8 @@ class WebSocketClient {
         this.elements.userId.value = 'user-' + Math.random().toString(36).slice(2, 8);
         // 닉네임을 '테스터-' + 무작위 4자리 숫자로 자동 설정
         this.elements.nickName.value = '테스터-' + Math.floor(1000 + Math.random() * 9000);
+        // 서버 Room 이름을 '테스트 서버 Room - ' + 무작위 4자리 숫자로 자동 설정
+        this.elements.roomName.value = '테스트 서버 Room - ' + Math.floor(1000 + Math.random() * 9000);
     }
 
     setDefaultServerUrl() {
@@ -134,6 +136,7 @@ class WebSocketClient {
     }
 
     createRoom() {
+        // (Room 이름 자동 갱신 코드는 emit 이후로 이동)
         if (!this.isConnected) {
             this.addMessage('시스템', '먼저 서버에 연결해주세요.', 'system');
             return;
@@ -157,6 +160,8 @@ class WebSocketClient {
                 this.currentRoomId = response.roomInfo.roomId;
                 this.addMessage('시스템', `서버 Room 생성 성공: ${response.roomInfo.roomName} - ${response.roomInfo.roomId}`, 'system');
                 this.updateButtonStates();
+                // Room 생성 성공 후 Room 이름을 무작위로 갱신
+                this.elements.roomName.value = '테스트 서버 Room - ' + Math.floor(1000 + Math.random() * 9000);
             } else {
                 this.addMessage('시스템', `서버 Room 생성 실패: ${response.message}`, 'system');
             }
