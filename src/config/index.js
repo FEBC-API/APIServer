@@ -14,6 +14,7 @@ export const db = {
   clientIds: [
     ...['sample', 'board', 'brunch', 'nike', 'openmarket',],
     ...['fesp02-01TriFly'], // FESP 2기
+    ...new Array(8).fill(0).map((_, index) => `febc11-final${index.toString().padStart(2, '0')}-regj`),
     ...['febc13-js13-emjf', 'febc13-js14-emjf'],
     ...new Array(16).fill(0).map((_, index) => `febc13-final${index.toString().padStart(2, '0')}-emjf`),
   ],
