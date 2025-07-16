@@ -31,7 +31,8 @@ class WebSocketClient {
       memberCount: document.getElementById('memberCount'),
       memberList: document.getElementById('memberList'),
       // Room 목록 패널
-      roomListPanel: document.getElementById('roomListPanel')
+      roomListPanel: document.getElementById('roomListPanel'),
+      whisperTarget: document.getElementById('whisperTarget')
     };
     // 사용자 ID를 'user-' + 무작위 6자리 영숫자 문자열로 자동 설정
     this.elements.userId.value = 'user-' + Math.random().toString(36).slice(2, 8);
@@ -242,19 +243,35 @@ class WebSocketClient {
     const message = this.elements.messageInput.value.trim();
     if (!message) return;
     if (this.socket) {
-      this.socket.emit('message', message);
+      const target = this.elements.whisperTarget.value;
+      if (target && target !== 'all') {
+        // 귓속말
+        // 대상 닉네임 찾기
+        const targetOption = this.elements.whisperTarget.selectedOptions[0];
+        const targetText = targetOption ? targetOption.textContent : target;
+        this.socket.emit('sendTo', target, message);
+        this.addMessage(`나(귓속말) -> ${targetText}`, message, 'user');
+      } else {
+        // 전체 메시지
+        this.socket.emit('message', message);
+      }
       this.elements.messageInput.value = '';
     }
   }
 
   handleMessage(data) {
-    const messageType = data.nickName === '시스템' ? 'system' : 'user';
+    let messageType = data.nickName === '시스템' ? 'system' : 'user';
     let messageContent = data.msg;
+    let sender = data.nickName;
     // 시스템 메시지가 객체인 경우 처리
     if (typeof data.msg === 'object') {
       messageContent = `[${data.msg.action}] ${data.msg.msg}`;
     }
-    this.addMessage(data.nickName, messageContent, messageType);
+    // 귓속말이면 닉네임 앞에 (귓속말) 표시
+    if (data.msgType === 'whisper') {
+      sender = `${sender} (귓속말) `;
+    }
+    this.addMessage(sender, messageContent, messageType);
   }
 
   addMessage(sender, content, type = 'user') {
@@ -277,12 +294,27 @@ class WebSocketClient {
     const memberArray = Object.entries(memberList);
     this.elements.memberCount.textContent = memberArray.length;
     this.elements.memberList.innerHTML = '';
+    // whisperTarget 셀렉트 옵션 갱신
+    const whisperSelect = this.elements.whisperTarget;
+    const prevValue = whisperSelect.value;
+    whisperSelect.innerHTML = '<option value="all">모두에게</option>';
     memberArray.forEach(([userId, memberInfo]) => {
       const memberTag = document.createElement('div');
       memberTag.className = 'member-tag';
       memberTag.textContent = memberInfo.nickName;
       this.elements.memberList.appendChild(memberTag);
+      // 셀렉트 옵션 추가 (본인은 제외)
+      if (userId !== this.elements.userId.value.trim()) {
+        const opt = document.createElement('option');
+        opt.value = userId;
+        opt.textContent = memberInfo.nickName + ` (${userId})`;
+        whisperSelect.appendChild(opt);
+      }
     });
+    // 이전 선택값 복원
+    if ([...whisperSelect.options].some(opt => opt.value === prevValue)) {
+      whisperSelect.value = prevValue;
+    }
   }
 
   updateConnectionStatus(connected) {

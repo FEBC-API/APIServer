@@ -13,6 +13,9 @@ const server = io => {
       return;
     }
 
+    // 네임스페이스별 사용자 소켓 매핑 관리(귓속말 기능을 위해)
+    const userSocketMap = new Map();
+
     // 새로운 네임스페이스의 룸 목록 초기화
     namespaceRooms.set(namespace, new Map());
     
@@ -86,6 +89,8 @@ const server = io => {
         const rooms = namespaceRooms.get(namespace);
         const myRoom = rooms?.get(socket.roomId);
         
+        userSocketMap.delete(`${socket.roomId}/${socket.user_id}`);
+
         if(myRoom) {
           myRoom.memberList.delete(socket.user_id);
           broadcastMsg('시스템', `${socket.nickName}님이 나갔습니다.`);
@@ -193,6 +198,7 @@ const server = io => {
             socket.nickName = params.nickName?.trim() || '게스트' + (++roomInfo.memberList.guestNo);
 
             roomInfo.memberList.set(params.user_id, { 
+              // socket,
               nickName: socket.nickName, 
               joinTime: new Date().toISOString()
             });
@@ -217,10 +223,12 @@ const server = io => {
           res.message = `${params.roomId} Room이 존재하지 않습니다.`;
         }
 
+        userSocketMap.set(`${params.roomId}/${params.user_id}`, socket);
+
         callback?.(res);
       };
 
-      // 이벤트 리스너 연결
+      // 웹소켓 연결이 끊어질 경우 룸에서 나가기
       socket.on('disconnect', function() {
         leaveRoom();
       });
@@ -231,6 +239,24 @@ const server = io => {
       socket.on('leaveRoom', leaveRoom);
       socket.on('message', msg => {
         broadcastMsg(socket.nickName, msg);
+      });
+
+      // 지정한 사용자에게만 메세지 전송
+      socket.on('sendTo', (userId, msg) => {
+        const rooms = namespaceRooms.get(namespace);
+        const roomInfo = rooms.get(socket.roomId);
+        if(roomInfo) {
+          if(roomInfo.memberList.has(userId)) {
+            console.log(`${socket.roomId}/${userId} 에게 귓속말 전송`);
+            const targetSocket = userSocketMap.get(`${socket.roomId}/${userId}`);
+            targetSocket?.emit('message', {
+              nickName: socket.nickName,
+              msg,
+              timestamp: new Date().toISOString(),
+              msgType: 'whisper'
+            });
+          }
+        }
       });
       socket.on('cleanRooms', cleanRooms);
     });
