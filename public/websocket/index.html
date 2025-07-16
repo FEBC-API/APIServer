@@ -98,9 +98,16 @@
           
           <div class="feature-item">
             <div class="feature-icon">💬</div>
-            <h3>실시간 메시지</h3>
+            <h3>실시간 메시지</span></h3>
             <p>서버 Room 내 모든 클라이언트에게 실시간으로 데이터를 전송할 수 있습니다.</p>
             <code>socket.emit('message', 'data')</code>
+          </div>
+          
+          <div class="feature-item">
+            <div class="feature-icon">🕵️</div>
+            <h3>귓속말(1:1 메시지)</h3>
+            <p>특정 사용자에게만 비공개 메시지를 보낼 수 있습니다.</p>
+            <code>socket.emit('sendTo', userId, '비밀 메시지')</code>
           </div>
           
           <div class="feature-item">
@@ -123,6 +130,8 @@
             <p>관리자 권한으로 모든 서버 Room을 정리하고 초기화할 수 있습니다.</p>
             <code>socket.emit('cleanRooms')</code>
           </div>
+
+          
         </div>
       </div>
 
