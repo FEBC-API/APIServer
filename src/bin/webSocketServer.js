@@ -133,10 +133,10 @@ const server = io => {
         const newRoomId = roomId || shortid.generate();
         const rooms = namespaceRooms.get(namespace);
 
-        if(!user_id?.trim()) {
+        if(typeof user_id !== 'string' || !user_id?.trim()) {
           user_id = socket.id;
         }
-        if(!hostName?.trim()) {
+        if(typeof hostName !== 'string' || !hostName?.trim()) {
           hostName = '용쌤';
         }
 
