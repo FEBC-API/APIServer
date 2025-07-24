@@ -13,13 +13,13 @@ import moment from 'moment';
 import { readFile } from 'fs/promises';
 import proxy from '#bin/proxy.js';
 
-
 var app = express();
 
 const blacklistedIps = new Map();
 
-app.use(morgan('dev'));
-
+morgan.token('client-id', (req) => req.headers['client-id'] || '-');
+morgan.token('ip', (req) => req.headers['x-forwarded-for'] || req.ip);
+app.use(morgan(':client-id :ip :method :url :status :response-time ms - :res[content-length]'));
 
 // 프록시 서버 구동
 app.use('/proxy', proxy);
