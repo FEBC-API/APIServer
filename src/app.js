@@ -19,7 +19,17 @@ const blacklistedIps = new Map();
 
 morgan.token('client-id', (req) => req.headers['client-id'] || '-');
 morgan.token('ip', (req) => req.headers['x-forwarded-for'] || req.ip);
-app.use(morgan(':client-id :ip :method :url :status :response-time ms - :res[content-length]'));
+morgan.token('date-local', () => {
+  const now = new Date();
+  const yyyy = now.getFullYear();
+  const mm = String(now.getMonth() + 1).padStart(2, '0');
+  const dd = String(now.getDate()).padStart(2, '0');
+  const hh = String(now.getHours()).padStart(2, '0');
+  const min = String(now.getMinutes()).padStart(2, '0');
+  const ss = String(now.getSeconds()).padStart(2, '0');
+  return `${yyyy}.${mm}.${dd} ${hh}:${min}:${ss}`;
+});
+app.use(morgan(':date-local :client-id :ip :method :url :status :response-time ms - :res[content-length]'));
 
 // 프록시 서버 구동
 app.use('/proxy', proxy);
