@@ -56,6 +56,7 @@ export const cors = {
     /.*devtunnels\.ms/,
     /.*github\.io/,
     /.*github\.dev/,
+    /.*devtunnels\.ms/,
     ...(process.env.APP_HOST ? [new RegExp(process.env.APP_HOST)] : [])
   ]
 };
