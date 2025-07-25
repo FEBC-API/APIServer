@@ -195,7 +195,7 @@ const server = io => {
           } else {
             socket.roomId = params.roomId;
             socket.user_id = params.user_id;
-            socket.nickName = params.nickName?.trim() || '게스트' + (++roomInfo.memberList.guestNo);
+            socket.nickName = typeof params.nickName === 'string' && params.nickName.trim() || '게스트' + (++roomInfo.memberList.guestNo);
 
             roomInfo.memberList.set(params.user_id, { 
               // socket,
