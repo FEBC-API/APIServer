@@ -213,7 +213,7 @@ const doc = {
           },
           loginType: {
             type: 'string',
-            enum: ['email', 'google', 'github'],
+            enum: ['email', 'google', 'github', 'kakao', 'naver'],
             description: 'Auth Provider'
           },
           name: {

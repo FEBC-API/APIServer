@@ -206,6 +206,7 @@ router.post('/signup/oauth', [
   body('email').optional().isEmail().withMessage('이메일 형식에 맞지 않습니다.'),
   body('phone').optional().matches(/^01([0|1|6|7|8|9])-?([0-9]{3,4})-?([0-9]{4})$/).withMessage('휴대폰 형식에 맞지 않습니다.'),
   body('extra').optional().isObject().withMessage('extra 데이터는 객체로 전달해야 합니다.'),
+  body('extra.providerAccountId').notEmpty().withMessage('extra.providerAccountId는 필수입니다.'),
 ], validator.checkResult, async function (req, res, next) {
   /*
     #swagger.tags = ['회원']
@@ -217,7 +218,7 @@ router.post('/signup/oauth', [
     }]
 
     #swagger.requestBody = {
-      description: "회원 정보가 저장된 객체입니다.<br>id: Provider가 제공하는 사용자 id(필수, Auth.js를 사용할 경우 account.providerAccountId)<br>type: 회원 구분(필수, 구매회원: user, 판매회원: seller)<br>loginType: 인증 제공자(필수, google, github 등)<br>email: 이메일(선택)<br>name: 이름(선택)<br>image: 프로필 이미지(선택)<br>extra: 추가 데이터(선택). 추가하고 싶은 아무 속성이나 지정",
+      description: "회원 정보가 저장된 객체입니다.<br>type: 회원 구분(필수, 구매회원: user, 판매회원: seller)<br>loginType: 인증 제공자(필수, google, github 등)<br>email: 이메일(선택)<br>name: 이름(선택)<br>image: 프로필 이미지(선택)<br>extra: 추가 데이터(선택). 추가하고 싶은 아무 속성이나 지정<br>extra.providerAccountId: Provider가 제공하는 사용자 id(필수, Auth.js를 사용할 경우 account.providerAccountId)",
       required: true,
       content: {
         "application/json": {
