@@ -200,7 +200,6 @@ router.get('/name', [
 
 // OAuth 인증 후 자동 회원 가입
 router.post('/signup/oauth', [
-  body('id').optional().trim().notEmpty().withMessage('Auth Provider가 제공하는 사용자 ID를 전달해야 합니다.'),
   body('type').matches(/^(user|seller)$/).withMessage('회원 구분은 user 또는 seller로 전달해야 합니다.'),
   body('loginType').optional().trim().notEmpty().withMessage('Auth Provider 이름을 google, github등 필수로 전달해야 합니다.'),
   body('email').optional().isEmail().withMessage('이메일 형식에 맞지 않습니다.'),
