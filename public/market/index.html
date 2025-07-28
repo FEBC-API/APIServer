@@ -43,14 +43,95 @@
 
       <div class="changelog-section">
         <h2>변경 사항</h2>
+
+        <div class="version-item">
+          <h3 id="v1.2.0">v1.2.0 - 2025.07.28</h3>
+          <ul>
+            <li>[기능 수정] 북마크 목록 조회시 응답 데이터에 user_id 속성 추가
+              <ul>
+                <li>변경전: 
+                  <code>
+                    {
+                      "ok": 1,
+                      "item": [
+                        {
+                          "_id": 1,
+                          "memo": "첫째 크리스마스 선물.",
+                          ...
+                        },
+                        ...
+                      ]
+                    }
+                  </code>
+                </li>
+                <li>변경후: 
+                    <code>
+                      {
+                        "ok": 1,
+                        "item": [
+                          {
+                            "_id": 1,
+                            "user_id": 4,
+                            "memo": "첫째 크리스마스 선물.",
+                            ...
+                          },
+                          ...
+                        ]
+                      }
+                    </code>
+                  </li>
+                <li>API 문서 보기: <a href="/market/apidocs/#/북마크/get_bookmarks__type_" target="_blank">북마크 목록 조회</a></li>
+              </ul>
+            </li>
+            <li>[버그 수정] 북마크 목록 조회시 응답 데이터 포맷이 API 문서와 다르게 나오던 문제 수정
+              <ul>
+                <li>변경전: 
+                  <code>
+                    {
+                      "0": {
+                        ...
+                      },
+                      "1": {
+                        ...
+                      },
+                      "2": {
+                        ...
+                      },
+                      "ok": 1
+                    }
+                  </code>
+                </li>
+                <li>변경후: 
+                    <code>
+                      {
+                        "ok": 1,
+                        "item": [
+                          {
+                            ...
+                          },
+                          {
+                            ...
+                          },
+                          {
+                            ...
+                          }
+                        ]
+                      }
+                    </code>
+                  </li>
+                <li>API 문서 보기: <a href="/market/apidocs/#/북마크/get_bookmarks__type_" target="_blank">북마크 목록 조회</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
         
         <div class="version-item">
           <h3 id="v1.1.0">v1.1.0 - 2025.07.10</h3>
           <ul>
-            <li>파일 업로드시 응답 데이터의 path 필드의 파일 경로 정보에서 '/' 제거
+            <li>[기능 수정]파일 업로드시 응답 데이터의 path 필드의 파일 경로 정보에서 '/' 제거
               <ul>
-                <li>예전: <code>"path": "/files/openmarket/Gb4OJkEX2k.jpg"</code></li>
-                <li>변경: <code>"path": "files/openmarket/Gb4OJkEX2k.jpg"</code></li>
+                <li>변경전: <code>"path": "/files/openmarket/Gb4OJkEX2k.jpg"</code></li>
+                <li>변경후: <code>"path": "files/openmarket/Gb4OJkEX2k.jpg"</code></li>
                 <li>API 문서 보기: <a href="/market/apidocs/#/파일/post_files_" target="_blank">파일 업로드</a></li>
               </ul>
             </li>

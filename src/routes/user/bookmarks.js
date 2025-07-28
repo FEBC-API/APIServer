@@ -167,7 +167,7 @@ router.get('/:type', [
   try {
     const clientId = getClientId(req);
     const result = await bookmarkModel.findBy(clientId, { user_id: req.user._id, type: req.params.type });
-    res.json({ ok: 1, ...result });
+    res.json({ ok: 1, item: result });
   } catch (err) {
     next(err);
   }

@@ -42,6 +42,7 @@ const bookmarkModel = {
         $project: {
           // bookmark
           _id: 1,
+          user_id: 1,
           memo: 1,
           extra: 1,
           createdAt: 1,
