@@ -75,7 +75,7 @@ router.post('/', jwtAuth.auth('user'), [
   /*
     #swagger.tags = ['장바구니']
     #swagger.summary  = '장바구니에 상품 추가'
-    #swagger.description = '장바구니에 상품을 추가합니다.<br>이미 장바구니에 추가된 상품일 경우 수량이 증가하고 새로운 상품이 추가될 경우 목록에 추가됩니다.'
+    #swagger.description = '장바구니에 상품을 추가합니다.<br>이미 장바구니에 추가된 상품일 경우(size, color를 지정하면 size, color까지 모두 일치할 경우) 수량이 증가하고 새로운 상품이 추가될 경우 목록에 추가됩니다.'
     
     #swagger.security = [{
       "Access Token": [],
@@ -83,7 +83,13 @@ router.post('/', jwtAuth.auth('user'), [
     }]
 
     #swagger.requestBody = {
-      description: "장바구니에 추가할 상품 정보가 저장된 객체입니다.<br>다음과 같은 필수 정보를 포함해야 합니다.<br>product_id: 상품 id<br>quantity: 구매 수량<br><br>다음은 선택 사항입니다.<br>size: 사이즈, 꼭 사이즈가 아니더라도 상품의 추가 옵션을 지정할 수 있습니다.",
+      description: "<p>장바구니에 추가할 상품 정보가 저장된 객체입니다.</p>
+      <ul>
+        <li><b>*product_id</b>: 상품 id</li>
+        <li><b>*quantity</b>: 구매 수량</li>
+        <li>size: 사이즈</li>
+        <li>color: 색상</li>
+      </ul>",
       required: true,
       content: {
         "application/json": {

@@ -16,8 +16,12 @@ const cartModel = {
 
     const beforeCart = await this.findByUser(clientId, cartInfo.user_id);
     let sameProduct;
-    if (cartInfo.size) {
-      sameProduct = _.find(beforeCart, { product_id, size: cartInfo.size });
+    if (cartInfo.size || cartInfo.color) {
+      // size와 color가 모두 일치하는 상품 찾기
+      const matchCondition = { product_id };
+      if (cartInfo.size) matchCondition.size = cartInfo.size;
+      if (cartInfo.color) matchCondition.color = cartInfo.color;
+      sameProduct = _.find(beforeCart, matchCondition);
     } else {
       sameProduct = _.find(beforeCart, { product_id });
     }
@@ -103,6 +107,7 @@ const cartModel = {
           _id: 1,
           product_id: 1,
           size: 1,
+          color: 1,
           quantity: 1,
           createdAt: 1,
           updatedAt: 1,
@@ -184,7 +189,16 @@ const cartModel = {
     const beforeCart = await this.findByUser(clientId, user_id);
 
     for (const product of products) {
-      const sameProduct = _.find(beforeCart, { product_id: product._id });
+      // size와 color가 모두 일치하는 상품 찾기
+      let sameProduct;
+      if (product.size || product.color) {
+        const matchCondition = { product_id: product._id };
+        if (product.size) matchCondition.size = product.size;
+        if (product.color) matchCondition.color = product.color;
+        sameProduct = _.find(beforeCart, matchCondition);
+      } else {
+        sameProduct = _.find(beforeCart, { product_id: product._id });
+      }
 
       // 이미 등록된 상품일 경우 수량을 증가시킨다.
       if (sameProduct) {

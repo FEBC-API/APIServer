@@ -1093,7 +1093,9 @@ const doc = {
 
       cartCreate: {
         "product_id": 4,
-        "quantity": 2
+        "quantity": 2,
+        "size": "M",
+        "color": "RED"
       },
 
       cartCreateRes: {
