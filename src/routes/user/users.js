@@ -33,7 +33,17 @@ router.post('/', [
     }]
 
     #swagger.requestBody = {
-      description: "회원 정보가 저장된 객체입니다.<br>type: 회원 구분(필수, 구매회원: user, 판매회원: seller)<br>email: 이메일(필수)<br>password: 비밀번호(필수)<br>name: 이름(필수)<br>image: 회원 이미지(선택, file api로 업로드한 후 응답받은 이미지 명)<br>phone: 전화번호(선택)<br>address: 주소(선택)<br>extra: 추가 데이터(선택). 추가하고 싶은 아무 속성이나 지정",
+      description: "회원 정보가 저장된 객체입니다.<br>
+        type: 회원 구분(필수, 구매회원: user, 판매회원: seller)<br>
+        email: 이메일(필수)<br>
+        password: 비밀번호(필수)<br>
+        name: 이름(필수)<br>
+        image: 회원 이미지(선택, file api로 업로드한 후 응답받은 이미지 명)<br>
+        phone: 전화번호(선택)<br>
+        address: 주소(선택)<br>
+        extra: 추가 데이터(선택, 추가하고 싶은 아무 속성이나 지정)<br>
+        extra.emailConfirm: 이메일 인증 여부(선택, 이메일 인증이 필수일 경우 false로 지정, 이메일 인증이 완료되면 true로 변경됨)<br>
+        extra.adminConfirm: 관리자 승인 여부(선택, 관리자 승인이 필수일 경우 false로 지정, 관리자 승인이 완료되면 true로 변경됨)<br>",
       required: true,
       content: {
         "application/json": {
@@ -340,8 +350,10 @@ router.post('/login', [
   try {
     const clientId = getClientId(req);
     const user = await userService.login(clientId, req.body, req.query.expiresIn);
-    if (user.type === 'seller' && user.extra?.confirm === false) {
+    if (user.extra?.adminConfirm === false) {
       res.status(403).json({ ok: 0, message: '관리자의 승인이 필요합니다.' });
+    } else if(user.extra?.emailConfirm === false){
+      res.status(403).json({ ok: 0, message: '이메일 인증이 완료되지 않았습니다.' });
     } else {
       res.json({ ok: 1, item: user });
     }
