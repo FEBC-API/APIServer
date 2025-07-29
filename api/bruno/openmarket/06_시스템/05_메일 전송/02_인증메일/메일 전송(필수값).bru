@@ -1,0 +1,23 @@
+meta {
+  name: 메일 전송(필수값)
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{url}}/email/verify
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "to": "aceppin@daum.net",
+    "serviceName": "멋쟁이사자처럼",
+    "serviceUrl": "http://localhost:3000"
+  }
+}
+
+settings {
+  encodeUrl: true
+}

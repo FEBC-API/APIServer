@@ -1,0 +1,23 @@
+meta {
+  name: 게시물 등록(id 대신 다른 값으로 조회를 위한)
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{url}}/posts
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+      "type": "result",
+      "title": "당신의 취항은?",
+      "content": "A 향수를 추천합니다.",
+      "image": "/files/00-sample/sample-bugatti.png" ,
+      "extra": {
+        "result_id": "333abc"
+      }
+  }
+}

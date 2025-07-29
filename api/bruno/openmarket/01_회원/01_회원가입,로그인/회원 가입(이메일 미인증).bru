@@ -1,0 +1,25 @@
+meta {
+  name: 회원 가입(이메일 미인증)
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{url}}/users
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "email": "uzoolove@gmail.com",
+    "password": "11111111",
+    "name": "미인증",
+    "phone": "0118889999",
+    "address": "서울시 강남구 역삼동 999",
+    "type": "user",
+    "extra": {
+      "emailConfirm": false
+    }
+  }
+}

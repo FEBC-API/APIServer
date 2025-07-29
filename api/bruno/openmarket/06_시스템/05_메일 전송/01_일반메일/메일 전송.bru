@@ -1,0 +1,24 @@
+meta {
+  name: 메일 전송
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{url}}/email
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "to": "aceppin@daum.net",
+    "serviceName": "라이언 보드",
+    "subject": "메일 제목입니다.",
+    "content": "<h1>🦁라이언 보드🦁의 가입 축하 메일입니다.</h1><p>라이언 보드에 가입하신걸 환영합니다.</p>"
+  }
+}
+
+settings {
+  encodeUrl: true
+}

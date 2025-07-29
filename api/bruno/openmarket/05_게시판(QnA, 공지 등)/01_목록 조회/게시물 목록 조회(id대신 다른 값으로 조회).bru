@@ -1,0 +1,16 @@
+meta {
+  name: 게시물 목록 조회(id대신 다른 값으로 조회)
+  type: http
+  seq: 8
+}
+
+get {
+  url: {{url}}/posts?type=result&custom={"extra.result_id": "333abc"}
+  body: none
+  auth: none
+}
+
+params:query {
+  type: result
+  custom: {"extra.result_id": "333abc"}
+}

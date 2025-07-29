@@ -5,11 +5,12 @@ meta {
 }
 
 get {
-  url: {{url}}/products?custom={"price":{"$lte":10000}}
+  url: {{url}}/products?maxPrice=10000
   body: none
   auth: inherit
 }
 
 params:query {
-  custom: {"price":{"$lte":10000}}
+  maxPrice: 10000
+  ~custom: {"price":{"$lte":10000}}
 }
