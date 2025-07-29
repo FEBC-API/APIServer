@@ -70,7 +70,46 @@ const authService = {
     }else{
       throw createError(401, 'refreshToken과 일치하는 사용자가 없습니다.');
     }    
-  }
+  },
+
+  // 이메일 인증 번호 생성
+  async generateEmailToken(email, options = {}) {
+    const { 
+      expiresIn = '1h', 
+      serviceUrl,
+      serviceName,
+      clientId
+    } = options;
+    
+    // 이메일 인증용 토큰은 기본 1시간 유효, 옵션으로 변경 가능
+    const token = await this.sign({ 
+      verifyEmail: email,
+      serviceUrl,
+      serviceName,
+      clientId
+    }, expiresIn);
+    return token.accessToken;
+  },
+
+  // 이메일 인증 검증
+  async verifyEmailToken(token) {
+    // 토큰 검증 (만료시간, 서명 등 모든 검증 포함)
+    const payload = this.verifyToken(token, 'access');
+    
+    // 이메일 인증용 토큰인지 확인 (verifyEmail 필드 존재 여부)
+    if (!payload.verifyEmail) {
+      throw createError(401, '유효하지 않은 링크입니다.', { errorName: 'JsonWebTokenError' });
+    }
+    
+    return {
+      verified: true,
+      email: payload.verifyEmail,
+      serviceUrl: payload.serviceUrl,
+      serviceName: payload.serviceName,
+      clientId: payload.clientId,
+      message: '이메일 인증이 완료되었습니다.'
+    };
+  },
 };
 
 export default authService;

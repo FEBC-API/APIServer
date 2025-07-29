@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>이메일 인증 실패 - OpenMarket</title>
+  <link rel="stylesheet" href="../common.css">
+  <style>
+    body {
+      background: #ffffff;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    
+    .auth-container {
+      max-width: 650px;
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+      padding: 50px 40px;
+      text-align: center;
+    }
+    
+    .error-icon {
+      font-size: 64px;
+      margin-bottom: 30px;
+      animation: shake 0.6s ease-in-out;
+    }
+    
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+      20%, 40%, 60%, 80% { transform: translateX(5px); }
+    }
+    
+    h1 {
+      color: #dc2626;
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+    
+    .error-message {
+      color: #6b7280;
+      font-size: 1.1rem;
+      line-height: 1.6;
+      margin: 25px 0;
+      padding: 20px;
+      background: #fef2f2;
+      border: 1px solid #fecaca;
+      border-radius: 12px;
+      border-left: 4px solid #dc2626;
+    }
+    
+    .suggestions {
+      background: #fffbeb;
+      border: 1px solid #fed7aa;
+      border-radius: 12px;
+      padding: 24px;
+      margin: 30px 0;
+      text-align: left;
+    }
+    
+    .suggestions h3 {
+      color: #d97706;
+      margin-bottom: 15px;
+      font-size: 1.2rem;
+      font-weight: 600;
+    }
+    
+    .suggestions ul {
+      color: #92400e;
+      margin: 0;
+      padding-left: 20px;
+    }
+    
+    .suggestions li {
+      margin: 8px 0;
+      line-height: 1.5;
+    }
+    
+    .feature-item {
+      background: #f8fafc;
+      border-radius: 12px;
+      padding: 20px;
+      margin: 20px 0;
+      border-left: 4px solid #e2e8f0;
+      text-align: left;
+    }
+    
+    .feature-item h4 {
+      color: #374151;
+      margin-bottom: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+    }
+    
+    .feature-item p {
+      color: #6b7280;
+      margin: 0;
+      font-size: 0.95rem;
+    }
+    
+    .btn-primary {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
+      padding: 16px 32px;
+      border: none;
+      border-radius: 12px;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 600;
+      font-size: 1.1rem;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 16px rgba(102, 126, 234, 0.3);
+      margin-top: 30px;
+    }
+    
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(102, 126, 234, 0.4);
+      color: white;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="auth-container">
+    <div class="error-icon">❌</div>
+    <h1>인증에 실패했습니다</h1>
+    
+    <div class="error-message" id="errorMessage">
+      인증 중 오류가 발생했습니다.
+    </div>
+    
+    <div class="suggestions">
+      <h3>해결 방법을 확인해보세요</h3>
+      <ul>
+        <li><strong>링크 확인:</strong> 이메일에서 받은 링크를 정확히 클릭했는지 확인해주세요.</li>
+        <li><strong>시간 확인:</strong> 인증 링크는 1시간 후에 만료됩니다.</li>
+        <li><strong>재전송:</strong> 인증 메일을 다시 요청해보세요.</li>
+        <li><strong>대체 서비스 이용:</strong> 위의 방법을 다 확인해 봤는데도 문제가 지속된다면 개발자가 잘못한 거예요. 이때는 다른 서비스를 이용해주세요.(사실 쿠팡이 더 싸요)</li>
+      </ul>
+    </div>
+    
+    <div class="feature-item">
+      <h4>💡 인증이 왜 필요한가요?</h4>
+      <p>계정 보안을 위해 이메일 인증을 통해 본인임을 확인하고 있습니다. <br>인증 완료 후 모든 서비스를 안전하게 이용하실 수 있습니다.</p>
+    </div>
+    
+    <a href="#" class="btn-primary" id="serviceLink">
+      <span id="serviceName">서비스로 이동</span>
+      <span>→</span>
+    </a>
+  </div>
+
+  <script>
+    // URL 쿼리 파라미터 읽기
+    const urlParams = new URLSearchParams(window.location.search);
+    
+    // 필수 파라미터 확인 - 쿼리스트링이 없거나 error 파라미터가 없으면 비정상 접근
+    const hasQueryParams = window.location.search.length > 0;
+    const error = urlParams.get('error');
+    
+    // 쿼리 파라미터가 아예 없거나, error 파라미터가 없으면 비정상 접근
+    if (!hasQueryParams || !error) {
+      // 비정상 접근 - 전용 페이지로 리다이렉트
+      window.location.href = '/market/unauthorized-access.html';
+    } else {
+      // 정상 접근 - 동적으로 내용 업데이트
+      const redirectUrl = urlParams.get('redirectUrl') || '/';
+      const serviceName = urlParams.get('serviceName') || '멋쟁이 용처럼';
+      
+      document.getElementById('errorMessage').textContent = error;
+      document.getElementById('serviceLink').href = redirectUrl;
+      document.getElementById('serviceName').textContent = serviceName + ' 서비스로 이동';
+      
+      // 쿼리 파라미터 제거 (깔끔한 URL로 변경)
+      if (window.location.search) {
+        const cleanUrl = window.location.origin + window.location.pathname;
+        window.history.replaceState({}, document.title, cleanUrl);
+      }
+    }
+  </script>
+</body>
+</html> 

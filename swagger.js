@@ -99,6 +99,10 @@ const doc = {
       description: '시스템 - 인증 관리 기능',
     },
     {
+      name: '이메일',
+      description: '시스템 - 이메일 전송 기능',
+    },
+    {
       name: '코드 조회',
       description: '시스템 - 코드 조회 기능(그룹화된 key/value 쌍의 데이터 조회)',
     },
@@ -304,6 +308,8 @@ const doc = {
         },
         required: ['target_id', 'content']
       },
+
+
     },
     schemas: {
       
@@ -368,6 +374,54 @@ const doc = {
       emailPossible: {
         "ok": 1,
         "duplicate": false
+      },
+
+
+
+      emailSendRes: {
+        "ok": 1,
+        "item": {
+          "accepted": [
+            "uzoolove@gmail.com"
+          ],
+          "rejected": [],
+          "ehlo": [
+            "SIZE 35882577",
+            "8BITMIME",
+            "AUTH LOGIN PLAIN XOAUTH2 PLAIN-CLIENTTOKEN OAUTHBEARER XOAUTH",
+            "ENHANCEDSTATUSCODES",
+            "PIPELINING",
+            "CHUNKING",
+            "SMTPUTF8"
+          ],
+          "envelopeTime": 1758,
+          "messageTime": 683,
+          "messageSize": 2213,
+          "response": "250 2.0.0 OK  1753781161 d9443c01a7336-24008efc073sm50256735ad.58 - gsmtp",
+          "envelope": {
+            "from": "febc.api@gmail.com",
+            "to": [
+              "uzoolove@gmail.com"
+            ]
+          },
+          "messageId": "<9b728c32-e806-1f92-f008-fe8ec1b03403@gmail.com>"
+        }
+      },
+
+      emailSend: {
+        "to": "user@example.com",
+        "serviceName": "멋쟁이 용처럼",
+        "subject": "[멋쟁이 용처럼] 회원 가입을 축하합니다.",
+        "content": `<div style="margin: 0 auto; max-width: 600px; text-align: center;"><h1>안녕하세요. 멋쟁이 용처럼의 용쌤입니다.</h1><p>회원 가입 기념으로 100,000,000 포인트를 적립해 드렸습니다.</p></div>`,
+      },
+
+      emailVerifySend: {
+        "to": "user@example.com",
+        "serviceName": "멋쟁이 용처럼",
+        "serviceUrl": "https://myservice.com",
+        "subject": "[멋쟁이 용처럼] 인증 메일입니다.",
+        "content": `<div style="margin: 0 auto; max-width: 600px; text-align: center;"><h1>🦁라이언 보드🦁의 가입 인증 메일입니다.</h1><p>메일 인증이 완료되어야 로그인이 가능합니다.</p></div>`,
+        "expiresIn": "10m"
       },
 
       accessTokenRes: {
@@ -2894,8 +2948,6 @@ const doc = {
           },
         ]
       },
-
-
 
     }
   }

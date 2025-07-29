@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>이메일 인증 완료 - OpenMarket</title>
+  <link rel="stylesheet" href="../common.css">
+  <style>
+    body {
+      background: #ffffff;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    
+    .auth-container {
+      max-width: 650px;
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+      padding: 50px 40px;
+      text-align: center;
+    }
+    
+    .success-icon {
+      font-size: 64px;
+      margin-bottom: 30px;
+      animation: bounce 0.6s ease-in-out;
+    }
+    
+    @keyframes bounce {
+      0%, 20%, 60%, 100% { transform: translateY(0); }
+      40% { transform: translateY(-10px); }
+      80% { transform: translateY(-5px); }
+    }
+    
+    h1 {
+      color: #059669;
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+    
+    .message {
+      color: #6b7280;
+      font-size: 1.1rem;
+      line-height: 1.6;
+      margin: 20px 0;
+    }
+    
+    .email-display {
+      background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(102, 126, 234, 0.2));
+      border: 1px solid #667eea;
+      border-radius: 12px;
+      padding: 20px;
+      margin: 30px 0;
+      font-family: 'Courier New', monospace;
+      font-weight: 600;
+      color: #764ba2;
+      font-size: 1.1rem;
+    }
+    
+    .success-details {
+      background: #f8fafc;
+      border-radius: 12px;
+      padding: 20px;
+      margin: 30px 0;
+      border-left: 4px solid #059669;
+    }
+    
+    .success-details h3 {
+      color: #047857;
+      margin-bottom: 10px;
+      font-size: 1.1rem;
+    }
+    
+    .success-details p {
+      color: #6b7280;
+      margin: 0;
+    }
+    
+    .btn-primary {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
+      padding: 16px 32px;
+      border: none;
+      border-radius: 12px;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 600;
+      font-size: 1.1rem;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 16px rgba(102, 126, 234, 0.3);
+      margin-top: 30px;
+    }
+    
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(102, 126, 234, 0.4);
+      color: white;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="auth-container">
+    <div class="success-icon">✅</div>
+    <h1>인증이 완료되었습니다!</h1>
+    <p class="message" id="message">이메일 인증이 완료되었습니다.</p>
+    
+    <div class="email-display" id="email">이메일 주소</div>
+    
+    <div class="success-details">
+      <h3>다음 단계</h3>
+      <p>이제 모든 서비스를 이용하실 수 있습니다. <br>아래 버튼을 클릭하여 계속 진행해주세요.</p>
+    </div>
+    
+    <a href="#" class="btn-primary" id="serviceLink">
+      <span id="serviceName">서비스로 이동</span>
+      <span>→</span>
+    </a>
+  </div>
+
+  <script>
+    // URL 쿼리 파라미터 읽기
+    const urlParams = new URLSearchParams(window.location.search);
+    
+    // 필수 파라미터 확인 - 쿼리스트링이 없거나 message와 email이 모두 없으면 비정상 접근
+    const hasQueryParams = window.location.search.length > 0;
+    const message = urlParams.get('message');
+    const email = urlParams.get('email');
+    
+    // 쿼리 파라미터가 아예 없거나, message와 email이 둘 다 없으면 비정상 접근
+    if (!hasQueryParams || (!message && !email)) {
+      // 비정상 접근 - 전용 페이지로 리다이렉트
+      window.location.href = '/market/unauthorized-access.html';
+    } else {
+      // 정상 접근 - 동적으로 내용 업데이트
+      const redirectUrl = urlParams.get('redirectUrl') || '/';
+      const serviceName = urlParams.get('serviceName') || '멋쟁이 용처럼';
+      
+      document.getElementById('message').textContent = message || '이메일 인증이 완료되었습니다.';
+      document.getElementById('email').textContent = email || '이메일 주소';
+      document.getElementById('serviceLink').href = redirectUrl;
+      document.getElementById('serviceName').textContent = serviceName + ' 서비스로 이동';
+      
+      // 쿼리 파라미터 제거 (깔끔한 URL로 변경)
+      if (window.location.search) {
+        const cleanUrl = window.location.origin + window.location.pathname;
+        window.history.replaceState({}, document.title, cleanUrl);
+      }
+    }
+  </script>
+</body>
+</html> 

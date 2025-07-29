@@ -45,6 +45,29 @@
         <h2>변경 사항</h2>
 
         <div class="version-item">
+          <h3 id="v1.4.0"><a href="#v1.4.0">v1.4.0 - 2025.07.29</a></h3>
+          <ul>
+            <li>[기능 추가] 일반 이메일 전송 기능 추가
+              <ul>
+                <li>회원 가입 축하, 배송 상태 변경 등 일반적인 정보를 제공하는 목적의 이메일을 보내고 싶을 때 사용합니다.</li>
+                <li>이메일을 통한 인증을 원한다면 <a href="/market/apidocs/#/이메일/post_email_verify_" target="_blank">인증 이메일 전송</a> API를 사용하세요.</li>
+                <li>API 문서 보기: <a href="/market/apidocs/#/이메일/post_email_" target="_blank">일반 이메일 전송</a></li>
+              </ul>
+            </li>
+            <li>[기능 추가] 인증 이메일 전송 기능 추가
+              <ul>
+                <li>이메일 인증 서비스는 지정한 사용자에게 인증 링크가 있는 이메일을 보내고 인증이 완료되면 회원 정보에 인증 정보를 추가하므로 회원 가입을 완료한 후에 요청해야 합니다.</li>
+                <li>회원 가입시 extra.emailConfirm 속성을 false로 지정하면 이메일을 인증하지 않은 사용자는 로그인을 할 수 없습니다.</li>
+                <li>이메일에 전달되는 "인증 완료" 버튼을 클릭하면 이메일을 인증한 후 extra.emailConfirm 속성을 true로 변경하고 인증 완료 페이지로 이동합니다.</li>
+                <li>이 모든 작업은 API 서버에서 처리되므로 이메일 인증을 하고 싶은 팀은 "회원 가입" 후에 "인증 이메일 전송"을 요청만하면 됩니다.</li>
+                <li>만약 회원 가입 도중에 이메일 인증을 먼저 하고 싶다면 자체적으로 인증 코드를 생성한 후 <a href="/market/apidocs/#/이메일/post_email_" target="_blank">일반 이메일 전송</a>을 요청해서 이메일 본문에 인증 코드를 보내고 사용자가 인증 코드를 입력하면 자체적으로 검증하도록 구현하면 됩니다.</li>
+                <li>API 문서 보기: <a href="/market/apidocs/#/이메일/post_email_verify_" target="_blank">인증 이메일 전송</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+
+        <div class="version-item">
           <h3 id="v1.3.0"><a href="#v1.3.0">v1.3.0 - 2025.07.29</a></h3>
           <ul>
             <li>[기능 수정] 장바구니에 상품 추가시 color 옵션 추가
