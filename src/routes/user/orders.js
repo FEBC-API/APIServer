@@ -29,7 +29,14 @@ router.post('/', [
     }]
     
     #swagger.requestBody = {
-      description: "구매 정보가 저장된 객체입니다.<br>products 속성은 필수이며 객체 배열입니다.<br>배열의 요소인 객체는 다음과 같은 필수 정보를 포함해야 하고 추가 속성은 자유롭게 지정하면 됩니다.<br>_id: 상품 id<br>quantity: 구매 수량",
+      description: "구매 정보가 저장된 객체입니다.<br>
+      products 속성은 필수이며 객체 배열입니다.<br>
+      products 속성의 요소인 객체는 다음과 같은 필수 속성과 선택 속성이 있습니다.<br>
+      이외의 추가 속성은 자유롭게 지정하면 됩니다.<br>
+      _id: 상품 id(필수)<br>
+      quantity: 구매 수량(필수)<br>
+      size: 사이즈(선택)<br>
+      color: 색상(선택)",
       required: true,
       content: {
         "application/json": {
