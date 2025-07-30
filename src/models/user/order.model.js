@@ -21,7 +21,7 @@ const orderModel = {
 
     const products = [];
 
-    for (let { _id, quantity } of orderInfo.products) {
+    for (let { _id, quantity, size, color } of orderInfo.products) {
       const product = await db.collection('product').findOne({ _id });
       if (product) {
         if (product.quantity - product.buyQuantity >= quantity) {
@@ -36,6 +36,8 @@ const orderModel = {
             name: product.name,
             image: product.mainImages?.length && product.mainImages[0],
             price: product.price * quantity,
+            size,
+            color,
             extra: product.extra
           });
         } else {
