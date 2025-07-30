@@ -2661,6 +2661,8 @@ const doc = {
               "quantity": 1,
               "seller_id": 2,
               "name": "캥거루 스턴트 독 로봇완구",
+              "size": "L",
+              "color": "red",
               "image": {
                 "url": "files/sample-dog.jpg",
                 "fileName": "sample-dog.jpg",
@@ -2682,6 +2684,8 @@ const doc = {
               "quantity": 2,
               "seller_id": 2,
               "name": "헬로카봇 스톰다이버",
+              "size": "L",
+              "color": "white",
               "image": {
                 "url": "files/sample-diver.jpg",
                 "fileName": "sample-diver.jpg",
@@ -2725,6 +2729,8 @@ const doc = {
               "quantity": 1,
               "seller_id": 2,
               "name": "캥거루 스턴트 독 로봇완구",
+              "size": "L",
+              "color": "red",
               "image": {
                 "url": "files/sample-dog.jpg",
                 "fileName": "sample-dog.jpg",
@@ -2746,6 +2752,8 @@ const doc = {
               "quantity": 2,
               "seller_id": 2,
               "name": "헬로카봇 스톰다이버",
+              "size": "L",
+              "color": "white",
               "image": {
                 "url": "files/sample-diver.jpg",
                 "fileName": "sample-diver.jpg",
