@@ -2618,11 +2618,15 @@ const doc = {
         "products": [
           {
             "_id": 1,
-            "quantity": 1
+            "quantity": 1,
+            "size": "M",
+            "color": "red"
           },
           {
             "_id": 2,
-            "quantity": 2
+            "quantity": 2,
+            "size": "M",
+            "color": "blue"
           }
         ]
       },
@@ -2631,11 +2635,15 @@ const doc = {
         "products": [
           {
             "_id": 1,
-            "quantity": 1
+            "quantity": 1,
+            "size": "L",
+            "color": "red"
           },
           {
             "_id": 2,
-            "quantity": 2
+            "quantity": 2,
+            "size": "L",
+            "color": "white"
           }
         ],
         "address": {
