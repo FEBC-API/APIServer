@@ -1,0 +1,40 @@
+meta {
+  name: 상품 구매(size, color 추가)
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{url}}/orders
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+      "products": [
+          {
+              "_id": 1,
+              "quantity": 1,
+              "size": "L",
+              "color": "red"
+          },
+          {
+              "_id": 1,
+              "quantity": 1,
+              "size": "M",
+              "color": "red"
+          },
+          {
+              "_id": 7,
+              "quantity": 2,
+              "size": "S",
+              "color": "black"
+          }
+      ],
+      "address": {
+          "name": "학교",
+          "value": "서울시 강남구 역삼동 234"
+      }
+  }
+}
