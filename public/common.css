@@ -482,6 +482,42 @@ body {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
+/* 일반 code 태그 스타일 */
+code {
+  background: linear-gradient(135deg, #1f2937, #374151);
+  color: #f9fafb;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-family: 'Fira Code', 'JetBrains Mono', 'Consolas', monospace;
+  font-size: 0.9rem;
+  font-weight: 500;
+  display: inline-block;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin: 4px 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+  line-height: 1.5;
+}
+
+/* 코드 블록 스타일 */
+.version-item code {
+  background: linear-gradient(135deg, #1f2937, #374151);
+  color: #f9fafb;
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-family: 'Fira Code', 'JetBrains Mono', 'Consolas', monospace;
+  font-size: 0.85rem;
+  font-weight: 500;
+  display: block;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin: 8px 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+  line-height: 1.6;
+  overflow-x: auto;
+  border-left: 4px solid var(--primary-color);
+}
+
 /* WebSocket specific styles */
 .usage-section {
   margin-bottom: 80px;

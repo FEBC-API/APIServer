@@ -434,9 +434,8 @@ const doc = {
         "name": "ZOZOFO 테이블 게임 축구 보드 사커 게임기 보드게임 2인경기 완구 가족모임 미니 월드컵 스포츠 어린이 크리스마스 선물 생일 선물",
         "mainImages": [
           {
-            "path ": "files/openmarket/sample-football.jpg",
-            "name ": "sample-football.jpg",
-            "originalname": "사커게임.png"
+            "path": "https://res.cloudinary.com/demo/image/upload/v1/Gb4OJkEX2k.jpg",
+            "name": "sample-football.jpg",
           }
         ],
         "content": "<div class=\"product-detail\"><p>ZOZOFO 테이블 게임 축구 보드 사커 게임기 보드게임 2인경기 완구 가족모임 미니 월드컵 스포츠 어린이 크리스마스 선물 생일 선물 상세 설명</p></div>",
@@ -463,9 +462,8 @@ const doc = {
           "name": "ZOZOFO 테이블 게임 축구 보드 사커 게임기 보드게임 2인경기 완구 가족모임 미니 월드컵 스포츠 어린이 크리스마스 선물 생일 선물",
           "mainImages": [
             {
-              "path ": "files/openmarket/sample-football.jpg",
-              "name ": "sample-football.jpg",
-              "originalname": "사커게임.png"
+              "path": "https://res.cloudinary.com/demo/image/upload/v1/Gb4OJkEX2k.jpg",
+              "name": "sample-football.jpg",
             }
           ],
           "content": "<div class=\"product-detail\"><p>ZOZOFO 테이블 게임 축구 보드 사커 게임기 보드게임 2인경기 완구 가족모임 미니 월드컵 스포츠 어린이 크리스마스 선물 생일 선물 상세 설명</p></div>",
@@ -505,9 +503,8 @@ const doc = {
             "buyQuantity": 89,
             "mainImages": [
               {
-                "path": "files/openmarket/sample-bugatti.png",
+                "path": "https://res.cloudinary.com/demo/image/upload/v1/nQYGBCVZZ.png",
                 "name": "sample-bugatti.png",
-                "originalname": "부가티.png"
               }
             ],
             "createdAt": getRandomDate(),
@@ -527,7 +524,7 @@ const doc = {
               "name": "어피치",
               "phone": "01033334444",
               "address": "서울시 강남구 도곡동 789",
-              "image": "user-apeach.webp",
+              "image": "https://res.cloudinary.com/demo/image/upload/v1/Lm9NpQrS8t.webp",
               "extra": {
                 "confirm": false,
                 "birthday": "11-24",
@@ -575,9 +572,8 @@ const doc = {
           "buyQuantity": 89,
           "mainImages": [
             {
-              "path": "files/openmarket/sample-bugatti.png",
+              "path": "https://res.cloudinary.com/demo/image/upload/v1/nQYGBCVZZ.png",
               "name": "sample-bugatti.png",
-              "originalname": "부가티.png"
             }
           ],
           "content": "\n          <div class=\"product-detail\">\n            <p>레고 테크닉 42151 부가티 볼리드 상세 설명</p>\n          </div>",
@@ -661,7 +657,7 @@ const doc = {
               "_id": 4,
               "quantity": 2,
               "name": "레고 테크닉 42151 부가티 볼리드",
-              "image": "/uploads/sample-bugatti.png",
+              "image": "https://res.cloudinary.com/demo/image/upload/v1/nQYGBCVZZ.png",
               "price": 90000
             }
           ],
@@ -693,7 +689,7 @@ const doc = {
                 "seller_id": 2,
                 "state": "OS020",
                 "name": "헬로카봇 스톰다이버",
-                "image": "files/sample-diver.jpg",
+                "image": "https://res.cloudinary.com/demo/image/upload/v1/Km8PqRsT9v.jpg",
                 "quantity": 2,
                 "price": 34520,
                 "review_id": 3,
@@ -756,7 +752,7 @@ const doc = {
               "seller_id": 3,
               "state": "OS110",
               "name": "레고 테크닉 42151 부가티 볼리드",
-              "image": "files/sample-bugatti.png",
+              "image": "https://res.cloudinary.com/demo/image/upload/v1/nQYGBCVZZ.png",
               "quantity": 1,
               "price": 45000,
               "review_id": 1
@@ -797,7 +793,7 @@ const doc = {
               "seller_id": 2,
               "state": "OS310",
               "name": "헬로카봇 스톰다이버",
-              "image": "files/sample-diver.jpg",
+              "image": "https://res.cloudinary.com/demo/image/upload/v1/Km8PqRsT9v.jpg",
               "quantity": 1,
               "price": 17260,
               "review_id": 2
@@ -972,9 +968,8 @@ const doc = {
             "product": {
               "_id": 2,
               "image": {
-                "path": "files/openmarket/sample-diver.jpg",
+                "path": "https://res.cloudinary.com/demo/image/upload/v1/Km8PqRsT9v.jpg",
                 "name": "sample-diver.jpg",
-                "originalname": "헬로카봇.jpg"
               },
               "name": "헬로카봇 스톰다이버"
             }
@@ -995,9 +990,8 @@ const doc = {
           "product": {
             "_id": 3,
             "image": {
-              "url": "files/sample-classic.jpg",
-              "fileName": "sample-classic.jpg",
-              "orgName": "레고 클래식.jpg"
+              "url": "https://res.cloudinary.com/demo/image/upload/v1/Xy2ZqWnM5k.jpg",
+              "name": "sample-classic.jpg",
             },
             "name": "레고 클래식 라지 조립 박스 10698"
           },
@@ -1017,9 +1011,8 @@ const doc = {
             "price": 17260,
             "name": "헬로카봇 스톰다이버",
             "image": {
-              "url": "files/sample-diver.jpg",
-              "fileName": "sample-diver.jpg",
-              "orgName": "헬로카봇.jpg"
+              "url": "https://res.cloudinary.com/demo/image/upload/v1/Km8PqRsT9v.jpg",
+              "name": "sample-diver.jpg",
             },
             "replies": [
               {
@@ -1073,9 +1066,8 @@ const doc = {
               "seller_id": 3,
               "name": "레고 테크닉 42151 부가티 볼리드",
               "image": {
-                "url": "files/sample-bugatti.png",
-                "fileName": "sample-bugatti.png",
-                "orgName": "부가티.png"
+                "url": "https://res.cloudinary.com/demo/image/upload/v1/nQYGBCVZZ.png",
+                "name": "sample-bugatti.png",
               },
               "price": 90000,
               "extra": {
@@ -1118,9 +1110,8 @@ const doc = {
               "quantity": 320,
               "buyQuantity": 310,
               "image": {
-                "url": "files/sample-dog.jpg",
-                "fileName": "sample-dog.jpg",
-                "orgName": "스턴트 독.jpg"
+                "url": "https://res.cloudinary.com/demo/image/upload/v1/Ah7BcDeF3g.jpg",
+                "name": "sample-dog.jpg",
               },
               "extra": {
                 "isNew": true,
@@ -1169,9 +1160,8 @@ const doc = {
               "quantity": 100,
               "buyQuantity": 89,
               "image": {
-                "url": "files/sample-bugatti.png",
-                "fileName": "sample-bugatti.png",
-                "orgName": "부가티.png"
+                "url": "https://res.cloudinary.com/demo/image/upload/v1/nQYGBCVZZ.png",
+                "name": "sample-bugatti.png",
               },
               "extra": {
                 "isNew": false,
@@ -1283,9 +1273,8 @@ const doc = {
                 "buyQuantity": 99,
                 "mainImages": [
                   {
-                    "path": "files/openmarket/sample-classic.jpg",
+                    "path": "https://res.cloudinary.com/demo/image/upload/v1/nQYGBCVZZ.jpg",
                     "name": "sample-classic.jpg",
-                    "originalname": "레고 클래식.jpg"
                   }
                 ]
               }
@@ -1326,9 +1315,8 @@ const doc = {
               "quantity": 100,
               "buyQuantity": 89,
               "image": {
-                "url": "files/sample-bugatti.png",
-                "fileName": "sample-bugatti.png",
-                "orgName": "부가티.png"
+                "url": "https://res.cloudinary.com/demo/image/upload/v1/nQYGBCVZZ.png",
+                "name": "sample-bugatti.png",
               },
               "extra": {
                 "isNew": false,
@@ -1358,9 +1346,8 @@ const doc = {
             "quantity": 100,
             "buyQuantity": 89,
             "image": {
-              "url": "files/sample-bugatti.png",
-              "fileName": "sample-bugatti.png",
-              "orgName": "부가티.png"
+              "url": "https://res.cloudinary.com/demo/image/upload/v1/nQYGBCVZZ.png",
+              "name": "sample-bugatti.png",
             },
             "extra": {
               "isNew": false,
@@ -1390,9 +1377,8 @@ const doc = {
             "buyQuantity": 99,
             "mainImages": [
               {
-                "path ": "files/openmarket/sample-classic.jpg",
-                "name ": "sample-classic.jpg",
-                "originalname": "레고 클래식.jpg"
+                "path": "https://res.cloudinary.com/demo/image/upload/v1/Xy2ZqWnM5k.jpg",
+                "name": "sample-classic.jpg",
               }
             ],
             "createdAt": getRandomDate(),
@@ -1459,9 +1445,8 @@ const doc = {
             "product": {
               "name": "캥거루 스턴트 독 로봇완구",
               "image": {
-                "url": "files/sample-dog.jpg",
-                "fileName": "sample-dog.jpg",
-                "orgName": "스턴트 독.jpg"
+                "url": "https://res.cloudinary.com/demo/image/upload/v1/Ah7BcDeF3g.jpg",
+                "name": "sample-dog.jpg",
               }
             },
             "bookmarks": 2,
@@ -1579,16 +1564,48 @@ const doc = {
         "ok": 1,
         "item": [
           {
-            "originalname": "sample-cat.jpg",
-            "name": "nQYGBCVZZ.jpg",
-            "path": "files/openmarket/nQYGBCVZZ.jpg"
+            "name": "sample.jpg",
+            "path": "https://res.cloudinary.com/demo/image/upload/v1/nQYGBCVZZ.jpg"
           },
           {
-            "originalname": "sample-dog.jpg",
-            "name": "Gb4OJkEX2k.jpg",
-            "path": "files/openmarket/Gb4OJkEX2k.jpg"
+            "name": "test.jpg",
+            "path": "https://res.cloudinary.com/demo/image/upload/v1/Gb4OJkEX2k.jpg"
           }
         ]
+      },
+
+      dbInitRes: {
+        "ok": 1,
+        "data": {
+          "insertedData": 150,
+          "details": {
+            "user": 10,
+            "product": 50,
+            "post": 30,
+            "order": 25,
+            "reply": 20,
+            "cart": 10,
+            "bookmark": 5,
+            "file_uploads": 15
+          }
+        },
+        "files": {
+          "count": 8,
+          "success": {
+            "count": 5,
+            "details": ["user-muzi.png", "product-01.jpg", "product-02.jpg", "banner-main.png", "icon-cart.svg"]
+          },
+          "missing": {
+            "reason": "initData에서 사용하지만 첨부파일로 전송되지 않음",
+            "count": 2,
+            "details": ["missing1.jpg", "missing2.png"]
+          },
+          "unused": {
+            "reason": "첨부파일에 있지만 initData에서 사용하지 않음",
+            "count": 1,
+            "details": ["unused.jpg"]
+          }
+        }
       },
 
       codeListRes: {
@@ -2079,9 +2096,8 @@ const doc = {
         address: '서울시 강남구 역삼동 123',
         type: 'user',
         image: {
-          "path ": "files/openmarket/profile.jpg",
-          "name ": "profile.jpg",
-          "originalname": "사커게임.png"
+          "path": "files/openmarket/profile.jpg",
+          "name": "profile.jpg",
         },
         extra: {
           gender: 'extra에는 프로젝트에서 필요한 아무 속성이나',
@@ -2207,9 +2223,8 @@ const doc = {
             "age": '넣으면 됩니다.',
             "address": ['배열도', '가능하고'],
             "image": {
-              "path ": "files/openmarket/profile.jpg",
-              "name ": "profile.jpg",
-              "originalname": "사커게임.png"
+              "path": "files/openmarket/profile.jpg",
+              "name": "profile.jpg",
             },
             "obj": {
               "hello": '객체로',
@@ -2425,9 +2440,8 @@ const doc = {
             "mainImages": [
               [
                 {
-                  "path": "files/openmarket/sample-dog.jpg",
+                  "path": "https://res.cloudinary.com/demo/image/upload/v1/nQYGBCVZZ.jpg",
                   "name": "sample-dog.jpg",
-                  "originalname": "스턴트 독.jpg"
                 }
               ]
             ]
@@ -2664,9 +2678,8 @@ const doc = {
               "size": "L",
               "color": "red",
               "image": {
-                "url": "files/sample-dog.jpg",
-                "fileName": "sample-dog.jpg",
-                "orgName": "스턴트 독.jpg"
+                "url": "https://res.cloudinary.com/demo/image/upload/v1/nQYGBCVZZ.jpg",
+                "name": "sample-dog.jpg",
               },
               "price": 22800,
               "extra": {
@@ -2687,9 +2700,8 @@ const doc = {
               "size": "L",
               "color": "white",
               "image": {
-                "url": "files/sample-diver.jpg",
-                "fileName": "sample-diver.jpg",
-                "orgName": "헬로카봇.jpg"
+                "url": "https://res.cloudinary.com/demo/image/upload/v1/nQYGBCVZZ.jpg",
+                "name": "sample-diver.jpg",
               },
               "price": 34520,
               "extra": {
@@ -2732,9 +2744,8 @@ const doc = {
               "size": "L",
               "color": "red",
               "image": {
-                "url": "files/sample-dog.jpg",
-                "fileName": "sample-dog.jpg",
-                "orgName": "스턴트 독.jpg"
+                "url": "https://res.cloudinary.com/demo/image/upload/v1/nQYGBCVZZ.jpg",
+                "name": "sample-dog.jpg",
               },
               "price": 22800,
               "extra": {
@@ -2755,9 +2766,8 @@ const doc = {
               "size": "L",
               "color": "white",
               "image": {
-                "url": "files/sample-diver.jpg",
-                "fileName": "sample-diver.jpg",
-                "orgName": "헬로카봇.jpg"
+                "url": "https://res.cloudinary.com/demo/image/upload/v1/nQYGBCVZZ.jpg",
+                "name": "sample-diver.jpg",
               },
               "price": 34520,
               "extra": {
@@ -2945,9 +2955,8 @@ const doc = {
               "name": "레고 테크닉 42151 부가티 볼리드",
               "price": 45000,
               "image": {
-                "path": "files/openmarket/sample-bugatti.png",
+                "path": "https://res.cloudinary.com/demo/image/upload/v1/nQYGBCVZZ.png",
                 "name": "sample-bugatti.png",
-                "originalname": "부가티.png"
               }
             }
           },

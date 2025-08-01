@@ -34,8 +34,8 @@ app.use(morgan(':date-local :client-id :ip :method :url :status :response-time m
 // 프록시 서버 구동
 app.use('/proxy', proxy);
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.json({ limit: '200mb' }));
+app.use(express.urlencoded({ extended: false, limit: '200mb' }));
 app.use(cookieParser());
 app.use(express.static('public'));
 

@@ -1,0 +1,50 @@
+{
+  "user": [
+    {
+      "email": "admin@market.com",
+      "password": "$2b$10$S.8GNMDyvUF0xzujPtHBu.j5gtS19.OhRmYbpJBnCHg2S83WLx1T2",
+      "name": "무지",
+      "phone": "01011112222",
+      "address": "서울시 강남구 역삼동 123",
+      "type": "admin",
+      "loginType": "email",
+      "image": "files/team/user-muzi.png",
+      "extra": {
+        "birthday": "03-23"
+      }
+    },
+    {
+      "email": "s1@market.com",
+      "password": "$2b$10$S.8GNMDyvUF0xzujPtHBu.j5gtS19.OhRmYbpJBnCHg2S83WLx1T2",
+      "name": "네오",
+      "phone": "01022223333",
+      "address": "서울시 강남구 삼성동 456",
+      "type": "seller",
+      "loginType": "email",
+      "image": "files/team/user-neo.png",
+      "extra": {
+        "birthday": "11-23"
+      }
+    }
+  ],
+  "product": [],
+  "order": [],
+  "review": [],
+  "cart": [],
+  "bookmark": [],
+  "post": [
+    {
+      "type": "community",
+      "views": 23,
+      "user": {
+        "_id": "2",
+        "name": "네오",
+        "image": "files/team/user-neo.png"
+      },
+      "title": "회원 가입했어요.",
+      "content": "잘 부탁드려요."
+    }
+  ],
+  "code": [],
+  "config": []
+}

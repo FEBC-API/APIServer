@@ -1,137 +1,155 @@
 import fs from 'node:fs';
-import { readdir } from 'node:fs/promises';
-import { GridFSBucket } from 'mongodb';
-import getDB from './getDB.js';
 import dotenv from 'dotenv';
 
-// 기본 .env 파일 로딩(package.json에서 로딩함)
 dotenv.config({ path: '.env' });
-// 환경별 .env 파일 로딩
-console.log('NODE_ENV', process.env.NODE_ENV);
-if (process.env.NODE_ENV) {
-  dotenv.config({ override: true, path: `.env.${process.env.NODE_ENV}` });
-}
 
-const imageUpload = process.env.IMAGE_UPLOAD || 'update';
-const clientId = process.env.CLIENT_ID;
-const targetDir = process.env.TARGET_DIR;
-const { db, client, nextSeq } = await getDB(clientId);
+const clientId = process.env.CLIENT_ID || 'openmarket';
+const targetDir = process.env.TARGET_DIR || 'openmarket';
+const apiBaseUrl = process.env.API_URL || 'http://localhost:80';
 const sampleFileFolder = `./${targetDir}/uploadFiles`;
-const bucket = new GridFSBucket(db, {
-  bucketName: 'upload'
+
+
+
+// API 호출을 위한 헤더 설정
+const getHeaders = () => ({
+  'client-id': clientId,
+  'Content-Type': 'application/json'
 });
 
-// mongodb의 GridFS를 이용한 파일 저장
-async function uploadFileToGridFS(filename) {
-  const filepath = `${sampleFileFolder}/${filename}`;
-  return new Promise((resolve, reject) => {
-    try {  
-      const uploadStream = bucket.openUploadStream(filename);
-      const fileStream = fs.createReadStream(filepath);
-  
-      fileStream.on('data', (chunk) => {
-        uploadStream.write(chunk);
-      });
-      
-      fileStream.on('end', () => {
-        uploadStream.end(() => {
-          console.log(`파일 업로드: ${filename}`);
-          resolve();
-        });
-      });
-    } catch (err) {
-      console.error(err);
-      reject();
+// API 호출을 위한 공통 함수
+async function apiCall(endpoint, method = 'GET', data = null, isFormData = false) {
+  const url = `${apiBaseUrl}${endpoint}`;
+  const options = {
+    method,
+    headers: isFormData ? { 
+      'client-id': clientId,
+      // FormData의 경우 Content-Type을 설정하지 않으면 브라우저가 자동으로 설정하지만
+      // Node.js에서는 명시적으로 설정해야 할 수 있음
+    } : getHeaders()
+  };
+
+  if (data) {
+    if (isFormData) {
+      options.body = data;
+      // FormData의 경우 Content-Type을 자동으로 설정하도록 함
+    } else {
+      options.body = JSON.stringify(data);
     }
+  }
+
+  try {
+    const response = await fetch(url, options);
+    
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`API 호출 실패 ${response.status}: ${errorText}`);
+    }
+
+    const result = await response.json();
+    return result;
+  } catch (error) {
+    console.error(`API 호출 오류 [${method} ${endpoint}]:`, error.message);
+    throw error;
+  }
+}
+
+
+
+async function initDB() {
+  // 실제 uploadFiles 폴더의 파일 목록 가져오기
+  const fs = await import('node:fs');
+  const actualFiles = fs.readdirSync(sampleFileFolder)
+    .filter(file => !file.startsWith('.')) // 숨김 파일 제외
+    .filter(file => fs.statSync(`${sampleFileFolder}/${file}`).isFile()); // 파일만
+  
+  console.log(`uploadFiles 폴더의 실제 파일: ${actualFiles.length}개`);
+  actualFiles.forEach(file => {
+    console.log(`  ${file}`);
   });
   
-}
-
-// mongodb의 GridFS를 이용한 파일 삭제
-async function deleteFileFromGridFS(filename) {
-  const fileDoc = await db.collection(`upload.files`).findOne({ filename });
-  if (fileDoc) {
-    await bucket.delete(fileDoc._id); // GridFS에서 파일 삭제
-    console.log(`파일 삭제: ${filename}`);
+  // FormData로 파일 전송
+  const formData = new FormData();
+  
+  // data.json 파일 추가
+  const dataJsonPath = `./${targetDir}/data.json`;
+  const dataJsonBuffer = fs.readFileSync(dataJsonPath);
+  const dataJsonBlob = new Blob([dataJsonBuffer]);
+  formData.append('initData', dataJsonBlob);
+  
+  // uploadFiles 폴더의 파일들 추가
+  for (const filename of actualFiles) {
+    const filePath = `${sampleFileFolder}/${filename}`;
+    const fileBuffer = fs.readFileSync(filePath);
+    const blob = new Blob([fileBuffer]);
+    formData.append('attach', blob, filename);
+  }
+  
+  // 서버의 dbinit API 호출
+  const result = await apiCall('/db/init', 'POST', formData, true);
+  
+     if (result.ok) {
+     console.log('\nDB 초기화 결과');
+     console.log(`등록된 데이터: ${result.data.insertedData}건`);
+     
+     if (result.data.details) {
+       for (const [collection, count] of Object.entries(result.data.details)) {
+         console.log(`  ${collection}: ${count}건`);
+       }
+     }
+     
+     
+     
+           if (result.files) {
+        console.log('\n파일 업로드 결과');
+        console.log(`전체 파일: ${result.files.count}개`);
+        
+        if (result.files.success && result.files.success.count > 0) {
+          console.log(`업로드된 파일: ${result.files.success.count}개`);
+                              if (result.files.success.details && result.files.success.details.length > 0) {
+                      result.files.success.details.forEach(filename => {
+                        console.log(`  ${filename}`);
+                      });
+                    }
+        }
+        
+        if (result.files.missing && result.files.missing.count > 0) {
+          console.log(`\n첨부되지 않은 파일: ${result.files.missing.count}개`);
+          console.log(`사유: ${result.files.missing.reason}`);
+          if (result.files.missing.details && result.files.missing.details.length > 0) {
+            result.files.missing.details.forEach(filename => {
+              console.log(`  ${filename}`);
+            });
+          }
+        }
+        
+        if (result.files.unused && result.files.unused.count > 0) {
+          console.log(`\n사용하지 않는 파일: ${result.files.unused.count}개`);
+          console.log(`사유: ${result.files.unused.reason}`);
+          if (result.files.unused.details && result.files.unused.details.length > 0) {
+            result.files.unused.details.forEach(filename => {
+              console.log(`  ${filename}`);
+            });
+          }
+        }
+      }
+  } else {
+    console.error('서버 dbinit 실패');
   }
 }
 
+// 메인 실행
+console.log(`등록할 데이터: ${targetDir}/data.js`);
+console.log(`업로드할 폴더: ${targetDir}/uploadFiles`);
+console.log(`API 서버 주소: ${apiBaseUrl}`);
+console.log(`client-id: ${clientId}`);
 
-// DB에 저장된 파일 목록 조회
-const getDBFiles = async () => {
-  try {
-    const files = await bucket.find().project({ filename: 1 }).toArray();
-    return files.map(file => file.filename);
-  } catch (err) {
-    console.error(err)
-  }
-}
-
-async function initDB(initData) {
-  // 데이터 등록
-  for(const collection in initData){
-    const data = initData[collection];
-    if(data.length > 0){
-      await db[collection].insertMany(data);
-    }
-    console.debug(`${collection} ${data.length}건 등록.`);
-  }
-
-  // 이미지 등록
-  const dbFiles = await getDBFiles();
-  const folderFiles = await readdir(sampleFileFolder);
-
-  let uploadFiles = [];
-  let deleteFiles = [];
-  switch(imageUpload){
-    case 'always':
-      uploadFiles = folderFiles;
-      // deleteFiles = dbFiles;
-      break;
-    case 'update':
-      // db 파일이 폴더에 없으면 삭제
-      deleteFiles = dbFiles.filter(file => !folderFiles.includes(file));
-
-      // 폴더의 파일이 db에 없으면 업로드
-      uploadFiles = folderFiles.filter(file => !dbFiles.includes(file));
-      
-      break;
-    case 'none':
-    default:
-  }
-
-  for(const fileName of deleteFiles){
-    await deleteFileFromGridFS(fileName);
-  }
-
-  for(const fileName of uploadFiles){
-    await uploadFileToGridFS(fileName);
-  }
-}
-
-// 파일 컬렉션을 제외하고 모든 컬렉션 삭제
-async function dropDatabase(){
-  // 데이터베이스 내 모든 컬렉션 이름 가져오기
-  const collections = await db.listCollections().toArray();
-
-  for (const collection of collections) {
-    if (collection.name !== 'upload.files' && collection.name !== 'upload.chunks') {
-      await db.collection(collection.name).drop();
-      console.info(`DB 삭제: ${collection.name}`);
-    }
-  }
-}
-
-import(`./${targetDir}/data.js`).then(async ({ initData }) => {
-  if(imageUpload === 'always'){
-    await db.dropDatabase(); // 전체 삭제
-  }else{
-    await dropDatabase(); // 파일 컬렉션 제외하고 삭제
-  }
-
-  await initDB(await initData(clientId, nextSeq));
-  client.close();
+try {
+  console.log('DB 초기화 시작...');
+  await initDB();
   console.info('DB 초기화 완료.');
-});
+} catch (error) {
+  console.error('DB 초기화 중 오류 발생:', error);
+  process.exit(1);
+}
 
 

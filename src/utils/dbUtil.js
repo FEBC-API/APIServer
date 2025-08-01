@@ -10,18 +10,18 @@ const nextSeq = async (db, _id) => {
     result = { _id, no: 1 };
     await db.collection('seq').insertOne({ _id, no: 2 });
   }
-  logger.debug('nextseq', _id, result.no)
+  // logger.debug('nextseq', _id, result.no)
   return result.no;
 }
 
 export const getClientId = (req) => {
-  return req?.headers?.['client-id'];
+  const clientId = req?.headers?.['client-id'];
+  if (!clientId) throw new Error('client-id 헤더가 없습니다.');
+  if (!DBConfig.clientIds.includes(clientId)) throw new Error(`[${clientId}]는 등록되지 않은 client-id 입니다.`);
+  return clientId;
 };
 
 export const getDb = async (clientId) => {
-  if (!clientId) throw new Error('client-id 헤더가 없습니다.');
-  if (!DBConfig.clientIds.includes(clientId)) throw new Error(`[${clientId}]는 등록되지 않은 client-id 입니다.`);
-  
   if (!client){
     await connect();
   }
