@@ -168,8 +168,8 @@ router.patch('/read', jwtAuth.auth('user'), async function(req, res, next) {
 
   /*
     #swagger.tags = ['알림 메세지']
-    #swagger.summary  = '내 알림 상태 수정'
-    #swagger.description = '내 알림 목록을 읽음 상태로 수정합니다.'
+    #swagger.summary  = '내 알림 목록 전체를 읽음 상태로 수정'
+    #swagger.description = '내 알림 목록을 전체를 읽음 상태로 수정합니다.'
     
     #swagger.security = [{
       "Access Token": [],
@@ -215,9 +215,9 @@ router.patch('/read', jwtAuth.auth('user'), async function(req, res, next) {
 router.patch('/:_id/read', jwtAuth.auth('user'), async function(req, res, next) {
 
   /*
-    #swagger.tags = ['알림']
-    #swagger.summary  = '알림 읽음 처리'
-    #swagger.description = '지정한 알림 한 건을 읽음 처리합니다.'
+    #swagger.tags = ['알림 메세지']
+    #swagger.summary  = '알림 메세지 한건 읽음 처리'
+    #swagger.description = '지정한 알림 메세지 한 건을 읽음 처리합니다.'
     
     #swagger.security = [{
       "Access Token": [],
