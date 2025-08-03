@@ -3,6 +3,7 @@ import multer from 'multer';
 import logger from '#utils/logger.js';
 import { getClientId, getDb } from '#utils/dbUtil.js';
 import { cleanupFiles } from '#utils/uploadUtil.js';
+import moment from 'moment-timezone';
 
 const router = express.Router();
 
@@ -211,7 +212,9 @@ router.post('/init', upload.any(), async function(req, res, next) {
           const newId = await db.nextSeq(collectionName);
           documentsWithNewIds.push({
             _id: newId,
-            ...doc
+            ...doc,
+            createdAt: moment().tz('Asia/Seoul').format('YYYY.MM.DD HH:mm:ss'),
+            updatedAt: moment().tz('Asia/Seoul').format('YYYY.MM.DD HH:mm:ss')
           });
         }
         
