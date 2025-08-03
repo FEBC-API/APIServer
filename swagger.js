@@ -23,7 +23,7 @@ const doc = {
     version: process.env.npm_package_version,
     title: '오픈마켓 API',
     description: `오픈마켓 API Server입니다.<br>
-      <a href="/market">버전별 변경사항 확인</a>`,
+      <a href="/market#changelog-section">버전별 변경사항 확인</a>`,
   },
   host: process.env.API_HOST,
   basePath: '/market',
