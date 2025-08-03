@@ -90,6 +90,7 @@ const postModel = {
                 $expr: {
                   $and: [
                     { $eq: ["$target_id", "$$postId"] },
+                    { $not: [{ $ifNull: ["$is_like", false] }] }, // 북마크일 경우 is_like는 지정 안함
                     { $eq: ["$type", "post"] } // 게시물에 대한 북마크는 type이 post로 지정됨
                   ]
                 }
@@ -99,9 +100,31 @@ const postModel = {
           as: "bookmarkItems"
         }
       },
+      // 좋아요 목록
+      {
+        $lookup: {
+          from: "bookmark",
+          let: { postId: "$_id" },
+          pipeline: [
+            {
+              $match: {
+                $expr: {
+                  $and: [
+                    { $eq: ["$target_id", "$$postId"] },
+                    { $eq: ["$is_like", true] }, // 좋아요일 경우 is_like는 true로 지정
+                    { $eq: ["$type", "post"] } // 게시물에 대한 북마크는 type이 post로 지정됨
+                  ]
+                }
+              }
+            }
+          ],
+          as: "likeItems"
+        }
+      },
       {
         $addFields: {
           bookmarks: { $size: "$bookmarkItems" },
+          likes: { $size: "$likeItems" },
           myBookmarkId: { // 내가 북마크한 게시물일때 북마크 id
             $map: {
               input: {
@@ -114,6 +137,19 @@ const postModel = {
               as: "bookmark",
               in: "$$bookmark._id"
             }
+          },
+          myLikeId: { // 내가 좋아요한 게시물일때 좋아요 id
+            $map: {
+              input: {
+                $filter: {
+                  input: "$likeItems",
+                  as: "like",
+                  cond: { $eq: ["$$like.user._id", userId] } // userId가 좋아요한 항목 필터링
+                }
+              },
+              as: "like",
+              in: "$$like._id"
+            }
           }
         }
       },
@@ -121,6 +157,12 @@ const postModel = {
       { 
         $unwind: {
           path: "$myBookmarkId",
+          preserveNullAndEmptyArrays: true
+        }
+      },
+      { 
+        $unwind: {
+          path: "$myLikeId",
           preserveNullAndEmptyArrays: true
         }
       },
@@ -144,6 +186,8 @@ const postModel = {
           // bookmarkItems: 1,
           myBookmarkId: 1,
           bookmarks: 1,
+          myLikeId: 1,
+          likes: 1,
           repliesCount: { $cond: { if: { $isArray: '$replies' }, then: { $size: '$replies' }, else: 0 } },
           'product.name': '$product.name',
           // 'product.image': { $cond: { if: { $isArray: '$product.mainImages' }, then: { $arrayElemAt: ['$product.mainImages', 0] }, else: undefined } }
@@ -220,6 +264,7 @@ const postModel = {
                   $expr: {
                     $and: [
                       { $eq: ["$target_id", "$$postId"] },
+                      { $not: [{ $ifNull: ["$is_like", false] }] }, // 북마크일 경우 is_like는 지정 안함
                       { $eq: ["$type", "post"] } // 게시물에 대한 북마크는 type이 post로 지정됨
                     ]
                   }
@@ -229,9 +274,31 @@ const postModel = {
             as: "bookmarkItems"
           }
         },
+        // 좋아요 목록
+        {
+          $lookup: {
+            from: "bookmark",
+            let: { postId: "$_id" },
+            pipeline: [
+              {
+                $match: {
+                  $expr: {
+                    $and: [
+                      { $eq: ["$target_id", "$$postId"] },
+                      { $eq: ["$is_like", true] }, // 좋아요일 경우 is_like는 true로 지정
+                      { $eq: ["$type", "post"] } // 게시물에 대한 북마크는 type이 post로 지정됨
+                    ]
+                  }
+                }
+              }
+            ],
+            as: "likeItems"
+          }
+        },
         {
           $addFields: {
             bookmarks: { $size: "$bookmarkItems" },
+            likes: { $size: "$likeItems" },
             myBookmarkId: { // 내가 북마크한 게시물일때 북마크 id
               $map: {
                 input: {
@@ -244,6 +311,19 @@ const postModel = {
                 as: "bookmark",
                 in: "$$bookmark._id"
               }
+            },
+            myLikeId: { // 내가 좋아요한 게시물일때 좋아요 id
+              $map: {
+                input: {
+                  $filter: {
+                    input: "$likeItems",
+                    as: "like",
+                    cond: { $eq: ["$$like.user._id", userId] } // userId가 좋아요한 항목 필터링
+                  }
+                },
+                as: "like",
+                in: "$$like._id"
+              }
             }
           }
         },
@@ -254,11 +334,18 @@ const postModel = {
             preserveNullAndEmptyArrays: true
           }
         },
+        { 
+          $unwind: {
+            path: "$myLikeId",
+            preserveNullAndEmptyArrays: true
+          }
+        },
 
         {
           $project: {
             "temp_product": 0,
-            "bookmarkItems": 0
+            "bookmarkItems": 0,
+            "likeItems": 0
           }
         }
       ]).next();

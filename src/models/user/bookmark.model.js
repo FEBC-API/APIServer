@@ -4,7 +4,7 @@ import logger from '#utils/logger.js';
 import { getDb } from '#utils/dbUtil.js';
 
 const bookmarkModel = {
-  // 북마크 등록
+  // 북마크/좋아요 등록
   async create(clientId, bookmark) {
     logger.trace(arguments);
     const db = await getDb(clientId);
@@ -17,7 +17,7 @@ const bookmarkModel = {
     return bookmark;
   },
 
-  // 북마크 목록 조회
+  // 북마크/좋아요 목록 조회
   async findBy(clientId, query) {
     logger.trace(arguments);
     const db = await getDb(clientId);
@@ -81,12 +81,13 @@ const bookmarkModel = {
     return list;
   },
 
-  // 지정한 사용자의 북마크 목록 조회
+  // 지정한 사용자의 북마크/좋아요 목록 조회
   async findByUser(clientId, user_id) {
     logger.trace(arguments);
+    const match = { type: 'user', target_id: user_id };
     const db = await getDb(clientId);
     const bookmarkedList = await db.collection('bookmark').aggregate([
-      { $match: { type: 'user', target_id: user_id } },
+      { $match: match },
       {
         $project: {
           type: 0,
@@ -107,24 +108,25 @@ const bookmarkModel = {
     return result;
   },
 
-  // 상품에 대한 북마크 목록 조회
+  // 상품에 대한 북마크/좋아요 목록 조회
   async findByProduct(clientId, product_id) {
     logger.trace(arguments);
+    const match = { type: 'product', target_id: product_id };
     const db = await getDb(clientId);
-    const list = await db.collection('bookmark').find({ type: 'product', target_id: product_id }).toArray();
+    const list = await db.collection('bookmark').find(match).toArray();
 
     logger.debug(list);
     return list;
   },
 
-  // 지정한 검색 조건으로 북마크 한건 조회
+  // 지정한 검색 조건으로 북마크/좋아요 한건 조회
   async findOneBy(clientId, query) {
     const result = await this.findBy(clientId, query);
     logger.debug(result[0]);
     return result[0];
   },
 
-  // 북마크 삭제
+  // 북마크/좋아요 삭제
   async delete(clientId, query) {
     logger.trace(arguments);
     const db = await getDb(clientId);

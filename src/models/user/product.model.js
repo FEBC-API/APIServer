@@ -87,6 +87,7 @@ const productModel = {
                 $expr: {
                   $and: [
                     { $eq: ["$target_id", "$$productId"] },
+                    { $not: [{ $ifNull: ["$is_like", false] }] }, // 북마크일 경우 is_like는 지정 안함
                     { $eq: ["$type", "product"] } // 상품에 대한 북마크는 type이 product로 지정됨
                   ]
                 }
@@ -96,11 +97,32 @@ const productModel = {
           as: "bookmarkItems"
         }
       },
-
+      // 좋아요 목록
+      {
+        $lookup: {
+          from: "bookmark",
+          let: { productId: "$_id" },
+          pipeline: [
+            {
+              $match: {
+                $expr: {
+                  $and: [
+                    { $eq: ["$target_id", "$$productId"] },
+                    { $eq: ["$is_like", true] }, // 좋아요일 경우 is_like는 true로 지정
+                    { $eq: ["$type", "product"] } // 상품에 대한 북마크는 type이 product로 지정됨
+                  ]
+                }
+              }
+            }
+          ],
+          as: "likeItems"
+        }
+      },
 
       {
         $addFields: {
           bookmarks: { $size: "$bookmarkItems" }, // 북마크 목록 수
+          likes: { $size: "$likeItems" }, // 좋아요 목록 수
           // bookmarked: { // 내가 북마크한 상품인지 여부
           //   $cond: {
           //     if: { $in: [userId, "$bookmarkItems.user._id"] },
@@ -120,6 +142,19 @@ const productModel = {
               as: "bookmark",
               in: "$$bookmark._id"
             }
+          },
+          myLikeId: { // 내가 좋아요한 상품일때 좋아요 id
+            $map: {
+              input: {
+                $filter: {
+                  input: "$likeItems",
+                  as: "like",
+                  cond: { $eq: ["$$like.user._id", userId] } // userId가 좋아요한 항목 필터링
+                }
+              },
+              as: "like",
+              in: "$$like._id"
+            }
           }
         }
       },
@@ -127,6 +162,12 @@ const productModel = {
       {
         $unwind: {
           path: "$myBookmarkId",
+          preserveNullAndEmptyArrays: true
+        }
+      },
+      {
+        $unwind: {
+          path: "$myLikeId",
           preserveNullAndEmptyArrays: true
         }
       },
@@ -160,6 +201,7 @@ const productModel = {
         $project: {
           content: 0,
           bookmarkItems: 0,
+          likeItems: 0,
           reviewItems: 0,
           optionItems: 0,
           'seller.password': 0,
@@ -247,6 +289,7 @@ const productModel = {
                 $expr: {
                   $and: [
                     { $eq: ["$target_id", "$$productId"] },
+                    { $not: [{ $ifNull: ["$is_like", false] }] }, // 북마크일 경우 is_like는 지정 안함
                     { $eq: ["$type", "product"] } // 상품에 대한 북마크는 type이 product로 지정됨
                   ]
                 }
@@ -256,9 +299,34 @@ const productModel = {
           as: "bookmarkItems"
         }
       },
+
+      // 좋아요 목록
+      
+      {
+        $lookup: {
+          from: "bookmark",
+          let: { productId: "$_id" },
+          pipeline: [
+            {
+              $match: {
+                $expr: {
+                  $and: [
+                    { $eq: ["$target_id", "$$productId"] },
+                    { $eq: ["$is_like", true] }, // 좋아요일 경우 is_like는 true로 지정
+                    { $eq: ["$type", "product"] } // 상품에 대한 북마크는 type이 product로 지정됨
+                  ]
+                }
+              }
+            }
+          ],
+          as: "likeItems"
+        }
+      },
+
       {
         $addFields: {
           bookmarks: { $size: "$bookmarkItems" },
+          likes: { $size: "$likeItems" },
           myBookmarkId: { // 내가 북마크한 상품일때 북마크 id
             $map: {
               input: {
@@ -271,6 +339,19 @@ const productModel = {
               as: "bookmark",
               in: "$$bookmark._id"
             }
+          },
+          myLikeId: { // 내가 좋아요한 상품일때 좋아요 id
+            $map: {
+              input: {
+                $filter: {
+                  input: "$likeItems",
+                  as: "like",
+                  cond: { $eq: ["$$like.user._id", userId] } // userId가 좋아요한 항목 필터링
+                }
+              },
+              as: "like",
+              in: "$$like._id"
+            }
           }
         }
       },
@@ -278,6 +359,12 @@ const productModel = {
       {
         $unwind: {
           path: "$myBookmarkId",
+          preserveNullAndEmptyArrays: true
+        }
+      },
+      {
+        $unwind: {
+          path: "$myLikeId",
           preserveNullAndEmptyArrays: true
         }
       },
@@ -306,6 +393,7 @@ const productModel = {
       {
         $project: {
           bookmarkItems: 0,
+          likeItems: 0,
           'seller.password': 0,
           'seller.refreshToken': 0,
           'seller.type': 0,

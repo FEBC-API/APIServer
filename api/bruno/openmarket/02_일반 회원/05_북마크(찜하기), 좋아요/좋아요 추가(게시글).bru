@@ -1,0 +1,19 @@
+meta {
+  name: 좋아요 추가(게시글)
+  type: http
+  seq: 6
+}
+
+post {
+  url: {{url}}/bookmarks/post
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+      "target_id": 2,
+      "memo": "좋은글",
+      "is_like": true
+  }
+}

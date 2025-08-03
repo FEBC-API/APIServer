@@ -1,0 +1,19 @@
+meta {
+  name: 좋아요 추가(상품)
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{url}}/bookmarks/product
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+      "target_id": 3,
+      "memo": "맘에드는 상품",
+      "is_like": true
+  }
+}

@@ -25,7 +25,7 @@
       <div class="header-content">
         <h1>OpenMarket API Server</h1>
         <p>전자상거래 플랫폼을 위한 RESTful API 서버</p>
-        <div class="badge">OpenMarket API v2.0.0</div>
+        <div class="badge">OpenMarket API v2.2.0</div>
       </div>
     </div>
 
@@ -44,6 +44,22 @@
 
       <div class="changelog-section">
         <h2>변경 사항</h2>
+
+        <div class="version-item">
+          <h3 id="v2.2.0"><a href="#v2.2.0">v2.2.0 - 2025.08.03</a></h3>
+          <ul>
+            <li>[기능 추가] 북마크 기능과 좋아요 기능 분리
+              <ul>
+                <li>번경정: 북마크, 찜하기, 좋아요를 같은 기능이라고 생각해서 하나의 기능으로 구현했기 때문에 북마크(찜하기)와 동시에 좋아요를 사용할 수 없었음</li>
+                <li>변경후: 북마크(찜하기)와 좋아요를 동시에 사용할 수 있음</li>
+                <li>북마크(찜하기)와 좋아요 기능이 동시에 필요하지 않은 팀은 예전 api 그대로 북마크를 좋아요 기능으로 사용하면 됩니다.</li>
+                <li>두 기능이 동시에 필요한 팀은 북마크(찜하기)는 예전 api 그대로 사용하면 되고 좋아요 기능은 북마크 api에 is_like 값을 true로 전달만하면 됩니다.</li>
+                <li>Bruno 파일 보기: <a href="<%= brunoUrl %>/02_일반 회원/05_북마트(찜하기), 좋아요" target="_blank">07_스케줄러</a></li>
+                <li>API 문서 보기: <a href="/market/apidocs/#/북마크" target="_blank">일반 회원 - 북마크(찜하기)/좋아요 관련 기능</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
 
         <div class="version-item">
           <h3 id="v2.1.0"><a href="#v2.1.0">v2.1.0 - 2025.08.03</a></h3>

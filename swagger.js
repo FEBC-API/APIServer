@@ -56,7 +56,7 @@ const doc = {
     },
     {
       name: '북마크',
-      description: '일반 회원 - 북마크(찜하기) 관련 기능',
+      description: '일반 회원 - 북마크(찜하기)/좋아요 관련 기능',
     },
     {
       name: '상품 관리',

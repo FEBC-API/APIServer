@@ -86,6 +86,7 @@ const userModel = {
                 $expr: {
                   $and: [
                     { $eq: ["$user_id", "$$userId"] },
+                    { $not: [{ $ifNull: ["$is_like", false] }] }, // 북마크일 경우 is_like는 지정 안함
                     { $eq: ["$type", "product"] } // 상품에 대한 북마크는 type이 product로 지정됨
                   ]
                 }
@@ -93,6 +94,28 @@ const userModel = {
             }
           ],
           as: "bookmark.productItems"
+        }
+      },
+
+      // 좋아요 목록(상품)
+      {
+        $lookup: {
+          from: "bookmark",
+          let: { userId: "$_id" },
+          pipeline: [
+            {
+              $match: {
+                $expr: {
+                  $and: [
+                    { $eq: ["$user_id", "$$userId"] },
+                    { $eq: ["$is_like", true] }, // 좋아요일 경우 is_like는 true로 지정
+                    { $eq: ["$type", "product"] } // 상품에 대한 북마크는 type이 product로 지정됨
+                  ]
+                }
+              }
+            }
+          ],
+          as: "like.productItems"
         }
       },
 
@@ -107,6 +130,7 @@ const userModel = {
                 $expr: {
                   $and: [
                     { $eq: ["$user_id", "$$userId"] },
+                    { $not: [{ $ifNull: ["$is_like", false] }] }, // 북마크일 경우 is_like는 지정 안함
                     { $eq: ["$type", "user"] } // 사용자에 대한 북마크는 type이 user로 지정됨
                   ]
                 }
@@ -114,6 +138,28 @@ const userModel = {
             }
           ],
           as: "bookmark.userItems"
+        }
+      },
+
+      // 좋아요 목록(사용자)
+      {
+        $lookup: {
+          from: "bookmark",
+          let: { userId: "$_id" },
+          pipeline: [
+            {
+              $match: {
+                $expr: {
+                  $and: [
+                    { $eq: ["$user_id", "$$userId"] },
+                    { $eq: ["$is_like", true] }, // 좋아요일 경우 is_like는 true로 지정
+                    { $eq: ["$type", "user"] } // 사용자에 대한 북마크는 type이 user로 지정됨
+                  ]
+                }
+              }
+            }
+          ],
+          as: "like.userItems"
         }
       },
 
@@ -128,6 +174,7 @@ const userModel = {
                 $expr: {
                   $and: [
                     { $eq: ["$user_id", "$$userId"] },
+                    { $not: [{ $ifNull: ["$is_like", false] }] }, // 북마크일 경우 is_like는 지정 안함
                     { $eq: ["$type", "post"] } // 게시물에 대한 북마크는 type이 post로 지정됨
                   ]
                 }
@@ -135,6 +182,28 @@ const userModel = {
             }
           ],
           as: "bookmark.postItems"
+        }
+      },
+
+      // 좋아요 목록(게시글)
+      {
+        $lookup: {
+          from: "bookmark",
+          let: { userId: "$_id" },
+          pipeline: [
+            {
+              $match: {
+                $expr: {
+                  $and: [
+                    { $eq: ["$user_id", "$$userId"] },
+                    { $eq: ["$is_like", true] }, // 좋아요일 경우 is_like는 true로 지정
+                    { $eq: ["$type", "post"] } // 게시물에 대한 북마크는 type이 post로 지정됨
+                  ]
+                }
+              }
+            }
+          ],
+          as: "like.postItems"
         }
       },
 
@@ -149,6 +218,7 @@ const userModel = {
                 $expr: {
                   $and: [
                     { $eq: ["$target_id", "$$userId"] },
+                    { $not: [{ $ifNull: ["$is_like", false] }] }, // 북마크일 경우 is_like는 지정 안함
                     { $eq: ["$type", "user"] } // 사용자에 대한 북마크는 type이 user로 지정됨
                   ]
                 }
@@ -156,6 +226,28 @@ const userModel = {
             }
           ],
           as: "bookmarkedBy.userItems"
+        }
+      },
+
+      // 대상 회원을 좋아요한 사람들
+      {
+        $lookup: {
+          from: "bookmark",
+          let: { userId: "$_id" },
+          pipeline: [
+            {
+              $match: {
+                $expr: {
+                  $and: [
+                    { $eq: ["$target_id", "$$userId"] },
+                    { $eq: ["$is_like", true] }, // 좋아요일 경우 is_like는 true로 지정
+                    { $eq: ["$type", "user"] } // 사용자에 대한 북마크는 type이 user로 지정됨
+                  ]
+                }
+              }
+            }
+          ],
+          as: "likedBy.userItems"
         }
       },
 
@@ -167,6 +259,16 @@ const userModel = {
           'bookmark.users': { $size: "$bookmark.userItems" },
           'bookmark.posts': { $size: "$bookmark.postItems" },
           'bookmarkedBy.users': { $size: "$bookmarkedBy.userItems" },
+        }
+      },
+
+      // 좋아요 수
+      {
+        $addFields: {
+          'like.products': { $size: "$like.productItems" },
+          'like.users': { $size: "$like.userItems" },
+          'like.posts': { $size: "$like.postItems" },
+          'likedBy.users': { $size: "$likedBy.userItems" },
         }
       },
 
@@ -195,6 +297,11 @@ const userModel = {
           'user.bookmark.userItems': 0,
           'user.bookmark.postItems': 0,
           'user.bookmarkedBy.userItems': 0,
+          'user.like.productItems': 0,
+          'user.like.userItems': 0,
+          'user.like.postItems': 0,
+          'user.likedBy.userItems': 0,
+
         }
       },
 
@@ -276,6 +383,7 @@ const userModel = {
                 $expr: {
                   $and: [
                     { $eq: ["$target_id", "$$userId"] },
+                    { $not: [{ $ifNull: ["$is_like", false] }] }, // 북마크일 경우 is_like는 지정 안함
                     { $eq: ["$type", "user"] } // 사용자에 대한 북마크는 type이 user로 지정됨
                   ]
                 }
@@ -286,11 +394,34 @@ const userModel = {
         }
       },
 
+      // 대상 회원을 좋아요한 사람들
+      {
+        $lookup: {
+          from: "bookmark",
+          let: { userId: "$_id" },
+          pipeline: [
+            {
+              $match: { 
+                $expr: {
+                  $and: [
+                    { $eq: ["$target_id", "$$userId"] },
+                    { $eq: ["$is_like", true] }, // 좋아요일 경우 is_like는 true로 지정
+                    { $eq: ["$type", "user"] } // 사용자에 대한 북마크는 type이 user로 지정됨
+                  ]
+                }
+              }
+            }
+          ],
+          as: "likedBy.userItems"
+        }
+      },
+
 
       // 북마크 수
       {
         $addFields: {
           'bookmarkedBy.users': { $size: "$bookmarkedBy.userItems" },
+          'likedBy.users': { $size: "$likedBy.userItems" },
         }
       },
 
@@ -359,6 +490,8 @@ const userModel = {
         'postItems': 0,
         'bookmark.postItems': 0,
         'bookmarkedBy.userItems': 0,
+        'like.productItems': 0,
+        'likedBy.userItems': 0,
         'salesData': 0,
       }
     });
