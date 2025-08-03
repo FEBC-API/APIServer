@@ -264,7 +264,7 @@ router.delete('/:_id', [
   /*
     #swagger.tags = ['북마크']
     #swagger.summary  = '북마크 삭제'
-    #swagger.description = '북마크를 삭제한다.'
+    #swagger.description = '북마크를 삭제합니다.'
     
     #swagger.security = [{
       "Access Token": [],

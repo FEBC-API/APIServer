@@ -489,7 +489,7 @@ router.patch('/:_id', jwtAuth.auth('user'), async function (req, res, next) {
   /*
     #swagger.tags = ['게시판']
     #swagger.summary  = '게시글 수정'
-    #swagger.description = '게시글을 수정한다.'
+    #swagger.description = '게시글을 수정합니다.'
     
     #swagger.security = [{
       "Access Token": [],
@@ -817,7 +817,7 @@ router.patch('/:_id/replies/:reply_id', jwtAuth.auth('user'), async (req, res, n
   /*
     #swagger.tags = ['게시판']
     #swagger.summary  = '댓글 수정'
-    #swagger.description = '게시글의 댓글을 수정한다.'
+    #swagger.description = '게시글의 댓글을 수정합니다.'
     
     #swagger.security = [{
       "Access Token": [],
@@ -849,7 +849,7 @@ router.delete('/:_id/replies/:reply_id', jwtAuth.auth('user'), async (req, res, 
   /*
     #swagger.tags = ['게시판']
     #swagger.summary  = '댓글 삭제'
-    #swagger.description = '게시글의 댓글을 삭제한다.'
+    #swagger.description = '게시글의 댓글을 삭제합니다.'
     
     #swagger.security = [{
       "Access Token": [],

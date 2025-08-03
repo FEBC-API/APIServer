@@ -14,7 +14,7 @@ router.get('/', async function(req, res, next) {
 
     #swagger.tags = ['코드 조회']
     #swagger.summary  = '코드 목록 조회'
-    #swagger.description = '코드 목록을 조회한다.'
+    #swagger.description = '코드 목록을 조회합니다.'
 
     #swagger.security = [{
       "Client ID": []
@@ -63,7 +63,7 @@ router.get('/:_id', async function(req, res, next) {
   /*
     #swagger.tags = ['코드 조회']
     #swagger.summary  = '코드 한건 조회'
-    #swagger.description = '코드 한건을 조회한다.'
+    #swagger.description = '코드 한건을 조회합니다.'
 
     #swagger.security = [{
       "Client ID": []

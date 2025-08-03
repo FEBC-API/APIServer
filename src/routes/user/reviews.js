@@ -367,7 +367,7 @@ router.patch('/:_id', jwtAuth.auth('user'), [
   /*
     #swagger.tags = ['구매 후기']
     #swagger.summary  = '구매 후기 수정'
-    #swagger.description = '구매 후기를 수정한다.'
+    #swagger.description = '구매 후기를 수정합니다.'
     
     #swagger.security = [{
       "Access Token": [],

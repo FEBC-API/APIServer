@@ -656,7 +656,7 @@ router.get('/:_id/*', /*jwtAuth.auth('user'),*/ async function (req, res, next) 
 
     #swagger.tags = ['회원']
     #swagger.summary  = '회원 정보 조회(단일 속성)'
-    #swagger.description = '회원 정보 중 한가지 속성을 조회한다.'
+    #swagger.description = '회원 정보 중 한가지 속성을 조회합니다.'
 
     #swagger.security = [{
       "Client ID": []
@@ -800,7 +800,7 @@ router.patch('/:_id', jwtAuth.auth('user'), async function (req, res, next) {
   /*
     #swagger.tags = ['회원']
     #swagger.summary  = '회원 정보 수정'
-    #swagger.description = '회원 정보를 수정한다.'
+    #swagger.description = '회원 정보를 수정합니다.'
 
     #swagger.security = [{
       "Access Token": [],
