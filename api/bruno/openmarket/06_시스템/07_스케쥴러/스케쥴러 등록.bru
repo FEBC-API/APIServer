@@ -1,0 +1,27 @@
+meta {
+  name: 스케쥴러 등록
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{url}}/scheduler
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "name": "게시글 통계 알림",
+    "description": "게시글 작성후 1시간 뒤에 조회수와 댓글을 이메일로 전송",
+    "endpoint": "http://localhost:3000/api/scheduler/posts/1",
+    "time": "2025.08.03 19:24:00",
+    "extra": {
+      "아무": "데이터를 자유롭게 추가"
+    }
+  }
+}
+
+settings {
+  encodeUrl: true
+}

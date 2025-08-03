@@ -9,10 +9,11 @@
   <script type="text/javascript">
     const apiUrl = location.origin;
     const githubUrl = 'https://github.com/FEBC-API/APIServer';
-    const brunoUrl = githubUrl + '/blob/main/server/api/bruno/openmarket';
+    const brunoUrl = githubUrl + '/blob/main/api/bruno/openmarket';
 
     window.addEventListener('DOMContentLoaded', () => {
       document.body.innerHTML = document.body.innerHTML.replace(/<%= apiUrl %>|&lt;%= apiUrl %&gt;/g, apiUrl)
+                                                        .replace(/<%= githubUrl %>|&lt;%= githubUrl %&gt;/g, githubUrl)
                                                         .replace(/<%= brunoUrl %>|&lt;%= brunoUrl %&gt;/g, brunoUrl);
     });
   </script>
@@ -45,6 +46,19 @@
         <h2>변경 사항</h2>
 
         <div class="version-item">
+          <h3 id="v2.1.0"><a href="#v2.1.0">v2.1.0 - 2025.08.03</a></h3>
+          <ul>
+            <li>[기능 추가] 스케줄러 관리 기능 추가
+              <ul>
+                <li>스케줄러를 등록하면 지정된 시간에 해당 엔드포인트를 자동으로 호출합니다.</li>
+                <li>Bruno 파일 보기: <a href="<%= brunoUrl %>/06_시스템/07_스케줄러" target="_blank">07_스케줄러</a></li>
+                <li>API 문서 보기: <a href="/market/apidocs/#/스케줄러" target="_blank">스케줄러</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+
+        <div class="version-item">
           <h3 id="v2.0.0"><a href="#v2.0.0">v2.0.0 - 2025.07.31</a></h3>
           <ul>
             
@@ -60,24 +74,24 @@
                       <ul>
                         <li>변경전 예시: 
                           <code>
-          &lt;Image
-            className="w-8 mr-2 rounded-full"
-            src={`${API_URL}/${reply.user.image}`}
-            alt={`${reply.user.name} 프로필 이미지`}
-            width="32"
-            height="32"
-          /&gt;  
+&lt;Image
+  className="w-8 mr-2 rounded-full"
+  src={`${API_URL}/${reply.user.image}`}
+  alt={`${reply.user.name} 프로필 이미지`}
+  width="32"
+  height="32"
+/&gt;  
                           </code>
                         </li>
                         <li>변경후 예시: 
                           <code>
-          &lt;Image
-            className="w-8 mr-2 rounded-full"
-            src={reply.user.image}
-            alt={`${reply.user.name} 프로필 이미지`}
-            width="32"
-            height="32"
-          /&gt;
+&lt;Image
+  className="w-8 mr-2 rounded-full"
+  src={reply.user.image}
+  alt={`${reply.user.name} 프로필 이미지`}
+  width="32"
+  height="32"
+/&gt;
                           </code>
                         </li>
                       </ul>
@@ -112,15 +126,15 @@ export default nextConfig;
             <li>[기능 수정] 로컬에서 실행하던 dbinit 스크립트를 제거하고 db 초기화 작업은 api 서버에서 제공
               <ul>
                 <li>dbinit 스크립트는 더 이상 사용하지 않습니다. 대신 api 서버에서 제공하는 dbinit API를 사용하세요.</li>
-                <li>Bruno 파일 보기: <a href="https://github.com/FEBC-API/APIServer/blob/main/api/bruno/openmarket/06_시스템/06_DB%20초기화/DB%20초기화.bru" target="_blank">06_DB 초기화</a></li>
+                <li>Bruno 파일 보기: <a href="<%= brunoUrl %>/06_시스템/06_DB%20초기화/DB%20초기화.bru" target="_blank">06_DB 초기화</a></li>
                 <li>API 문서 보기: <a href="/market/apidocs/#/시스템/post_db_init" target="_blank">DB 전체 초기화</a></li>
                 <li>api/dbinit/team 폴더 하위의 data.js 파일과 uploadFiles 폴더만 사용합니다. 나머지 파일들은 모두 삭제해도 됩니다.</li>
                 <li>api/dbinit/team/data.js 파일의 내용이 변경되었습니다. 다음을 참고하세요.
                   <ul>
-                    <li><a href="https://github.com/FEBC-API/APIServer/blob/main/api/dbinit/openmarket/data.js" target="_blank">openmarket data.json 변경전 파일 참고</a></li>
-                    <li><a href="https://github.com/FEBC-API/APIServer/blob/main/api/dbinit/openmarket/data.json" target="_blank">openmarket data.json 변경후 파일 참고</a></li>
-                    <li><a href="https://github.com/FEBC-API/APIServer/blob/main/api/dbinit/team/data.js" target="_blank">team data.js 변경전 파일 참고</a></li>
-                    <li><a href="https://github.com/FEBC-API/APIServer/blob/main/api/dbinit/team/data.json" target="_blank">team data.json 변경후 파일 참고</a></li>
+                    <li><a href="<%= githubUrl %>/blob/main/api/dbinit/openmarket/data.js" target="_blank">openmarket/data.json 변경전 파일 참고</a></li>
+                    <li><a href="<%= githubUrl %>/blob/main/api/dbinit/openmarket/data.json" target="_blank">openmarket/data.json 변경후 파일 참고</a></li>
+                    <li><a href="<%= githubUrl %>/blob/main/api/dbinit/team/data.js" target="_blank">team/data.js 변경전 파일 참고</a></li>
+                    <li><a href="<%= githubUrl %>/blob/main/api/dbinit/team/data.json" target="_blank">team/data.json 변경후 파일 참고</a></li>
                     <li>모든 이미지 경로 수정
                       <ul>
                         <li>변경전: files/${clientId}/파일명</li>

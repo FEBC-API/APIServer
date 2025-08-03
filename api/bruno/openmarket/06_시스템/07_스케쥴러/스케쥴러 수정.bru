@@ -1,0 +1,31 @@
+meta {
+  name: 스케쥴러 수정
+  type: http
+  seq: 4
+}
+
+patch {
+  url: {{url}}/scheduler/:_id
+  body: json
+  auth: inherit
+}
+
+params:path {
+  _id: 2
+}
+
+body:json {
+  {
+    "name": "[자동 향수 분사기] 펀딩 완료",
+    "description": "[자동 향수 분사기] 펀딩 완료시 호출되며 endpoint가 호출되면 펀딩 참자가들에게 이메일을 전송하고 펀딩 결과와 이메일 전송 내역을 응답",
+    "endpoint": "https://next.example.com/funding/2/finish",
+    "time": "2025-08-05 14:30",
+    "extra": {
+      "아무": "데이터나 자유롭게 추가"
+    }
+  }
+}
+
+settings {
+  encodeUrl: true
+}

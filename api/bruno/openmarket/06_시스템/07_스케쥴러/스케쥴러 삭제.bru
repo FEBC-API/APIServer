@@ -1,0 +1,19 @@
+meta {
+  name: 스케쥴러 삭제
+  type: http
+  seq: 5
+}
+
+delete {
+  url: {{url}}/scheduler/:_id
+  body: none
+  auth: inherit
+}
+
+params:path {
+  _id: 2
+}
+
+settings {
+  encodeUrl: true
+}

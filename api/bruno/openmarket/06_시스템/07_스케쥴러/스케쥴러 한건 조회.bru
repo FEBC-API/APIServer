@@ -1,0 +1,19 @@
+meta {
+  name: 스케쥴러 한건 조회
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{url}}/scheduler/:_id
+  body: none
+  auth: inherit
+}
+
+params:path {
+  _id: 8
+}
+
+settings {
+  encodeUrl: true
+}

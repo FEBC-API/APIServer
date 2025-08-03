@@ -110,6 +110,10 @@ const doc = {
       name: '설정 조회',
       description: '시스템 - 설정값 조회 기능(독립된 key/value 쌍의 데이터 조회)',
     },
+    {
+      name: '스케줄러',
+      description: '시스템 - 지정된 시간에 endpoint를 호출하는 스케줄러 관리 기능',
+    },
   ],
   components: {
     securitySchemes: {
@@ -367,6 +371,7 @@ const doc = {
       simpleOK: {
         "ok": 1
       },
+
       emailImpossable: {
         "ok": 1,
         "duplicate": true
@@ -1694,10 +1699,171 @@ const doc = {
         }
       },
 
-      
+      schedulerListRes: {
+        "ok": 1,
+        "item": [
+          {
+            "_id": 1,
+            "name": "펀딩 완료 알림",
+            "description": "펀딩이 완료되면 성공/실패 여부를 사용자 이메일로 전송하는 스케줄러",
+            "endpoint": "https://lion-board-tau.vercel.app/api/scheduler/funding/1",
+            "time": getRandomDate(),
+            "extra": {
+              "key": "value"
+            },
+            "state": "scheduled", // scheduled: 예정, completed: 완료, failed: 실패, missed: 누락
+            "executionResult": {
+              "success": true,
+              "status": 200,
+              "responseMessage": {
+                "ok": 1,
+                "message": "uzoolove@gmail.com 메일 전송 완료"
+              }
+            },
+            "createdAt": getRandomDate(),
+            "updatedAt": getRandomDate()
+          },
+          {
+            "_id": 2,
+            "name": "게시글 통계 알림",
+            "description": "게시글 작성후 1시간 뒤에 조회수와 댓글을 이메일로 전송",
+            "endpoint": "https://lion-board-tau.vercel.app/api/scheduler/posts/1",
+            "time": getRandomDate(),
+            "extra": {
+              "key": "value"
+            },
+            "state": "completed", // scheduled: 예정, completed: 완료, failed: 실패, missed: 누락
+            "executionResult": {
+              "success": true,
+              "status": 200,
+              "responseMessage": {
+                "ok": 1,
+                "message": "uzoolove@gmail.com 메일 전송 완료"
+              }
+            }, 
+            "createdAt": getRandomDate(),
+            "updatedAt": getRandomDate()
+          },
+          
+        ]
+      },
+
+      scheduler: {
+        "name": "게시글 통계 알림",
+        "description": "게시글 작성후 1시간 뒤에 조회수와 댓글을 이메일로 전송",
+        "endpoint": "https://lion-board-tau.vercel.app/api/scheduler/posts/1",
+        "time": getRandomDate(),
+        "extra": {
+          "key": "value"
+        }
+      },
+
+      schedulerDetailResScheduled: {
+        "ok": 1,
+        "item": {
+          "_id": 1,
+          "name": "게시글 통계 알림",
+          "description": "게시글 작성후 1시간 뒤에 조회수와 댓글을 이메일로 전송",
+          "endpoint": "https://lion-board-tau.vercel.app/api/scheduler/posts/1",
+          "time": getRandomDate(),
+          "extra": {
+            "key": "value"
+          },
+          "state": "scheduled", // scheduled: 예정, completed: 완료, failed: 실패, missed: 누락
+          "createdAt": getRandomDate(),
+          "updatedAt": getRandomDate()
+        }
+      },
+
+
     },
 
     examples: {
+      schedulerDetailResScheduled: {
+        "ok": 1,
+        "item": {
+          "_id": 1,
+          "name": "게시글 통계 알림",
+          "description": "게시글 작성후 1시간 뒤에 조회수와 댓글을 이메일로 전송",
+          "endpoint": "https://lion-board-tau.vercel.app/api/scheduler/posts/1",
+          "time": getRandomDate(),
+          "extra": {
+            "key": "value"
+          },
+          "state": "scheduled", // scheduled: 예정, completed: 완료, failed: 실패, missed: 누락
+          "createdAt": getRandomDate(),
+          "updatedAt": getRandomDate()
+        }
+      },
+
+      schedulerDetailResCompleted: {
+        "ok": 1,
+        "item": {
+          "_id": 1,
+          "name": "게시글 통계 알림",
+          "description": "게시글 작성후 1시간 뒤에 조회수와 댓글을 이메일로 전송",
+          "endpoint": "https://lion-board-tau.vercel.app/api/scheduler/posts/1",
+          "time": getRandomDate(),
+          "extra": {
+            "key": "value"
+          },
+          "state": "completed", // scheduled: 예정, completed: 완료, failed: 실패, missed: 누락
+          "executionResult": {
+            "success": true,
+            "status": 200,
+            "responseMessage": {
+              "ok": 1,
+              "message": "uzoolove@gmail.com 메일 전송 완료"
+            }
+          },          
+          "createdAt": getRandomDate(),
+          "updatedAt": getRandomDate()
+        }
+      },
+
+      schedulerDetailResFailed: {
+        "ok": 1,
+        "item": {
+          "_id": 1,
+          "name": "게시글 통계 알림",
+          "description": "게시글 작성후 1시간 뒤에 조회수와 댓글을 이메일로 전송",
+          "endpoint": "https://lion-board-tau.vercel.app/api/scheduler/posts/1",
+          "time": getRandomDate(),
+          "extra": {
+            "key": "value"
+          },
+          "state": "failed", // scheduled: 예정, completed: 완료, failed: 실패, missed: 누락
+          "executionResult": {
+            "success": false,
+            "errorMessage": "Request timeout",
+            "status": 408,
+          },          
+          "createdAt": getRandomDate(),
+          "updatedAt": getRandomDate()
+        }
+      },
+
+      schedulerDetailResMissed: {
+        "ok": 1,
+        "item": {
+          "_id": 1,
+          "name": "게시글 통계 알림",
+          "description": "게시글 작성후 1시간 뒤에 조회수와 댓글을 이메일로 전송",
+          "endpoint": "https://lion-board-tau.vercel.app/api/scheduler/posts/1",
+          "time": getRandomDate(),
+          "extra": {
+            "key": "value"
+          },
+          "state": "missed", // scheduled: 예정, completed: 완료, failed: 실패, missed: 누락
+          "executionResult": {
+            "success": false,
+            "errorMessage": "실행 시간이 이미 지났습니다",
+          },          
+          "createdAt": getRandomDate(),
+          "updatedAt": getRandomDate()
+        }
+      },
+
       updateConfigBody: {
         "value\u200B": 20 // value는 swagger-autogen에서 내부적으로 정의된 듯해서 제로폭 공백문자 추가
       },
@@ -1756,7 +1922,7 @@ const doc = {
           "image": "http://k.kakaocdn.net/dn/p4NUj/btsFiuTSVb6/Q4YkWkx4t1AFkFA3rtq6ZK/img_110x110.jpg",
           "kakao": {
             "id": 1234567890,
-            "connected_at": "2025-06-13T15:52:13Z",
+            "connected_at": getRandomDate(),
             "kakao_account": {
               "profile_nickname_needs_agreement": false,
               "profile_image_needs_agreement": false,
@@ -2973,6 +3139,9 @@ const doc = {
           },
         ]
       },
+
+      
+
 
     }
   }

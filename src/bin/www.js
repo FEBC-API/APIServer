@@ -7,10 +7,10 @@
 import http from 'node:http';
 import app from '#app.js';
 import logger from '#utils/logger.js';
-import config from '#config/index.js';
 import { Server }  from 'socket.io';
 import webSocketServer from '#bin/webSocketServer.js';
 import notificationServer from '#bin/notificationServer.js';
+import schedulerServer from '#bin/schedulerServer.js';
 
 /**
  * Get port from environment and store in Express.
@@ -94,3 +94,4 @@ const io = new Server(server, { cors: { origin: '*' } } );
 // const io = new Server(server, { cors: { origin: config.cors.origin } } );
 webSocketServer(io);
 notificationServer.listen(io);
+schedulerServer.start();

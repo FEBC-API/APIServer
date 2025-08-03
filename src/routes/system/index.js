@@ -5,6 +5,7 @@ import codeRouter from './codes.js';
 import configRouter from './config.js';
 import mailRouter from './email.js';
 import dbinitRouter from './dbinit.js';
+import schedulerRouter from './scheduler.js';
 
 import express from 'express';
 const router = express.Router({mergeParams: true});
@@ -15,5 +16,6 @@ router.use('/codes', codeRouter);
 router.use('/config', configRouter);
 router.use('/email', mailRouter);
 router.use('/db', dbinitRouter);
+router.use('/scheduler', schedulerRouter);
 
 export default router;
