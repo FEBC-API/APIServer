@@ -209,7 +209,7 @@ class CloudinaryStorage {
           logger.warn(`파일 정보 DB 저장 실패: ${dbError.message}`);
         }
 
-        logger.info(`새 파일 업로드 완료: ${filename} -> ${result.secure_url}`);
+        // logger.info(`새 파일 업로드 완료: ${filename} -> ${result.secure_url}`);
 
         cb(null, {
           filename: filename,
@@ -249,7 +249,7 @@ class CloudinaryStorage {
           return cb(error);
         }
 
-        logger.info(`파일 업로드 완료 (중복검사 없음): ${filename} -> ${result.secure_url}`);
+        // logger.info(`파일 업로드 완료 (중복검사 없음): ${filename} -> ${result.secure_url}`);
 
         cb(null, {
           filename: filename,
@@ -266,26 +266,17 @@ class CloudinaryStorage {
   }
 
   _removeFile(req, file, cb) {
-    // cloudinary에서 파일 삭제
-    if (file.public_id) {
-      cloudinary.uploader.destroy(file.public_id, (error) => {
-        cb(error);
-      });
-    } else {
-      cb();
-    }
+    // Cloudinary 파일 삭제 기능 비활성화
+    logger.info(`Cloudinary 파일 삭제 기능 비활성화: ${file.public_id || 'unknown'} (파일 유지)`);
+    cb(); // 에러 없이 완료 처리
   }
 }
 
-// 파일 삭제 유틸리티 함수들
+// 파일 삭제 유틸리티 함수들 (비활성화)
 export async function deleteCloudinaryFile(publicId) {
-  try {
-    await cloudinary.uploader.destroy(publicId);
-    logger.info(`Cloudinary 파일 삭제 성공: ${publicId}`);
-  } catch (error) {
-    logger.error(`Cloudinary 파일 삭제 실패: ${publicId}`, error);
-    throw error;
-  }
+  // Cloudinary 파일 삭제 기능 비활성화
+  logger.info(`Cloudinary 파일 삭제 기능 비활성화: ${publicId} (파일 유지)`);
+  return; // 실제 삭제하지 않음
 }
 
 export async function getFilesList(clientId) {
@@ -324,20 +315,15 @@ export async function deleteFileCompletely(filename, clientId) {
       throw new Error('파일을 찾을 수 없습니다.');
     }
 
-    // Cloudinary에서 파일 삭제
-    try {
-      if (fileInfo.public_id) {
-        await deleteCloudinaryFile(fileInfo.public_id);
-      }
-    } catch (cloudinaryError) {
-      logger.warn(`Cloudinary 파일 삭제 실패하였지만 DB에서는 제거합니다: ${cloudinaryError.message}`);
-    }
+    // Cloudinary 파일 삭제 기능 비활성화 - Cloudinary 파일은 유지
+    logger.info(`Cloudinary 파일 삭제 기능 비활성화: ${fileInfo.public_id} (파일 유지)`);
 
-    // DB에서 파일 정보 삭제
+    // DB에서 파일 정보만 삭제
     await db.collection('file_uploads').deleteOne({
       filename: filename
     });
 
+    logger.info(`DB에서 파일 정보 삭제 완료 (Cloudinary 파일은 유지): ${filename}`);
     return { success: true, filename };
   } catch (error) {
     logger.error(`파일 삭제 실패: ${filename}`, error);
@@ -431,7 +417,7 @@ export async function uploadMultipleFiles(files, clientId) {
       results.forEach((result, index) => {
         if (result.status === 'fulfilled') {
           successfulUploads.push(result.value);
-          logger.info(`파일 업로드 성공: ${validFiles[index].filename}`);
+          // logger.info(`파일 업로드 성공: ${validFiles[index].filename}`);
         } else {
           failedUploads.push({
             filename: validFiles[index].filename,
@@ -469,7 +455,7 @@ export function calculateFileHash(buffer) {
   return crypto.createHash('md5').update(buffer).digest('hex');
 }
 
-export async function cleanupFiles(keepFiles, clientId, fileContents = {}) {
+export async function cleanupFiles(keepFiles, clientId, fileContents = {}, db = null) {
   try {
     // 1. Cloudinary에서 모든 파일 조회 (메타데이터 포함)
     const cloudinaryFiles = await cloudinary.api.resources({
@@ -481,24 +467,27 @@ export async function cleanupFiles(keepFiles, clientId, fileContents = {}) {
 
     logger.info(`Cloudinary 실제 파일 수: ${cloudinaryFiles.resources.length}개`);
 
-    // 2. Cloudinary 파일들의 해시 정보 수집 (해시별로 모든 파일 저장)
-    const cloudinaryFileMap = new Map(); // 해시 -> 파일 배열
+    // 2. Cloudinary 파일들의 해시 정보 수집 (해시별로 첫 번째 파일만 저장)
+    const cloudinaryFileMap = new Map(); // 해시 -> 첫 번째 파일만
+    const allCloudinaryFiles = []; // 모든 파일 정보 (삭제 판단용)
 
     cloudinaryFiles.resources.forEach(resource => {
-      
-
       // 다양한 방법으로 메타데이터 추출 시도
       const originalName = resource.context?.custom?.original_name;
       const fileHash = resource.context?.custom?.file_hash;
 
-      // logger.info(`Cloudinary 파일 처리: ${originalName} (해시: ${fileHash ? fileHash.substring(0, 8) + '...' : '없음'})`);
+      // 모든 파일 정보 저장 (삭제 판단용)
+      allCloudinaryFiles.push({
+        public_id: resource.public_id,
+        secure_url: resource.secure_url,
+        original_name: originalName,
+        file_hash: fileHash,
+        resource: resource
+      });
 
-      // 해시 기반 맵 (해시가 있는 경우만)
-      if (fileHash) {
-        if (!cloudinaryFileMap.has(fileHash)) {
-          cloudinaryFileMap.set(fileHash, []);
-        }
-        cloudinaryFileMap.get(fileHash).push({
+      // 해시 기반 맵 (해시가 있는 경우만, 첫 번째 파일만 저장)
+      if (fileHash && !cloudinaryFileMap.has(fileHash)) {
+        cloudinaryFileMap.set(fileHash, {
           public_id: resource.public_id,
           secure_url: resource.secure_url,
           original_name: originalName,
@@ -522,24 +511,18 @@ export async function cleanupFiles(keepFiles, clientId, fileContents = {}) {
         const fileHash = calculateFileHash(fileBuffer);
 
         // Cloudinary에 같은 해시의 파일이 있는지 확인
-        const existingCloudinaryFiles = cloudinaryFileMap.get(fileHash);
+        const existingCloudinaryFile = cloudinaryFileMap.get(fileHash);
         // logger.info(`파일 ${keepFile} (해시: ${fileHash.substring(0, 8)}...) 검사 중...`);
 
-        if (existingCloudinaryFiles && existingCloudinaryFiles.length > 0) {
-          // logger.info(`  같은 해시의 파일 ${existingCloudinaryFiles.length}개 발견:`);
-          // existingCloudinaryFiles.forEach(file => {
-          //   logger.info(`    - ${file.original_name} -> ${file.public_id}`);
-          // });
-
-          // 같은 해시가 있으면 첫 번째 파일을 사용 (업로드 제외, DB에는 저장)
-          const firstFile = existingCloudinaryFiles[0];
+        if (existingCloudinaryFile) {
+          // 같은 해시가 있으면 해당 파일을 사용 (업로드 제외, DB에는 저장)
           filesToKeep.push({
             filename: keepFile,
             fileHash: fileHash,
-            cloudinaryInfo: firstFile
+            cloudinaryInfo: existingCloudinaryFile
           });
           keepFileHashes.add(fileHash);
-          // logger.info(`  ✅ 기존 파일 유지: ${keepFile} -> ${firstFile.public_id} (해시 기반, 업로드 제외)`);
+          // logger.info(`  ✅ 기존 파일 유지: ${keepFile} -> ${existingCloudinaryFile.public_id} (해시 기반, 업로드 제외)`);
         } else {
           // 해시가 다르면 새 파일로 업로드
           filesToUpload.push({
@@ -554,63 +537,14 @@ export async function cleanupFiles(keepFiles, clientId, fileContents = {}) {
       }
     }
 
-    // 4. Cloudinary에서 삭제할 파일들 찾기 (해시값만으로 비교)
-    const filesToDelete = [];
-    cloudinaryFiles.resources.forEach(resource => {
-      const fileHash = resource.context?.custom?.file_hash || resource.context?.file_hash;
+    // 4. 파일 삭제 기능 제거 - Cloudinary 파일은 삭제하지 않음
+    logger.info(`Cloudinary 파일 삭제 기능 비활성화 - 기존 파일들 유지`);
 
-      if (fileHash) {
-        // 해당 해시의 파일이 유지 목록에 있는지 확인
-        const keepFile = keepFiles.find(file => {
-          const fileBuffer = fileContents[file];
-          if (fileBuffer) {
-            const hash = calculateFileHash(fileBuffer);
-            return hash === fileHash;
-          }
-          return false;
-        });
-
-        // 유지 목록에 없으면 삭제 대상
-        if (!keepFile) {
-          filesToDelete.push(resource);
-        }
-      } else {
-        // 해시가 없는 파일은 삭제 대상 (안전을 위해)
-        logger.warn(`해시가 없는 파일 삭제: ${resource.public_id}`);
-        filesToDelete.push(resource);
-      }
-    });
-
-    // 5. 불필요한 파일들 삭제 (병렬 처리)
-    const deletePromises = filesToDelete.map(async (resource) => {
-      try {
-        await deleteCloudinaryFile(resource.public_id);
-        logger.info(`Cloudinary 파일 삭제: ${resource.public_id}`);
-        return { success: true, public_id: resource.public_id };
-      } catch (deleteError) {
-        logger.error(`Cloudinary 파일 삭제 실패: ${resource.public_id}`, deleteError);
-        return { success: false, public_id: resource.public_id, error: deleteError };
-      }
-    });
-
-    const deleteResults = await Promise.allSettled(deletePromises);
-    const successfulDeletes = deleteResults.filter(result =>
-      result.status === 'fulfilled' && result.value.success
-    ).length;
-    logger.info(`파일 삭제 완료: 성공 ${successfulDeletes}개, 실패 ${filesToDelete.length - successfulDeletes}개`);
-
-    // 6. 새로운 파일들 한번에 업로드 (병렬 처리)
+    // 5. 새로운 파일들 한번에 업로드 (병렬 처리)
     let uploadedFiles = [];
     if (filesToUpload.length > 0) {
-      logger.info(`새 파일들 한번에 업로드 시작: ${filesToUpload.length}개`);
+      // logger.info(`새 파일들 한번에 업로드 시작: ${filesToUpload.length}개`);
       
-      // 디버깅: 업로드할 파일들의 버퍼 크기 확인
-      // filesToUpload.forEach(fileInfo => {
-      //   const { filename, fileBuffer } = fileInfo;
-      //   const bufferSize = fileBuffer ? fileBuffer.length : 0;
-      //   logger.info(`업로드 예정 파일 ${filename}: ${bufferSize} bytes`);
-      // });
-
       const uploadResult = await uploadMultipleFiles(filesToUpload, clientId);
       uploadedFiles = uploadResult.successful;
 
@@ -622,10 +556,10 @@ export async function cleanupFiles(keepFiles, clientId, fileContents = {}) {
       }
     }
 
-    // 7. 최종 파일 목록 생성 (유지된 파일 + 업로드된 파일)
+    // 6. 최종 파일 목록 생성 (유지된 파일 + 업로드된 파일)
     const finalFiles = [...filesToKeep, ...uploadedFiles];
 
-    // 8. 응답용 파일 목록 생성
+    // 7. 응답용 파일 목록 생성
     const responseFiles = finalFiles.map(fileInfo => ({
       filename: fileInfo.filename,
       cloudinary_url: fileInfo.cloudinaryInfo.secure_url,
@@ -633,32 +567,48 @@ export async function cleanupFiles(keepFiles, clientId, fileContents = {}) {
       file_hash: fileInfo.fileHash
     }));
 
-    // 9. DB 저장용 데이터 생성
-    const dbData = finalFiles.map(fileInfo => ({
-      file_hash: fileInfo.fileHash,
-      public_id: fileInfo.cloudinaryInfo.public_id,
-      cloudinary_url: fileInfo.cloudinaryInfo.secure_url,
-      filename: fileInfo.filename,
-      file_size: 0, // 파일 크기는 알 수 없으므로 0으로 설정
-      created_at: new Date()
-    }));
+    // 8. DB 저장용 데이터 생성 (완전 동일 파일만 제외)
+    let dbData = [];
+    
+    if (db) {
+      // DB가 제공된 경우 완전 동일 파일(해시 + 파일명)만 제외
+      for (const fileInfo of finalFiles) {
+        // DB에서 동일한 해시와 파일명을 가진 파일 검색
+        const exactMatch = await db.collection('file_uploads').findOne({
+          file_hash: fileInfo.fileHash,
+          filename: fileInfo.filename
+        });
+        
+        if (exactMatch) {
+          // 완전히 동일한 파일이면 DB 추가에서 제외
+          logger.info(`완전 동일 파일 DB 추가 제외: ${fileInfo.filename} (해시: ${fileInfo.fileHash.substring(0, 8)}...)`);
+          continue;
+        }
+        
+        // 완전 동일하지 않으면 DB 추가 (같은 해시, 다른 파일명 포함)
+        dbData.push({
+          file_hash: fileInfo.fileHash,
+          public_id: fileInfo.cloudinaryInfo.public_id,
+          cloudinary_url: fileInfo.cloudinaryInfo.secure_url,
+          filename: fileInfo.filename,
+          file_size: 0, // 파일 크기는 알 수 없으므로 0으로 설정
+          created_at: new Date()
+        });
+      }
+    } else {
+      // DB가 제공되지 않은 경우 기존 로직 (모든 파일 포함)
+      dbData = finalFiles.map(fileInfo => ({
+        file_hash: fileInfo.fileHash,
+        public_id: fileInfo.cloudinaryInfo.public_id,
+        cloudinary_url: fileInfo.cloudinaryInfo.secure_url,
+        filename: fileInfo.filename,
+        file_size: 0, // 파일 크기는 알 수 없으므로 0으로 설정
+        created_at: new Date()
+      }));
+    }
 
-    // 디버깅: 최종 결과 로그
-    logger.info('=== 최종 파일 처리 결과 ===');
-    logger.info(`유지된 파일: ${filesToKeep.length}개`);
-    // filesToKeep.forEach(file => {
-    //   logger.info(`  유지: ${file.filename} -> ${file.cloudinaryInfo.public_id} (기존 파일)`);
-    // });
-
-    logger.info(`새로 업로드된 파일: ${uploadedFiles.length}개`);
-    // uploadedFiles.forEach(file => {
-    //   logger.info(`  업로드: ${file.filename} -> ${file.cloudinaryInfo.public_id} (새 파일)`);
-    // });
-
-    logger.info(`최종 파일 목록: ${responseFiles.length}개`);
-    // responseFiles.forEach(file => {
-    //   logger.info(`  ${file.filename} -> ${file.cloudinary_url}`);
-    // });
+    // 간단한 요약 로그 출력
+    logger.info(`파일 처리 완료: 유지 ${filesToKeep.length}개, 업로드 ${uploadedFiles.length}개`);
 
     return {
       files: responseFiles,
