@@ -24,8 +24,8 @@ router.post('/init', upload.any(), async function (req, res, next) {
     #swagger.tags = ['시스템']
     #swagger.summary  = 'DB 초기화'
     #swagger.description = `데이터베이스를 초기화합니다.<br>
-      이전에 등록된 파일은 삭제되지 않습니다.<br>
-      일단 initData와 업로드할 파일을 같이 전달해서 초기화 작업을 수행해 보고 만약 업로드할 파일이 많아서 502번 에러가 발생하면 파일을 나눠서 먼저 업로드한 후 파일 업로드가 끝나면 initData만 전달해서 초기화를 수행하면 됩니다.<br>
+      파일을 여러번 나눠서 업로드 해도 이전에 업로드한 파일은 삭제되지 않습니다.<br>
+      먼저 initData와 업로드할 파일을 같이 전달해서 초기화 작업을 수행해 보고 만약 업로드할 파일이 많아서 502번 에러가 발생하면 파일을 나눠서 먼저 업로드한 후 파일 업로드가 끝나면 initData만 전달해서 초기화를 수행하면 됩니다.<br>
       
       1. 파일만 업로드: 파일을 추가로 업로드<br>
       2. initData만 업로드: initData의 이미지 경로를 cloudinary 기반 url로 수정하고 initData로 DB 초기화<br>
