@@ -8,10 +8,15 @@ const nextSeq = async (db, _id) => {
   let result = await db.collection('seq').findOneAndUpdate({ _id }, { $inc: { no: 1 } });
   if (!result) {
     result = { _id, no: 1 };
-    await db.collection('seq').insertOne({ _id, no: 2 });
+    await setSeq(db, _id, 2);
+    // await db.collection('seq').insertOne({ _id, no: 2 });
   }
   // logger.debug('nextseq', _id, result.no)
   return result.no;
+}
+
+const setSeq = async (db, _id, no) => {
+  await db.collection('seq').updateOne({ _id }, { $set: { no } }, { upsert: true });
 }
 
 export const getClientId = (req) => {
@@ -28,6 +33,7 @@ export const getDb = async (clientId) => {
 
   const db = client.db(clientId);
   db.nextSeq = (_id) => nextSeq(db, _id);
+  db.setSeq = (_id, no) => setSeq(db, _id, no);
   return db;
 };
 
