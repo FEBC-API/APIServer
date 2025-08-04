@@ -204,7 +204,6 @@ router.post('/init', upload.any(), async function (req, res, next) {
     const insertStats = {};
 
     for (const [collectionName, documents] of Object.entries(updatedInitData)) {
-      logger.debug(`${collectionName}: ${documents.length}건 등록 시작`);
       if (!documents || !Array.isArray(documents) || documents.length === 0) {
         continue;
       }
@@ -217,7 +216,7 @@ router.post('/init', upload.any(), async function (req, res, next) {
         // for (const doc of documents) {
           const newId = i + 1;
           // const newId = await db.nextSeq(collectionName);
-          logger.debug(collectionName, '_id', newId);
+          // logger.debug(collectionName, '_id', newId);
           documentsWithNewIds.push({
             _id: newId,
             ...doc,
@@ -227,8 +226,6 @@ router.post('/init', upload.any(), async function (req, res, next) {
 
           db.setSeq(collectionName, newId + 1);
         }
-
-        logger.info(`${collectionName}: ${documentsWithNewIds.length}건 등록 준비 완료`);
 
         const result = await db.collection(collectionName).insertMany(documentsWithNewIds);
         const insertedCount = result.insertedCount;

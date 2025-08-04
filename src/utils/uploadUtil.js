@@ -485,13 +485,13 @@ export async function cleanupFiles(keepFiles, clientId, fileContents = {}) {
     const cloudinaryFileMap = new Map(); // 해시 -> 파일 배열
 
     cloudinaryFiles.resources.forEach(resource => {
-      logger.trace('cloudinary에 등록된 리소스:', cloudinaryFiles.resources.length);
+      
 
       // 다양한 방법으로 메타데이터 추출 시도
       const originalName = resource.context?.custom?.original_name;
       const fileHash = resource.context?.custom?.file_hash;
 
-      logger.info(`Cloudinary 파일 처리: ${originalName} (해시: ${fileHash ? fileHash.substring(0, 8) + '...' : '없음'})`);
+      // logger.info(`Cloudinary 파일 처리: ${originalName} (해시: ${fileHash ? fileHash.substring(0, 8) + '...' : '없음'})`);
 
       // 해시 기반 맵 (해시가 있는 경우만)
       if (fileHash) {
@@ -516,20 +516,20 @@ export async function cleanupFiles(keepFiles, clientId, fileContents = {}) {
       // 클라이언트에서 보낸 파일 내용 사용
       const fileBuffer = fileContents[keepFile];
       const bufferSize = fileBuffer ? fileBuffer.length : 0;
-      logger.info(`파일 ${keepFile} 버퍼 크기: ${bufferSize} bytes`);
+      // logger.info(`파일 ${keepFile} 버퍼 크기: ${bufferSize} bytes`);
       
       if (fileBuffer && bufferSize > 0) {
         const fileHash = calculateFileHash(fileBuffer);
 
         // Cloudinary에 같은 해시의 파일이 있는지 확인
         const existingCloudinaryFiles = cloudinaryFileMap.get(fileHash);
-        logger.info(`파일 ${keepFile} (해시: ${fileHash.substring(0, 8)}...) 검사 중...`);
+        // logger.info(`파일 ${keepFile} (해시: ${fileHash.substring(0, 8)}...) 검사 중...`);
 
         if (existingCloudinaryFiles && existingCloudinaryFiles.length > 0) {
           logger.info(`  같은 해시의 파일 ${existingCloudinaryFiles.length}개 발견:`);
-          existingCloudinaryFiles.forEach(file => {
-            logger.info(`    - ${file.original_name} -> ${file.public_id}`);
-          });
+          // existingCloudinaryFiles.forEach(file => {
+          //   logger.info(`    - ${file.original_name} -> ${file.public_id}`);
+          // });
 
           // 같은 해시가 있으면 첫 번째 파일을 사용 (업로드 제외, DB에는 저장)
           const firstFile = existingCloudinaryFiles[0];
@@ -539,7 +539,7 @@ export async function cleanupFiles(keepFiles, clientId, fileContents = {}) {
             cloudinaryInfo: firstFile
           });
           keepFileHashes.add(fileHash);
-          logger.info(`  ✅ 기존 파일 유지: ${keepFile} -> ${firstFile.public_id} (해시 기반, 업로드 제외)`);
+          // logger.info(`  ✅ 기존 파일 유지: ${keepFile} -> ${firstFile.public_id} (해시 기반, 업로드 제외)`);
         } else {
           // 해시가 다르면 새 파일로 업로드
           filesToUpload.push({
@@ -605,11 +605,11 @@ export async function cleanupFiles(keepFiles, clientId, fileContents = {}) {
       logger.info(`새 파일들 한번에 업로드 시작: ${filesToUpload.length}개`);
       
       // 디버깅: 업로드할 파일들의 버퍼 크기 확인
-      filesToUpload.forEach(fileInfo => {
-        const { filename, fileBuffer } = fileInfo;
-        const bufferSize = fileBuffer ? fileBuffer.length : 0;
-        logger.info(`업로드 예정 파일 ${filename}: ${bufferSize} bytes`);
-      });
+      // filesToUpload.forEach(fileInfo => {
+      //   const { filename, fileBuffer } = fileInfo;
+      //   const bufferSize = fileBuffer ? fileBuffer.length : 0;
+      //   logger.info(`업로드 예정 파일 ${filename}: ${bufferSize} bytes`);
+      // });
 
       const uploadResult = await uploadMultipleFiles(filesToUpload, clientId);
       uploadedFiles = uploadResult.successful;
@@ -646,19 +646,19 @@ export async function cleanupFiles(keepFiles, clientId, fileContents = {}) {
     // 디버깅: 최종 결과 로그
     logger.info('=== 최종 파일 처리 결과 ===');
     logger.info(`유지된 파일: ${filesToKeep.length}개`);
-    filesToKeep.forEach(file => {
-      logger.info(`  유지: ${file.filename} -> ${file.cloudinaryInfo.public_id} (기존 파일)`);
-    });
+    // filesToKeep.forEach(file => {
+    //   logger.info(`  유지: ${file.filename} -> ${file.cloudinaryInfo.public_id} (기존 파일)`);
+    // });
 
     logger.info(`새로 업로드된 파일: ${uploadedFiles.length}개`);
-    uploadedFiles.forEach(file => {
-      logger.info(`  업로드: ${file.filename} -> ${file.cloudinaryInfo.public_id} (새 파일)`);
-    });
+    // uploadedFiles.forEach(file => {
+    //   logger.info(`  업로드: ${file.filename} -> ${file.cloudinaryInfo.public_id} (새 파일)`);
+    // });
 
     logger.info(`최종 파일 목록: ${responseFiles.length}개`);
-    responseFiles.forEach(file => {
-      logger.info(`  ${file.filename} -> ${file.cloudinary_url}`);
-    });
+    // responseFiles.forEach(file => {
+    //   logger.info(`  ${file.filename} -> ${file.cloudinary_url}`);
+    // });
 
     return {
       files: responseFiles,
