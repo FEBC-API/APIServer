@@ -404,7 +404,7 @@ export async function uploadMultipleFiles(files, clientId) {
                 return;
               }
 
-              logger.info(`파일 업로드 완료: ${filename} -> ${result.secure_url}`);
+              // logger.info(`파일 업로드 완료: ${filename} -> ${result.secure_url}`);
               resolve({
                 filename: filename,
                 fileHash: fileHash,
@@ -526,7 +526,7 @@ export async function cleanupFiles(keepFiles, clientId, fileContents = {}) {
         // logger.info(`파일 ${keepFile} (해시: ${fileHash.substring(0, 8)}...) 검사 중...`);
 
         if (existingCloudinaryFiles && existingCloudinaryFiles.length > 0) {
-          logger.info(`  같은 해시의 파일 ${existingCloudinaryFiles.length}개 발견:`);
+          // logger.info(`  같은 해시의 파일 ${existingCloudinaryFiles.length}개 발견:`);
           // existingCloudinaryFiles.forEach(file => {
           //   logger.info(`    - ${file.original_name} -> ${file.public_id}`);
           // });
@@ -547,7 +547,7 @@ export async function cleanupFiles(keepFiles, clientId, fileContents = {}) {
             fileBuffer: fileBuffer,
             fileHash: fileHash
           });
-          logger.info(`  ❌ 새 파일 업로드 예정: ${keepFile} - 새로운 파일`);
+          // logger.info(`  ❌ 새 파일 업로드 예정: ${keepFile} - 새로운 파일`);
         }
       } else {
         logger.warn(`파일 내용이 없음: ${keepFile}`);
