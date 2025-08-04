@@ -1,0 +1,4 @@
+name: api-server
+routes:
+  - path: /
+    timeout_seconds: 300
