@@ -95,7 +95,7 @@ router.get('/products/:_id', [
 
   /*
     #swagger.tags = ['구매 후기']
-    #swagger.summary  = '상품 구매 후기 목록'
+    #swagger.summary  = '지정 상품 구매 후기 목록'
     #swagger.description = '지정한 상품의 구매 후기 목록을 조회합니다.'
      
     #swagger.security = [{
@@ -173,12 +173,19 @@ router.get('/all', async function (req, res, next) {
 
   /*
     #swagger.tags = ['구매 후기']
-    #swagger.summary  = '구매 후기 목록'
-    #swagger.description = '모든 사용자의 구매 후기 목록을 조회합니다.'
+    #swagger.summary  = '모든 상품 구매 후기 목록'
+    #swagger.description = '모든 상품의 구매 후기 목록을 조회합니다.<br>'
     
     #swagger.security = [{
       "Client ID": []
     }]
+
+    #swagger.parameters['full_name'] = {
+      description: "회원 이름 전체 표시 여부(true: 전체 표시, 생략시 첫글자만 표시하고 뒷부분은 마스킹 처리함)",
+      in: 'query',
+      type: 'string',
+      example: 'true'
+    }
 
     #swagger.responses[200] = {
       description: '성공',
@@ -214,8 +221,8 @@ router.get('/:_id', async function (req, res, next) {
 
   /*
     #swagger.tags = ['구매 후기']
-    #swagger.summary  = '구매 후기 상세'
-    #swagger.description = '구매 후기를 상세 조회합니다.'
+    #swagger.summary  = '상품 구매 후기 상세'
+    #swagger.description = '상품의 구매 후기를 상세 조회합니다.'
     
     #swagger.security = [{
       "Client ID": []
@@ -226,6 +233,13 @@ router.get('/:_id', async function (req, res, next) {
       in: 'path',
       type: 'number',
       example: 3
+    }
+
+    #swagger.parameters['full_name'] = {
+      description: "회원 이름 전체 표시 여부(true: 전체 표시, 생략시 첫글자만 표시하고 뒷부분은 마스킹 처리함)",
+      in: 'query',
+      type: 'string',
+      example: 'true'
     }
 
     #swagger.responses[200] = {
@@ -279,6 +293,13 @@ router.get('/', jwtAuth.auth('user'), async function (req, res, next) {
       "Access Token": [],
       "Client ID": []
     }]
+
+    #swagger.parameters['full_name'] = {
+      description: "회원 이름 전체 표시 여부(true: 전체 표시, 생략시 첫글자만 표시하고 뒷부분은 마스킹 처리함)",
+      in: 'query',
+      type: 'string',
+      example: 'true'
+    }
     
     #swagger.responses[200] = {
       description: '성공',
@@ -332,6 +353,12 @@ router.get('/seller/:seller_id', async function (req, res, next) {
       in: 'path',
       type: 'number',
       example: 2
+    }
+    #swagger.parameters['full_name'] = {
+      description: "회원 이름 전체 표시 여부(true: 전체 표시, 생략시 첫글자만 표시하고 뒷부분은 마스킹 처리함)",
+      in: 'query',
+      type: 'string',
+      example: 'true'
     }
 
     #swagger.responses[200] = {
