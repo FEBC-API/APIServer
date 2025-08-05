@@ -21,7 +21,7 @@ const reviewModel = {
   },
 
   // 조건에 맞는 후기 목록 조회
-  async findBy(clientId, query = {}, sortBy) {
+  async findBy(clientId, { query = {}, sortBy, fullName } = {}) {
     logger.trace(arguments);
     const db = await getDb(clientId);
 
@@ -57,7 +57,7 @@ const reviewModel = {
           'product.name': '$product.name',
           'user._id': '$user._id',
           'user.image': '$user.image',
-          'user.name': {
+          'user.name': fullName ? '$user.name' : {
             $concat: [
               { $substrCP: ['$user.name', 0, 1] }, // 첫 번째 문자 추출
               {
@@ -120,7 +120,7 @@ const reviewModel = {
   },
 
   // 판매자 후기 목록 조회
-  async findBySeller(clientId, seller_id) {
+  async findBySeller(clientId, seller_id, fullName) {
     logger.trace(arguments);
     const db = await getDb(clientId);
 
@@ -157,7 +157,7 @@ const reviewModel = {
           'review.createdAt': '$review.createdAt',
           'review.user._id': '$user._id',
           'review.user.image': '$user.image',
-          'review.user.name': {
+          'review.user.name': fullName ? '$user.name' : {
             $concat: [
               { $substrCP: ['$user.name', 0, 1] }, // 첫 번째 문자 추출
               {

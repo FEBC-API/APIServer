@@ -90,7 +90,7 @@ router.post('/', jwtAuth.auth('user'), [
 // 지정한 상품의 후기 목록 조회
 router.get('/products/:_id', [
   query('rating').optional().isInt().withMessage('후기 점수는 정수만 입력 가능합니다.'),
-  query('sort').optional().isJSON().withMessage('sort 값은 JSON 형식의 문자열이어야 합니다.')
+  query('sort').optional().isJSON().withMessage('sort 값은 JSON 형식의 문자열이어야 합니다.'),
 ], validator.checkResult, async function (req, res, next) {
 
   /*
@@ -109,7 +109,7 @@ router.get('/products/:_id', [
       example: 3
     }
     #swagger.parameters['rating'] = {
-      description: "후기 점수",
+      description: "검색할 후기 점수(생략시 모든 후기 점수)",
       in: 'query',
       type: 'number',
       example: 5
@@ -119,6 +119,12 @@ router.get('/products/:_id', [
       in: 'query',
       type: 'string',
       example: '{\"replies\": -1}'
+    }
+    #swagger.parameters['full_name'] = {
+      description: "회원 이름 전체 표시 여부(true: 전체 표시, 생략시 첫글자만 표시하고 뒷부분은 마스킹 처리함)",
+      in: 'query',
+      type: 'string',
+      example: 'true'
     }
 
     #swagger.responses[200] = {
@@ -155,7 +161,7 @@ router.get('/products/:_id', [
     let sortBy = JSON.parse(req.query.sort || '{}');
     sortBy['_id'] = sortBy['_id'] || -1; // 내림차순
 
-    const item = await reviewModel.findBy(clientId, search, sortBy);
+    const item = await reviewModel.findBy(clientId, { query: search, sortBy, fullName: req.query.full_name });
     res.json({ ok: 1, item });
   } catch (err) {
     next(err);
@@ -196,7 +202,7 @@ router.get('/all', async function (req, res, next) {
 
   try {
     const clientId = getClientId(req);
-    const item = await reviewModel.findBy(clientId);
+    const item = await reviewModel.findBy(clientId, { fullName: req.query.full_name });
     res.json({ ok: 1, item });
   } catch (err) {
     next(err);
@@ -250,7 +256,7 @@ router.get('/:_id', async function (req, res, next) {
 
   try {
     const clientId = getClientId(req);
-    const item = await reviewModel.findBy(clientId, { _id: Number(req.params._id) });
+    const item = await reviewModel.findBy(clientId, { query: { _id: Number(req.params._id) }, fullName: req.query.full_name });
     if (item) {
       res.json({ ok: 1, item });
     } else {
@@ -302,7 +308,7 @@ router.get('/', jwtAuth.auth('user'), async function (req, res, next) {
 
   try {
     const clientId = getClientId(req);
-    const item = await reviewModel.findBy(clientId, { user_id: req.user._id });
+    const item = await reviewModel.findBy(clientId, { query: { user_id: req.user._id }, fullName: req.query.full_name });
     res.json({ ok: 1, item });
   } catch (err) {
     next(err);
@@ -351,7 +357,7 @@ router.get('/seller/:seller_id', async function (req, res, next) {
   try {
     const clientId = getClientId(req);
     const seller_id = Number(req.params.seller_id);
-    const item = await reviewModel.findBySeller(clientId, seller_id);
+    const item = await reviewModel.findBySeller(clientId, seller_id, req.query.full_name);
     res.json({ ok: 1, item });
   } catch (err) {
     next(err);

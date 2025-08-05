@@ -1,0 +1,15 @@
+meta {
+  name: 상품 후기 목록 조회(작성자 이름 표시)
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{url}}/replies/products/3?full_name=true
+  body: none
+  auth: none
+}
+
+params:query {
+  full_name: true
+}
