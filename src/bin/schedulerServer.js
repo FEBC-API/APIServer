@@ -7,8 +7,8 @@ import axios from 'axios';
 import moment from 'moment-timezone';
 import { db } from '#config/index.js';
 import dayjs from 'dayjs';
-import utc from 'dayjs/plugin/utc';
-import timezone from 'dayjs/plugin/timezone';
+import utc from 'dayjs/plugin/utc.js';
+import timezone from 'dayjs/plugin/timezone.js';
 
 // dayjs 플러그인 설정
 dayjs.extend(utc);
@@ -100,6 +100,12 @@ async function loadAndStartClientJobs(clientId) {
 // 개별 스케줄러 시작
 async function startJob(clientId, scheduler) {
   try {
+    // scheduled 상태가 아닌 경우 스킵
+    if (scheduler.state !== 'scheduled') {
+      logger.info(`Client ${clientId} - 스케줄러 ${scheduler._id} (${scheduler.name})는 ${scheduler.state} 상태이므로 스킵`);
+      return;
+    }
+
     // 클라이언트에서 전달된 시간은 한국 시간이므로 UTC로 변환
     const scheduledTime = dayjs(scheduler.time).tz('Asia/Seoul');
     const now = dayjs().tz('Asia/Seoul');
@@ -108,7 +114,7 @@ async function startJob(clientId, scheduler) {
     if (delay <= 0) {
       logger.warn(`Client ${clientId} - 스케줄러 ${scheduler._id} (${scheduler.name})는 이미 실행 시간이 지났습니다`);
 
-      // 과거 시간이면 missed 상태로 업데이트
+      // 과거 시간이면 missed 상태로 업데이트 (scheduled 상태인 경우에만)
       await updateExecutionResult(clientId, scheduler._id, {
         state: 'missed',
         executionResult: {

@@ -3,8 +3,8 @@ import moment from 'moment-timezone';
 import logger from '#utils/logger.js';
 import { getDb } from '#utils/dbUtil.js';
 import dayjs from 'dayjs';
-import utc from 'dayjs/plugin/utc';
-import timezone from 'dayjs/plugin/timezone';
+import utc from 'dayjs/plugin/utc.js';
+import timezone from 'dayjs/plugin/timezone.js';
 
 // dayjs 플러그인 설정
 dayjs.extend(utc);
