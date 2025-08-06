@@ -121,13 +121,13 @@ router.post('/', [
     const { name, description, endpoint, time, extra } = req.body;
 
     // 미래 시간 체크 - 클라이언트에서 전달된 시간은 한국 시간이므로 UTC로 변환
-    const scheduledTime = dayjs(time).tz('Asia/Seoul').toISOString();
+    const scheduledTime = dayjs(time.replace(/\./g, '-').replace(' ', 'T') + '+09:00');
     console.log('클라이언트에서 전달된 시간:', time);
-    console.log('변환된 UTC 시간:', scheduledTime);
+    console.log('변환된 UTC 시간:', scheduledTime.toISOString());
     console.log('현재 UTC 시간:', dayjs().tz('Asia/Seoul').toISOString());
     
     const now = dayjs().tz('Asia/Seoul');
-    if (dayjs(scheduledTime).isSameOrBefore(now)) {
+    if (scheduledTime.isSameOrBefore(now)) {
       return next(new Error('실행 시간은 미래 시간이어야 합니다'));
     }
 
@@ -307,9 +307,9 @@ router.patch('/:_id', [
     // 미래 시간 체크 (time이 제공된 경우)
     if (updateData.time) {
       // 클라이언트에서 전달된 시간은 한국 시간이므로 UTC로 변환
-      const scheduledTime = dayjs(updateData.time).tz('Asia/Seoul').toISOString();
+      const scheduledTime = dayjs(updateData.time.replace(/\./g, '-').replace(' ', 'T') + '+09:00');
       const now = dayjs().tz('Asia/Seoul');
-      if (dayjs(scheduledTime).isSameOrBefore(now)) {
+      if (scheduledTime.isSameOrBefore(now)) {
         return next(new Error('실행 시간은 미래 시간이어야 합니다'));
       }
     }

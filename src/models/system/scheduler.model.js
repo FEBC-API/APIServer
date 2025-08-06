@@ -102,7 +102,7 @@ const schedulerModel = {
 
       for (const scheduler of scheduledSchedulers) {
         // 클라이언트에서 전달된 시간은 한국 시간이므로 UTC로 변환
-        const scheduledTime = dayjs(scheduler.time).tz('Asia/Seoul');
+        const scheduledTime = dayjs(scheduler.time.replace(/\./g, '-').replace(' ', 'T') + '+09:00');
         
         if (scheduledTime.isSameOrBefore(now)) {
           await db.collection('scheduler').updateOne(
