@@ -2,6 +2,13 @@ import moment from 'moment-timezone';
 
 import logger from '#utils/logger.js';
 import { getDb } from '#utils/dbUtil.js';
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+import timezone from 'dayjs/plugin/timezone';
+
+// dayjs 플러그인 설정
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 const schedulerModel = {
   // 스케줄러 생성
@@ -84,7 +91,7 @@ const schedulerModel = {
   async updateMissedSchedulers(clientId) {
     try {
       const db = await getDb(clientId);
-      const now = new Date();
+      const now = dayjs().tz('Asia/Seoul');
       
       // scheduled 상태인 스케줄러 중에서 실행 시간이 지난 것들을 찾아서 missed로 업데이트
       const scheduledSchedulers = await db.collection('scheduler').find({ 
@@ -92,9 +99,10 @@ const schedulerModel = {
       }).toArray();
 
       for (const scheduler of scheduledSchedulers) {
-        const scheduledTime = new Date(scheduler.time.replace(/\./g, '-').replace(' ', 'T') + '+09:00');
+        // 클라이언트에서 전달된 시간은 한국 시간이므로 UTC로 변환
+        const scheduledTime = dayjs(scheduler.time).tz('Asia/Seoul');
         
-        if (scheduledTime.getTime() <= now.getTime()) {
+        if (scheduledTime.isSameOrBefore(now)) {
           await db.collection('scheduler').updateOne(
             { _id: scheduler._id },
             { 

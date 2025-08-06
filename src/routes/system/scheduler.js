@@ -5,6 +5,13 @@ import logger from '#utils/logger.js';
 import schedulerModel from '#models/system/scheduler.model.js';
 import { getClientId } from '#utils/dbUtil.js';
 import schedulerServer from '#bin/schedulerServer.js';
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+import timezone from 'dayjs/plugin/timezone';
+
+// dayjs 플러그인 설정
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 const router = express.Router();
 
@@ -111,10 +118,14 @@ router.post('/', [
     const clientId = getClientId(req);
     const { name, description, endpoint, time, extra } = req.body;
 
-    // 미래 시간 체크
-    const scheduledTime = new Date(time.replace(/\./g, '-').replace(' ', 'T') + '+09:00');
-    const now = new Date();
-    if (scheduledTime <= now) {
+    // 미래 시간 체크 - 클라이언트에서 전달된 시간은 한국 시간이므로 UTC로 변환
+    const scheduledTime = dayjs(time).tz('Asia/Seoul').toISOString();
+    console.log('클라이언트에서 전달된 시간:', time);
+    console.log('변환된 UTC 시간:', scheduledTime);
+    console.log('현재 UTC 시간:', dayjs().tz('Asia/Seoul').toISOString());
+    
+    const now = dayjs().tz('Asia/Seoul');
+    if (dayjs(scheduledTime).isSameOrBefore(now)) {
       return next(new Error('실행 시간은 미래 시간이어야 합니다'));
     }
 
@@ -135,6 +146,7 @@ router.post('/', [
 
     res.status(201).json({ ok: 1, item });
   } catch (err) {
+    logger.error(err);
     next(err);
   }
 });
@@ -292,9 +304,10 @@ router.patch('/:_id', [
 
     // 미래 시간 체크 (time이 제공된 경우)
     if (updateData.time) {
-      const scheduledTime = new Date(updateData.time.replace(/\./g, '-').replace(' ', 'T') + '+09:00');
-      const now = new Date();
-      if (scheduledTime <= now) {
+      // 클라이언트에서 전달된 시간은 한국 시간이므로 UTC로 변환
+      const scheduledTime = dayjs(updateData.time).tz('Asia/Seoul').toISOString();
+      const now = dayjs().tz('Asia/Seoul');
+      if (dayjs(scheduledTime).isSameOrBefore(now)) {
         return next(new Error('실행 시간은 미래 시간이어야 합니다'));
       }
     }
