@@ -9,10 +9,12 @@ import { db } from '#config/index.js';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc.js';
 import timezone from 'dayjs/plugin/timezone.js';
+import isSameOrBefore from 'dayjs/plugin/isSameOrBefore.js';
 
 // dayjs 플러그인 설정
 dayjs.extend(utc);
 dayjs.extend(timezone);
+dayjs.extend(isSameOrBefore);
 
 const jobs = new Map(); // clientId별로 timeoutId 저장
 
