@@ -72,41 +72,90 @@ async function loadSwaggerFiles() {
 await loadSwaggerFiles();
 
 
-// 요청 제한 설정 (10초에 100번 요청 가능)
-const limiter = rateLimit({
-  windowMs: 1000 * 10, // 10초
-  max: 100, // 최대 요청 횟수
-  keyGenerator: (req) => req.headers['x-forwarded-for'] || req.ip, // 요청 IP를 키로 사용
-  skip: (req) => req.path.startsWith('/files/'), // /files/ 경로는 제한을 두지 않음
-  handler: function(req, res /*, next*/) {
-    const blockTime = 1000*60*60; // 한 시간
-    const ip = req.headers['x-forwarded-for'] || req.ip;
-    // 차단된 IP 목록에 추가
-    blacklistedIps.set(ip, { ip, time: Date.now() });
-    setTimeout(() => {
-      errorLogger.error('블랙리스트 해제', ip);
-      // 차단된 IP 목록에서 제거
-      blacklistedIps.delete(ip);
-    }, blockTime);
-    errorLogger.error('블랙리스트 추가', ip);
-    res.status(429).json({ ok: 0, message: '요청 횟수 제한 초과(100회/10초)로 인해 IP를 차단합니다.' });
-  }
-});
+// // 요청 제한 설정 (10초에 100번 요청 가능)
+// const limiter = rateLimit({
+//   windowMs: 1000 * 10, // 10초
+//   max: 100, // 최대 요청 횟수
+//   keyGenerator: (req) => req.headers['x-forwarded-for'] || req.ip, // 요청 IP를 키로 사용
+//   skip: (req) => req.path.startsWith('/files/'), // /files/ 경로는 제한을 두지 않음
+//   handler: function(req, res /*, next*/) {
+//     const blockTime = 1000*60*60; // 한 시간
+//     const ip = req.headers['x-forwarded-for'] || req.ip;
+//     // 차단된 IP 목록에 추가
+//     blacklistedIps.set(ip, { ip, time: Date.now() });
+//     setTimeout(() => {
+//       errorLogger.error('블랙리스트 해제', ip);
+//       // 차단된 IP 목록에서 제거
+//       blacklistedIps.delete(ip);
+//     }, blockTime);
+//     errorLogger.error('블랙리스트 추가', ip);
+//     res.status(429).json({ ok: 0, message: '요청 횟수 제한 초과(100회/10초)로 인해 IP를 차단합니다.' });
+//   }
+// });
 
-app.use((req, res, next) => {
-  // 블랙리스트에 등록된 IP는 요청을 차단
-  const ip = req.headers['x-forwarded-for'] || req.ip;
-  const blacklist = blacklistedIps.get(ip);
-  if (blacklist) {
-    const blockEndTime = moment(blacklist.time).add(1, 'hour');
-    const minutesLeft = blockEndTime.diff(moment(), 'minutes'); // 남은 시간(분) 계산
-    return res.status(403).json({ ok: 0, message: `요청 횟수 제한 초과(100회/10초)로 인해 이 IP는 1시간 동안 접속이 차단되었습니다. 차단 해제까지 남은 시간 ${minutesLeft}분 동안 어디에서 무한루프가 발생했는지 확인한 후 버그를 수정하고 재도전하세요^^`});
-  }
-  next();
-});
+// app.use((req, res, next) => {
+//   // 블랙리스트에 등록된 IP는 요청을 차단
+//   const ip = req.headers['x-forwarded-for'] || req.ip;
+//   const blacklist = blacklistedIps.get(ip);
+//   if (blacklist) {
+//     const blockEndTime = moment(blacklist.time).add(1, 'hour');
+//     const minutesLeft = blockEndTime.diff(moment(), 'minutes'); // 남은 시간(분) 계산
+//     return res.status(403).json({ ok: 0, message: `요청 횟수 제한 초과(100회/10초)로 인해 이 IP는 1시간 동안 접속이 차단되었습니다. 차단 해제까지 남은 시간 ${minutesLeft}분 동안 어디에서 무한루프가 발생했는지 확인한 후 버그를 수정하고 재도전하세요^^`});
+//   }
+//   next();
+// });
 
-// 모든 경로에 제한 적용
-app.use(limiter);
+
+
+// // 클라이언트 도메인에 따른 요청 제한 설정(개발 서버는 100회 까지, 배포 주소는 1000회 까지)
+// const getRequestLimit = (req) => {
+//   const origin = req.headers.origin || req.headers.referer || '';
+//   const isVercelClient = origin.includes('vercel.app');
+  
+//   return {
+//     limit: isVercelClient ? 1000 : 100,
+//     message: isVercelClient ? '1000회/10초' : '100회/10초'
+//   };
+// };
+
+// // 동적 요청 제한 설정 (최신 express-rate-limit 사용)
+// const limiter = rateLimit({
+//   windowMs: 1000 * 10, // 10초
+//   limit: (req) => getRequestLimit(req).limit, // 동적으로 제한 결정
+//   keyGenerator: (req) => req.headers['x-forwarded-for'] || req.ip, // 요청 IP를 키로 사용
+//   skip: (req) => req.path.startsWith('/files/'), // /files/ 경로는 제한을 두지 않음
+//   handler: function(req, res /*, next*/) {
+//     const blockTime = 1000*60*60; // 한 시간
+//     const ip = req.headers['x-forwarded-for'] || req.ip;
+//     const requestLimit = getRequestLimit(req);
+//     // 차단된 IP 목록에 추가
+//     blacklistedIps.set(ip, { ip, time: Date.now() });
+//     setTimeout(() => {
+//       errorLogger.error('블랙리스트 해제', ip);
+//       // 차단된 IP 목록에서 제거
+//       blacklistedIps.delete(ip);
+//     }, blockTime);
+//     errorLogger.error('블랙리스트 추가', ip);
+//     res.status(429).json({ ok: 0, message: `요청 횟수 제한 초과(${requestLimit.message})로 인해 IP를 차단합니다.` });
+//   }
+// });
+
+// app.use((req, res, next) => {
+//   // 블랙리스트에 등록된 IP는 요청을 차단
+//   const ip = req.headers['x-forwarded-for'] || req.ip;
+//   const blacklist = blacklistedIps.get(ip);
+//   if (blacklist) {
+//     const blockEndTime = moment(blacklist.time).add(1, 'hour');
+//     const minutesLeft = blockEndTime.diff(moment(), 'minutes'); // 남은 시간(분) 계산
+//     const requestLimit = getRequestLimit(req);
+//     return res.status(403).json({ ok: 0, message: `요청 횟수 제한 초과(${requestLimit.message})로 인해 이 IP는 1시간 동안 접속이 차단되었습니다. 차단 해제까지 남은 시간 ${minutesLeft}분 동안 어디에서 무한루프가 발생했는지 확인한 후 버그를 수정하고 재도전하세요^^`});
+//   }
+//   next();
+// });
+
+
+// // 모든 경로에 제한 적용
+// app.use(limiter);
 
 app.use(
   cors({
