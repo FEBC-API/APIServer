@@ -157,7 +157,7 @@ const orderModel = {
         }
       },
       {
-        $set: { ['products.0.review_id']: review_id }
+        $set: { 'products.$.review_id': review_id }
       }
     );
     logger.debug(result);
