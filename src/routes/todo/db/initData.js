@@ -45,7 +45,7 @@ const initData = {
   ],
   users: [],
   nextId: {
-    items: 5,
+    items: 4,
     users: 1
   }
 };
