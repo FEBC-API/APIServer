@@ -33,21 +33,15 @@ const doc = {
   definitions: {
     Error422: {
       ok: 0, 
-      error: {
-        message: '"title" 항목은 필수입니다.'
-      }
+      message: '"title" 항목은 필수입니다.'
     },
     Error404: {
       ok: 0, 
-      error: {
-        message: '/api/todolist/{_id} 리소스를 찾을 수 없습니다.'
-      }
+      message: '/todo/todolist/{_id} 리소스를 찾을 수 없습니다.'
     },
     Error500: {
       ok: 0, 
-      error: {
-        message: '서버 오류'
-      }
+      message: '서버 오류'
     },
     ItemRequest: {
       title: 'TodoList 프로젝트 UI 완성',

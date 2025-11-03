@@ -185,13 +185,13 @@ app.use(function(req, res, next){
 
 // 500 에러
 app.use(function(err, req, res, next){
-  console.log('APP.............................');
-  logger.error(err.status === 404 ? req.method + ' ' +err.message : err.stack+'\n\n');
+  logger.error(err.status === 404 ? req.method + ' ' + err.message : err.stack+'\n\n');
   if(err.cause){
     logger.error(err.cause);
   }
 
   const status = err.cause?.status || err.status || 500;
+  delete err.status;
 
   // let message = status === 500 ? '요청하신 작업 처리에 실패했습니다. 잠시 후 다시 이용해 주시기 바랍니다.' : err.message;
   let message = err.message;
