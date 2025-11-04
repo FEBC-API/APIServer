@@ -12,8 +12,10 @@ const initData = {
       content: "열심히 하자",
       done: true, 
       important: true,
+      category: "work",
       createdAt: getTime(-3, 5),
       updatedAt: getTime(-3, 6),
+      finishAt: getTime(-1, 6),
     },
     {
       _id: 2,
@@ -21,8 +23,10 @@ const initData = {
       content: "제일 어려웠음",
       done: false,
       important: false,
+      category: "study",
       createdAt: getTime(-3, 7),
       updatedAt: getTime(-3, 9),
+      finishedAt: getTime(-2, 1),
     },
     {
       _id: 3,
@@ -30,8 +34,10 @@ const initData = {
       content: "async/await도 같이 공부",
       done: false,
       important: true,
+      category: "personal",
       createdAt: getTime(-2, 1),
       updatedAt: getTime(-2, 5),
+      finishAt: getTime(3, 3),
     },
     {
       _id: 4,
@@ -41,6 +47,7 @@ const initData = {
       important: false,
       createdAt: getTime(-1, 12),
       updatedAt: getTime(-1, 14),
+      finishAt: getTime(2, 13),
     }
   ],
   users: [],

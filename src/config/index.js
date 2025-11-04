@@ -19,6 +19,7 @@ export const db = {
     // ...new Array(15).fill(0).map((_, index) => `febc13-final${index.toString().padStart(2, '0')}-emjf`),
     ...['febc13-final02-emjf', 'febc13-final03-emjf', 'febc13-final04-emjf', 'febc13-final05-emjf', 'febc13-final11-emjf', 'febc13-final13-emjf', 'febc13-final14-emjf'],
     ...['febc13-final01-emjf', 'febc13-final06-emjf', 'febc13-final07-emjf', 'febc13-final09-emjf', 'febc13-final10-emjf', 'febc13-final12-emjf', 'febc13-final15-emjf'],
+    ...new Array(9).fill(0).map((_, index) => `febc15-vanilla${index.toString().padStart(2, '0')}-ecad`),
   ],
 };
 
