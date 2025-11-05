@@ -19,7 +19,7 @@ const doc = {
   info: {
     title: 'TODO List API', 
     description: `할일 목록 API Server입니다.`, 
-    version: '1.0.0',
+    version: '1.0.3',
   },
   host: process.env.API_HOST,
   basePath: '/todo',
@@ -44,8 +44,26 @@ const doc = {
       message: '서버 오류'
     },
     ItemRequest: {
-      title: 'TodoList 프로젝트 UI 완성',
-      content: '이번주에 진핼할 수업 내용을 잘 따라하자.'
+      type: 'object',
+      required: ['title'],
+      properties: {
+        title: {
+          type: 'string',
+          example: 'TodoList 프로젝트 UI 완성'
+        },
+        content: {
+          type: 'string',
+          example: '이번주에 진핼할 수업 내용을 잘 따라하자.'
+        },
+        category: {
+          type: 'string',
+          example: 'study'
+        },
+        finishAt: {
+          type: 'string',
+          example: getTime(-1, 6)
+        }
+      }
     },
     DBInitRequest: {
       pwd: 'adminpassword',
@@ -63,8 +81,10 @@ const doc = {
         content: '열심히 하자',
         done: false,
         important: false,
+        category: 'study',
         createdAt: getTime(),
         updatedAt: getTime(),
+        finishAt: getTime(-1, 6),
       }
     },
     ListResponse: {
@@ -75,8 +95,10 @@ const doc = {
           title: 'Promise 복습',
           done: false,
           important: false,
+          category: 'study',
           createdAt: getTime(-2, 1),
           updatedAt: getTime(-2, 5),
+          finishAt: getTime(-1, 6),
         }
       ],
       pagination: {
@@ -94,8 +116,10 @@ const doc = {
           title: 'Promise 복습',
           done: false,
           important: false,
+          category: 'study',
           createdAt: getTime(-2, 1),
           updatedAt: getTime(-2, 5),
+          finishAt: getTime(-1, 6),
         }
       ],
       pagination: {}

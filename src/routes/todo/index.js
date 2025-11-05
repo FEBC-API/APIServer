@@ -50,7 +50,7 @@ router.get('/todolist', async function(req, res, next) {
 // 할일 등록
 router.post('/todolist', [
   body('title').trim().notEmpty(),
-  body('content').trim().notEmpty(),
+  // body('content').trim().notEmpty(),
 ], async function(req, res, next) {
   // #swagger.tags = ['Todo List']
   // #swagger.summary  = '할일 등록'
@@ -91,7 +91,7 @@ router.post('/todolist', [
       const error = new Error(`"${result.errors[0].path}" 항목은 필수입니다.`);
       error.status = 422;
       next(error);
-    }    
+    }
   }catch(err){
     next(err);
   }
