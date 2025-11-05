@@ -34,7 +34,7 @@ export async function list({ keyword, page, limit } = {}){
   // 검색어
   if(keyword){
     items = _.filter(items, item => {
-      return item.title.includes(keyword) || item.content.includes(keyword);
+      return item.title?.includes(keyword) || item.content?.includes(keyword);
     });
   }
 
