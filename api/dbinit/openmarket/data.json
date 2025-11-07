@@ -801,30 +801,39 @@
       "content": "아이가 6살인데 가지고 놀기 적당한 크기인가요?",
       "replies": [
         {
+          "_id": 1,
           "user": {
             "_id": 2,
             "name": "네오",
             "image": "uploadFiles/user-neo.png"
           },
           "content": "크기는 상품 상세정보에 나와 있습니다.",
+          "createdAt": "2025.11.03 12:52:49",
+          "updatedAt": "2025.11.04 13:52:49",
           "like": 5
         },
         {
+          "_id": 2,
           "user": {
             "_id": 4,
             "name": "제이지",
             "image": "uploadFiles/user-jayg.webp"
           },
           "content": "어디있나 모르겠어요.",
+          "createdAt": "2025.11.03 11:52:49",
+          "updatedAt": "2025.11.04 15:52:49",
           "like": 7
         },
         {
+          "_id": 3,
           "user": {
             "_id": 2,
             "name": "네오",
             "image": "uploadFiles/user-neo.png"
           },
           "content": "높이 60cm 입니다.",
+          "createdAt": "2025.11.01 15:52:49",
+          "updatedAt": "2025.11.02 16:12:49",
           "like": 3
         }
       ]

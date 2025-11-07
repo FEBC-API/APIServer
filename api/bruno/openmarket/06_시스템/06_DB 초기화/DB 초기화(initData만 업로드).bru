@@ -11,10 +11,11 @@ post {
 }
 
 body:multipart-form {
-  initData: @file(C:\febc13\04_final-project\Final-07-Chillin-Code\api\dbinit\team\data.json)
+  initData: @file(D:\likelion\febc-api\APIServer\api\dbinit\openmarket\data.json)
   ~attach: @file()
 }
 
 settings {
   encodeUrl: true
+  timeout: 0
 }
