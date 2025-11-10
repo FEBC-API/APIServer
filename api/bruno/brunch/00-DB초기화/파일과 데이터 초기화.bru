@@ -1,0 +1,21 @@
+meta {
+  name: 파일과 데이터 초기화
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{url}}/db/init
+  body: multipartForm
+  auth: inherit
+}
+
+body:multipart-form {
+  initData: @file(C:\febc15\project-vanilla-sample\api\dbinit\brunch\data.json)
+  attach: @file(C:\febc15\project-vanilla-sample\api\dbinit\brunch\uploadFiles\exam1.png|C:\febc15\project-vanilla-sample\api\dbinit\brunch\uploadFiles\exam2.png|C:\febc15\project-vanilla-sample\api\dbinit\brunch\uploadFiles\keyword.png|C:\febc15\project-vanilla-sample\api\dbinit\brunch\uploadFiles\no_profile.svg|C:\febc15\project-vanilla-sample\api\dbinit\brunch\uploadFiles\no_shooni.jpg|C:\febc15\project-vanilla-sample\api\dbinit\brunch\uploadFiles\user-apeach.webp|C:\febc15\project-vanilla-sample\api\dbinit\brunch\uploadFiles\user-cookping.webp|C:\febc15\project-vanilla-sample\api\dbinit\brunch\uploadFiles\user-dreamping.webp|C:\febc15\project-vanilla-sample\api\dbinit\brunch\uploadFiles\user-flowerping.webp|C:\febc15\project-vanilla-sample\api\dbinit\brunch\uploadFiles\user-heartping.webp|C:\febc15\project-vanilla-sample\api\dbinit\brunch\uploadFiles\user-jayg.webp|C:\febc15\project-vanilla-sample\api\dbinit\brunch\uploadFiles\user-joyping.webp|C:\febc15\project-vanilla-sample\api\dbinit\brunch\uploadFiles\user-loveping.webp|C:\febc15\project-vanilla-sample\api\dbinit\brunch\uploadFiles\user-muzi.webp|C:\febc15\project-vanilla-sample\api\dbinit\brunch\uploadFiles\user-neo.webp|C:\febc15\project-vanilla-sample\api\dbinit\brunch\uploadFiles\user-sparkleping.webp|C:\febc15\project-vanilla-sample\api\dbinit\brunch\uploadFiles\user-twinklingping.webp)
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

@@ -32,8 +32,8 @@ router.post('/init', upload.any(), async function (req, res, next) {
       3. initData + 파일 업로드: 파일 업로드 후 initData로 DB 초기화<br><br>
       bruno나 postman으로 호출하세요.<br>
       body의 타입은 [Multipart Form]으로 지정하고 [Add File]을 클릭하여 파일을 추가할 수 있습니다.<br>
-      Key: initData, Value: api/dbinit/team/data.json 파일을 추가하세요.(선택)<br>
-      Key: attach, Value: api/dbinit/team/uploadFiles 폴더에 있는 파일들을 추가하세요.(선택)`
+      Key: initData, Value: api/dbinit/서비스/data.json 파일을 추가하세요.(선택)<br>
+      Key: attach, Value: api/dbinit/서비스/uploadFiles 폴더에 있는 파일들을 추가하세요.(선택)`
     
     #swagger.security = [{
       "Client ID": []

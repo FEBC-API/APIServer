@@ -12,7 +12,7 @@
       }
     },
     {
-      "email": "w1@gmail.com",
+      "email": "w1@market.com",
       "password": "$2b$10$S.8GNMDyvUF0xzujPtHBu.j5gtS19.OhRmYbpJBnCHg2S83WLx1T2",
       "name": "AB",
       "type": "seller",
@@ -29,7 +29,7 @@
       }
     },
     {
-      "email": "w2@gmail.com",
+      "email": "w2@market.com",
       "password": "$2b$10$S.8GNMDyvUF0xzujPtHBu.j5gtS19.OhRmYbpJBnCHg2S83WLx1T2",
       "name": "자기반성",
       "type": "seller",
@@ -729,7 +729,7 @@
       "user": {
         "_id": 2,
         "name": "AB",
-        "email": "w1@gmail.com",
+        "email": "w1@market.com",
         "image": "uploadFiles/user-neo.webp"
       },
       "memo": "GPT,프롬프팅"
@@ -741,7 +741,7 @@
       "user": {
         "_id": 2,
         "name": "AB",
-        "email": "w1@gmail.com",
+        "email": "w1@market.com",
         "image": "uploadFiles/user-neo.webp"
       },
       "memo": "포트폴리오,노션"
@@ -753,7 +753,7 @@
       "user": {
         "_id": 2,
         "name": "AB",
-        "email": "w1@gmail.com",
+        "email": "w1@market.com",
         "image": "uploadFiles/user-neo.webp"
       },
       "memo": "인문학자"
@@ -765,7 +765,7 @@
       "user": {
         "_id": 3,
         "name": "자기반성",
-        "email": "w2@gmail.com",
+        "email": "w2@market.com",
         "image": "uploadFiles/user-jayg.webp"
       },
       "memo": "마케팅 관련 좋은 글 자주씀"
@@ -777,7 +777,7 @@
       "user": {
         "_id": 2,
         "name": "AB",
-        "email": "w1@gmail.com",
+        "email": "w1@market.com",
         "image": "uploadFiles/user-neo.webp"
       },
       "memo": "공상가"
@@ -825,7 +825,7 @@
       "user": {
         "_id": 2,
         "name": "AB",
-        "email": "w1@gmail.com",
+        "email": "w1@market.com",
         "image": "uploadFiles/user-neo.webp"
       },
       "memo": "캐치! 티니핑"
@@ -837,7 +837,7 @@
       "user": {
         "_id": 2,
         "name": "AB",
-        "email": "w1@gmail.com",
+        "email": "w1@market.com",
         "image": "uploadFiles/user-neo.webp"
       },
       "memo": "캐치! 티니핑"
