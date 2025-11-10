@@ -1,0 +1,20 @@
+meta {
+  name: 데이터 초기화
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{url}}/db/init
+  body: multipartForm
+  auth: inherit
+}
+
+body:multipart-form {
+  initData: @file(C:\febc15\project-vanilla-sample\api\dbinit\brunch\data.json)
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

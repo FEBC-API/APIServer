@@ -1,0 +1,20 @@
+meta {
+  name: 파일 업로드
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{url}}/files
+  body: multipartForm
+  auth: inherit
+}
+
+body:multipart-form {
+  attach: @file(C:\febc15\project-vanilla-sample\api\dbinit\nike\uploadFiles\user-apeach.webp)
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
