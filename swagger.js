@@ -372,17 +372,6 @@ const doc = {
         "ok": 1
       },
 
-      emailImpossable: {
-        "ok": 1,
-        "duplicate": true
-      },
-      emailPossible: {
-        "ok": 1,
-        "duplicate": false
-      },
-
-
-
       emailSendRes: {
         "ok": 1,
         "item": {
@@ -661,18 +650,29 @@ const doc = {
             {
               "_id": 4,
               "quantity": 2,
+              "seller_id": 3,
               "name": "레고 테크닉 42151 부가티 볼리드",
               "image": "https://res.cloudinary.com/demo/image/upload/v1/nQYGBCVZZ.png",
-              "price": 90000
+              "price": 90000,
+              "size": "M",
+              "color": "RED",
+              "extra": {
+                "isNew": false,
+                "isBest": true,
+                "category": ["PC03", "PC0303"],
+                "sort": 1
+              }
             }
           ],
           "address": {
             "name": "학교",
             "value": "서울시 강남구 역삼동 234"
           },
+          "state": "OS020",
           "user_id": 2,
           "_id": 4,
           "createdAt": getRandomDate(),
+          "updatedAt": getRandomDate(),
           "cost": {
             "products": 205000,
             "shippingFees": 6000,
