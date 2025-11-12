@@ -2251,7 +2251,7 @@ const doc = {
         phone: '01011112222',
         address: '서울시 강남구 역삼동 123',
         type: 'user',
-        image: "files/openmarket/profile.jpg",
+        image: "https://res.cloudinary.com/ddedslqvv/image/upload/v1762361889/openmarket/bK6Io05NOx1.png",
       },
 
       createUserWithExtra: {
@@ -2261,10 +2261,7 @@ const doc = {
         phone: '01011112222',
         address: '서울시 강남구 역삼동 123',
         type: 'user',
-        image: {
-          "path": "files/openmarket/profile.jpg",
-          "name": "profile.jpg",
-        },
+        image: "https://res.cloudinary.com/ddedslqvv/image/upload/v1762361889/openmarket/bK6Io05NOx1.png",
         extra: {
           gender: 'extra에는 프로젝트에서 필요한 아무 속성이나',
           age: '넣으면 됩니다.',
@@ -2388,10 +2385,7 @@ const doc = {
             "gender": 'extra에는 프로젝트에서 필요한 아무 속성이나',
             "age": '넣으면 됩니다.',
             "address": ['배열도', '가능하고'],
-            "image": {
-              "path": "files/openmarket/profile.jpg",
-              "name": "profile.jpg",
-            },
+            "image": "https://res.cloudinary.com/ddedslqvv/image/upload/v1762361889/openmarket/bK6Io05NOx1.png",
             "obj": {
               "hello": '객체로',
               "hi": '넣어도 됩니다.'
