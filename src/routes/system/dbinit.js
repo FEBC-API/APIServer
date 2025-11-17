@@ -354,9 +354,9 @@ async function handleInitDataOnlyUpload(initData, db) {
         const newId = i + 1;
         documentsWithNewIds.push({
           _id: newId,
-          ...doc,
           createdAt: moment().tz('Asia/Seoul').format('YYYY.MM.DD HH:mm:ss'),
-          updatedAt: moment().tz('Asia/Seoul').format('YYYY.MM.DD HH:mm:ss')
+          updatedAt: moment().tz('Asia/Seoul').format('YYYY.MM.DD HH:mm:ss'),
+          ...doc
         });
       }
       

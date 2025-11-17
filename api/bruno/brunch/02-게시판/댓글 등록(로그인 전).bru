@@ -1,0 +1,18 @@
+meta {
+  name: 댓글 등록(로그인 전)
+  type: http
+  seq: 7
+}
+
+post {
+  url: {{url}}/posts/1/replies
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "name": "하루",
+    "content": "멍멍"
+  }
+}

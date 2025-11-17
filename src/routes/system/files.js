@@ -96,7 +96,7 @@ router.post('/', multerUpload, handleError, async function(req, res, next) {
     logger.debug(req.files);
     const result = { ok: 1 };
 
-    result.item = req.files.map(file => ({
+    result.item = req.files?.map(file => ({
       name: file.filename,
       path: file.cloudinary_url,
     }));
