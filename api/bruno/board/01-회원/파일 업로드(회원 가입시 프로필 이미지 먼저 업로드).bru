@@ -1,0 +1,20 @@
+meta {
+  name: 파일 업로드(회원 가입시 프로필 이미지 먼저 업로드)
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{url}}/files
+  body: multipartForm
+  auth: inherit
+}
+
+body:multipart-form {
+  attach: @file()
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

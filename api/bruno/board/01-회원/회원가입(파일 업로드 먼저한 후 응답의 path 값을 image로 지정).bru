@@ -1,0 +1,26 @@
+meta {
+  name: 회원가입(파일 업로드 먼저한 후 응답의 path 값을 image로 지정)
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{url}}/users
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "email": "namu@board.com",
+    "password": "11111111",
+    "name": "나무",
+    "type": "user",
+    "image": "https://res.cloudinary.com/ddedslqvv/image/upload/v1763351865/board/6FycDK2xxh.png",
+    "extra": {
+      "job": "강아지",
+      "birthday": "2018"
+    }
+  }
+  
+}

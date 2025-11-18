@@ -1,0 +1,18 @@
+meta {
+  name: 게시물 수정(본인 게시물)
+  type: http
+  seq: 9
+}
+
+patch {
+  url: {{url}}/posts/3
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "title": "3번 수정",
+    "content": "3번 게시물 수정했어요."
+  }
+}

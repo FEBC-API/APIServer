@@ -1,0 +1,17 @@
+meta {
+  name: 댓글 등록(로그인 전 익명)
+  type: http
+  seq: 13
+}
+
+post {
+  url: {{url}}/posts/1/replies
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "content": "익명 댓글"
+  }
+}

@@ -1,0 +1,11 @@
+meta {
+  name: 게시물 삭제(타인 게시물)
+  type: http
+  seq: 12
+}
+
+delete {
+  url: {{url}}/posts/3
+  body: json
+  auth: inherit
+}

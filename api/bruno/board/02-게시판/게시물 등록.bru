@@ -1,0 +1,19 @@
+meta {
+  name: 게시물 등록
+  type: http
+  seq: 8
+}
+
+post {
+  url: {{url}}/posts
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "type": "info",
+    "title": "크롬 개발자도구에서 자주 쓰는 팁",
+    "content": "요즘 디버깅할 때 유용하게 쓰는 기능 몇 개 공유합니다.\n1. Ctrl+Shift+P로 명령어 검색\n2. Network → Fetch/XHR 필터로 API만 보기\n3. 요소 선택 후 $0으로 콘솔 접근 가능\n필요하면 더 정리해서 올릴게요!"
+  }
+}

@@ -1,0 +1,1030 @@
+{
+  "user": [
+    {
+      "email": "admin@board.com",
+      "password": "$2b$10$S.8GNMDyvUF0xzujPtHBu.j5gtS19.OhRmYbpJBnCHg2S83WLx1T2",
+      "name": "무지",
+      "type": "admin",
+      "loginType": "email",
+      "image": "uploadFiles/user-muzi.webp",
+      "extra": {
+        "job": "관리자"
+      }
+    },
+    {
+      "email": "appeach@board.com",
+      "password": "$2b$10$S.8GNMDyvUF0xzujPtHBu.j5gtS19.OhRmYbpJBnCHg2S83WLx1T2",
+      "name": "어피치",
+      "type": "user",
+      "loginType": "email",
+      "image": "uploadFiles/user-apeach.webp"
+    },
+    {
+      "email": "jayg@board.com",
+      "password": "$2b$10$S.8GNMDyvUF0xzujPtHBu.j5gtS19.OhRmYbpJBnCHg2S83WLx1T2",
+      "name": "제이지",
+      "type": "user",
+      "loginType": "email",
+      "image": "uploadFiles/user-jayg.webp"
+    },
+    {
+      "email": "neo@board.com",
+      "password": "$2b$10$S.8GNMDyvUF0xzujPtHBu.j5gtS19.OhRmYbpJBnCHg2S83WLx1T2",
+      "name": "네오",
+      "type": "user",
+      "loginType": "email",
+      "image": "uploadFiles/user-neo.webp"
+    }
+  ],
+  "post": [
+    {
+      "type": "info",
+      "title": "VSCode 필수 확장 프로그램 추천 (JavaScript 개발자용)",
+      "views": 23,
+      "user": {
+        "_id": 1,
+        "name": "무지",
+        "image": "uploadFiles/user-muzi.webp"
+      },
+      "content": "JavaScript 개발할 때 필수로 설치하면 좋은 VSCode 확장 프로그램들입니다.\n\n1. ESLint - 코드 품질 검사 및 자동 수정\n2. Prettier - 코드 포맷터 (ESLint와 함께 사용)\n3. JavaScript (ES6) code snippets - 자주 쓰는 코드 스니펫\n4. Auto Rename Tag - HTML/JSX 태그 자동 변경\n5. Bracket Pair Colorizer - 괄호 색상 구분\n6. GitLens - Git 히스토리 및 변경사항 추적\n7. Live Server - 로컬 개발 서버 자동 새로고침\n8. Path Intellisense - 파일 경로 자동완성\n\n이 정도면 개발 효율이 확실히 올라갑니다!",
+      "replies": [
+        {
+          "user": {
+            "_id": 2,
+            "name": "어피치",
+            "image": "uploadFiles/user-apeach.webp"
+          },
+          "content": "ESLint와 Prettier 조합은 정말 필수예요! 코드 스타일 통일이 자동으로 되니까 팀 프로젝트할 때 특히 좋아요."
+
+        },
+        {
+          "user": {
+            "_id": 3,
+            "name": "제이지",
+            "image": "uploadFiles/user-jayg.webp"
+          },
+          "content": "GitLens 추가 추천합니다! 누가 언제 코드를 수정했는지 한눈에 보여줘서 협업할 때 정말 유용해요."
+
+        },
+        {
+          "user": {
+            "_id": 4,
+            "name": "네오",
+            "image": "uploadFiles/user-neo.webp"
+          },
+          "content": "Live Server는 프론트엔드 개발할 때 없으면 안 되는 확장 프로그램이에요. 저장만 하면 자동 새로고침이라 너무 편합니다!"
+
+        }
+      ]
+    },
+    {
+      "type": "free",
+      "title": "VSCode 단축키 모음 - 생산성 2배 올리기",
+      "views": 18,
+      "user": {
+        "_id": 2,
+        "name": "어피치",
+        "image": "uploadFiles/user-apeach.webp"
+      },
+      "content": "VSCode에서 자주 쓰는 단축키 정리했습니다. 외우면 코딩 속도가 확실히 빨라져요!\n\n[편집 관련]\n- Ctrl+D: 같은 단어 선택 (여러 개 동시 수정)\n- Alt+Click: 멀티 커서\n- Ctrl+Shift+L: 같은 단어 모두 선택\n- Ctrl+/: 주석 토글\n- Alt+↑/↓: 줄 이동\n\n[파일/탐색]\n- Ctrl+P: 파일 빠른 열기\n- Ctrl+Shift+P: 명령 팔레트\n- Ctrl+B: 사이드바 토글\n- Ctrl+`: 터미널 토글\n\n[코드 네비게이션]\n- F12: 정의로 이동\n- Alt+F12: 정의 미리보기\n- Shift+F12: 참조 찾기\n- Ctrl+Shift+O: 심볼 검색\n\n[리팩토링]\n- F2: 심볼 이름 변경\n- Ctrl+Shift+R: 전체 파일에서 바꾸기\n\n꾸준히 쓰다 보면 손에 익어요!",
+      "replies": [
+        {
+          "user": {
+            "_id": 1,
+            "name": "무지",
+            "image": "uploadFiles/user-muzi.webp"
+          },
+          "content": "Ctrl+D 진짜 유용해요! 변수명 일괄 변경할 때 이거 없으면 어떻게 살아요 ㅋㅋ"
+
+        },
+        {
+          "user": {
+            "_id": 3,
+            "name": "제이지",
+            "image": "uploadFiles/user-jayg.webp"
+          },
+          "content": "F12로 정의로 이동하는 기능은 코드 이해할 때 정말 도움 많이 됩니다. 추천!"
+
+        }
+      ]
+    },
+    {
+      "type": "info",
+      "title": "JavaScript 디버깅 팁 - VSCode 디버거 활용하기",
+      "views": 31,
+      "user": {
+        "_id": 3,
+        "name": "제이지",
+        "image": "uploadFiles/user-jayg.webp"
+      },
+      "content": "console.log만 쓰지 말고 VSCode 내장 디버거를 활용해보세요. 훨씬 효율적입니다!\n\n[기본 설정]\n1. launch.json 파일 생성 (F5 누르면 자동 생성)\n2. Node.js나 Chrome 디버거 설정\n\n[주요 기능]\n- Breakpoint: 코드 실행 중단점 설정\n- Watch: 변수 값 실시간 모니터링\n- Call Stack: 함수 호출 스택 확인\n- Debug Console: 실행 중 코드 평가\n\n[실전 팁]\n- 조건부 중단점: 특정 조건에서만 멈추기\n- 로그포인트: 중단 없이 로그만 출력\n- Exception Breakpoint: 에러 발생 시 자동 중단\n\nNode.js 개발할 때 특히 유용합니다. 브라우저 개발자도구와 연동도 가능해요!",
+      "replies": [
+        {
+          "user": {
+            "_id": 1,
+            "name": "무지",
+            "image": "uploadFiles/user-muzi.webp"
+          },
+          "content": "조건부 중단점 진짜 신기해요! 특정 값일 때만 멈춰서 디버깅 시간이 확 줄었어요."
+
+        },
+        {
+          "user": {
+            "_id": 2,
+            "name": "어피치",
+            "image": "uploadFiles/user-apeach.webp"
+          },
+          "content": "처음엔 console.log가 편했는데, 디버거 쓰니까 변수 값 추적이 훨씬 쉬워졌어요. Watch 기능 최고예요!"
+
+        },
+        {
+          "user": {
+            "_id": 4,
+            "name": "네오",
+            "image": "uploadFiles/user-neo.webp"
+          },
+          "content": "Node.js 디버깅할 때 이거 없으면 정말 힘들어요. 브라우저 개발자도구보다 더 편한 것 같아요."
+
+        }
+      ]
+    },
+    {
+      "type": "info",
+      "title": "VSCode 설정 최적화 - JavaScript 개발 환경 꾸미기",
+      "views": 15,
+      "user": {
+        "_id": 4,
+        "name": "네오",
+        "image": "uploadFiles/user-neo.webp"
+      },
+      "content": "VSCode settings.json에서 자주 쓰는 설정들 공유합니다.\n\n[자동 저장 및 포맷팅]\n\"editor.formatOnSave\": true,\n\"editor.codeActionsOnSave\": {\n  \"source.fixAll.eslint\": true\n}\n\n[탭 및 들여쓰기]\n\"editor.tabSize\": 2,\n\"editor.insertSpaces\": true,\n\"editor.detectIndentation\": false\n\n[자동완성]\n\"editor.quickSuggestions\": true,\n\"editor.suggestSelection\": \"first\",\n\"editor.wordBasedSuggestions\": \"allDocuments\"\n\n[파일 관련]\n\"files.autoSave\": \"afterDelay\",\n\"files.autoSaveDelay\": 1000,\n\"files.exclude\": {\n  \"**/node_modules\": true,\n  \"**/.git\": true\n}\n\n[테마 및 폰트]\n\"editor.fontSize\": 14,\n\"editor.fontFamily\": \"'Fira Code', 'Consolas', monospace\",\n\"editor.fontLigatures\": true\n\n이 설정들로 더 편하게 코딩하세요!",
+      "replies": [
+        {
+          "user": {
+            "_id": 1,
+            "name": "무지",
+            "image": "uploadFiles/user-muzi.webp"
+          },
+          "content": "formatOnSave 설정하니까 저장할 때마다 자동으로 포맷팅되어서 너무 편해요!"
+
+        },
+        {
+          "user": {
+            "_id": 3,
+            "name": "제이지",
+            "image": "uploadFiles/user-jayg.webp"
+          },
+          "content": "Fira Code 폰트는 ligatures 기능 때문에 코드 읽기가 훨씬 편해져요. => 같은 기호가 예쁘게 연결되거든요!"
+
+        }
+      ]
+    },
+    {
+      "type": "info",
+      "title": "JavaScript 개발 환경 설정 가이드 - Node.js부터 VSCode까지",
+      "views": 27,
+      "user": {
+        "_id": 1,
+        "name": "무지",
+        "image": "uploadFiles/user-muzi.webp"
+      },
+      "content": "처음 JavaScript 개발 시작하는 분들을 위한 환경 설정 가이드입니다.\n\n[1단계: Node.js 설치]\n- LTS 버전 다운로드 (현재 20.x 권장)\n- npm 자동 설치됨\n- 터미널에서 node --version 확인\n\n[2단계: VSCode 설치]\n- 공식 사이트에서 다운로드\n- 필수 확장 프로그램 설치 (ESLint, Prettier 등)\n\n[3단계: 프로젝트 초기화]\nnpm init -y\nnpm install --save-dev eslint prettier\n\n[4단계: 설정 파일 생성]\n- .eslintrc.json: 린터 규칙\n- .prettierrc: 포맷터 설정\n- .gitignore: Git 제외 파일\n\n[5단계: package.json 스크립트]\n\"scripts\": {\n  \"lint\": \"eslint .\",\n  \"format\": \"prettier --write .\"\n}\n\n이제 개발 준비 완료! 궁금한 점 있으면 댓글 남겨주세요.",
+      "replies": [
+        {
+          "user": {
+            "_id": 2,
+            "name": "어피치",
+            "image": "uploadFiles/user-apeach.webp"
+          },
+          "content": "처음 시작할 때 이 가이드 있으면 정말 좋았을 텐데요! .gitignore에 node_modules 추가하는 거 깜빡하기 쉬운데 꼭 넣어야 해요."
+
+        },
+        {
+          "user": {
+            "_id": 4,
+            "name": "네오",
+            "image": "uploadFiles/user-neo.webp"
+          },
+          "content": "Node.js 버전 확인할 때 node --version 말고 npm --version도 같이 확인하는 게 좋아요. 둘 다 제대로 설치됐는지 확인할 수 있거든요."
+
+        },
+        {
+          "user": {
+            "_id": 3,
+            "name": "제이지",
+            "image": "uploadFiles/user-jayg.webp"
+          },
+          "content": "초보자분들께 정말 유용한 가이드네요! 한 가지 더 추가하면, nvm(Node Version Manager) 사용하는 것도 추천해요. 여러 프로젝트에서 다른 Node 버전 쓸 때 편해요."
+
+        }
+      ]
+    },
+    {
+      "type": "info",
+      "title": "VSCode 스니펫 만들기 - 반복 코드 자동화",
+      "views": 12,
+      "user": {
+        "_id": 2,
+        "name": "어피치",
+        "image": "uploadFiles/user-apeach.webp"
+      },
+      "content": "자주 쓰는 코드 패턴을 스니펫으로 만들어서 시간을 절약하세요!\n\n[스니펫 생성 방법]\n1. Ctrl+Shift+P → \"Configure User Snippets\"\n2. JavaScript 선택\n3. JSON 형식으로 스니펫 작성\n\n[예시: React 컴포넌트 스니펫]\n\"React Functional Component\": {\n  \"prefix\": \"rfc\",\n  \"body\": [\n    \"import React from 'react';\",\n    \"\",\n    \"const ${1:ComponentName} = () => {\",\n    \"  return (\",\n    \"    <div>${2:content}</div>\",\n    \"  );\",\n    \"};\",\n    \"\",\n    \"export default ${1:ComponentName};\"\n  ],\n  \"description\": \"React functional component\"\n}\n\n[예시: console.log 스니펫]\n\"Console Log\": {\n  \"prefix\": \"clg\",\n  \"body\": \"console.log('${1:label}:', ${2:value});\",\n  \"description\": \"Console log with label\"\n}\n\n자주 쓰는 패턴을 스니펫으로 만들어두면 정말 편해요!",
+      "replies": [
+        {
+          "user": {
+            "_id": 1,
+            "name": "무지",
+            "image": "uploadFiles/user-muzi.webp"
+          },
+          "content": "스니펫 만들기 처음 알았는데 진짜 시간 절약 엄청 되네요! React 컴포넌트 만들 때마다 타이핑하던 게 이제 한 줄이면 끝나요."
+
+        },
+        {
+          "user": {
+            "_id": 3,
+            "name": "제이지",
+            "image": "uploadFiles/user-jayg.webp"
+          },
+          "content": "clg 스니펫 진짜 유용해요! console.log('test:', value) 이렇게 매번 타이핑하던 게 이제 clg만 치면 되니까 너무 편합니다."
+
+        },
+        {
+          "user": {
+            "_id": 4,
+            "name": "네오",
+            "image": "uploadFiles/user-neo.webp"
+          },
+          "content": "팀 프로젝트할 때 공통 스니펫 만들어서 공유하면 코드 스타일도 통일되고 좋을 것 같아요!"
+
+        }
+      ]
+    },
+    {
+      "type": "info",
+      "title": "API 서버 사용 가이드 - 오픈마켓 API 서버 소개",
+      "views": 45,
+      "user": {
+        "_id": 1,
+        "name": "무지",
+        "image": "uploadFiles/user-muzi.webp"
+      },
+      "content": "프로젝트에서 사용할 수 있는 오픈마켓 API 서버에 대해 소개합니다.\n\n[API 서버 정보]\n- API 호출 URL: https://fesp-api.koyeb.app/market\n- API 문서: https://fesp-api.koyeb.app/market/apidocs\n- API 변경 사항: https://fesp-api.koyeb.app/market\n\n[제공 기능]\n- 게시판 관리\n- 회원 관리\n- 상품 관리\n- 구매 관리\n- 후기 관리\n\n[기술 스택]\n- Application Server: Node.js + Express\n- Database: MongoDB\n\nAPI 서버는 범용적으로 제작되어 있어 대부분의 오픈마켓에 적합합니다. 필요한 기능이 없으면 개발 요청해주세요!",
+      "replies": [
+        {
+          "user": {
+            "_id": 2,
+            "name": "어피치",
+            "image": "uploadFiles/user-apeach.webp"
+          },
+          "content": "API 문서 링크가 정말 유용하네요! Swagger UI로 바로 테스트할 수 있어서 편리해요."
+        },
+        {
+          "user": {
+            "_id": 3,
+            "name": "제이지",
+            "image": "uploadFiles/user-jayg.webp"
+          },
+          "content": "MongoDB를 사용하는 거군요! NoSQL 데이터베이스라서 유연하게 데이터 구조를 변경할 수 있어서 좋을 것 같아요."
+        }
+      ]
+    },
+    {
+      "type": "info",
+      "title": "DB 초기화 파일 다운로드 방법",
+      "views": 32,
+      "user": {
+        "_id": 2,
+        "name": "어피치",
+        "image": "uploadFiles/user-apeach.webp"
+      },
+      "content": "API 테스트를 위해 DB 초기화 파일을 다운로드하는 방법입니다.\n\n[브런치 스토리 DB 초기화 파일]\nnpx degit https://github.com/FEBC-API/APIServer/api/dbinit/brunch api/dbinit/readonly-brunch --force\nnpx degit https://github.com/FEBC-API/APIServer/api/dbinit/brunch api/dbinit/team-brunch --force\n\n[나이키 DB 초기화 파일]\nnpx degit https://github.com/FEBC-API/APIServer/api/dbinit/nike api/dbinit/readonly-nike --force\nnpx degit https://github.com/FEBC-API/APIServer/api/dbinit/nike api/dbinit/team-nike --force\n\n[주의사항]\n- 프로젝트 루트 폴더에서 실행해야 합니다\n- --force 옵션은 이전 파일을 덮어씌울 때 사용합니다\n- readonly는 테스트용, team은 팀 프로젝트용입니다",
+      "replies": [
+        {
+          "user": {
+            "_id": 3,
+            "name": "제이지",
+            "image": "uploadFiles/user-jayg.webp"
+          },
+          "content": "--force 옵션 사용할 때 기존 파일이 덮어씌워지는 거 주의해야겠어요. 백업해두는 게 좋을 것 같아요!"
+        },
+        {
+          "user": {
+            "_id": 4,
+            "name": "네오",
+            "image": "uploadFiles/user-neo.webp"
+          },
+          "content": "readonly와 team 버전을 구분해서 사용하는 게 좋네요. 테스트용과 실제 프로젝트용을 분리할 수 있어서 안전해요."
+        }
+      ]
+    },
+    {
+      "type": "info",
+      "title": "Bruno 설치 및 사용법 - Postman 대안",
+      "views": 28,
+      "user": {
+        "_id": 3,
+        "name": "제이지",
+        "image": "uploadFiles/user-jayg.webp"
+      },
+      "content": "Bruno는 Postman과 유사한 오픈소스 API 테스트 도구입니다.\n\n[Postman과의 차이점]\n- API 요청 정보를 클라우드가 아닌 로컬 파일 시스템에 저장\n- Git과 같은 버전 관리 도구와 쉽게 통합 가능\n- 협업 시 파일 공유로 쉽게 관리\n\n[설치 방법]\n1. https://www.usebruno.com/downloads 접속\n2. 본인의 OS에 맞는 버전 다운로드\n3. 기본 설정 그대로 설치\n\n[장점]\n- 무료 오픈소스\n- 로컬 저장으로 보안 강화\n- Git으로 버전 관리 가능\n\nAPI 테스트할 때 정말 유용한 도구예요!",
+      "replies": [
+        {
+          "user": {
+            "_id": 1,
+            "name": "무지",
+            "image": "uploadFiles/user-muzi.webp"
+          },
+          "content": "로컬에 저장되는 게 정말 좋아요! 클라우드에 민감한 정보가 올라가지 않아서 안전하네요."
+        },
+        {
+          "user": {
+            "_id": 4,
+            "name": "네오",
+            "image": "uploadFiles/user-neo.webp"
+          },
+          "content": "Git으로 버전 관리할 수 있다는 게 팀 프로젝트할 때 정말 큰 장점이에요. Postman보다 협업하기 편할 것 같아요!"
+        }
+      ]
+    },
+    {
+      "type": "info",
+      "title": "Bruno Collection 생성하기",
+      "views": 21,
+      "user": {
+        "_id": 4,
+        "name": "네오",
+        "image": "uploadFiles/user-neo.webp"
+      },
+      "content": "Bruno에서 API 테스트를 위한 Collection을 생성하는 방법입니다.\n\n[Collection 생성 단계]\n1. 좌측 상단의 bruno 로고(🐶) 클릭\n2. COLLECTIONS > Create Collection 선택\n3. 정보 입력:\n   - Name: test-brunch (원하는 이름)\n   - Location: 프로젝트 폴더 경로\n   - Folder Name: test-brunch\n4. Create 클릭\n\n[팁]\n- Safe Mode 선택 시 안전하게 저장됩니다\n- 프로젝트 폴더에 저장하면 Git으로 관리 가능\n- 여러 Collection을 만들어서 프로젝트별로 관리하세요\n\nCollection을 만들면 API 요청을 체계적으로 관리할 수 있어요!",
+      "replies": [
+        {
+          "user": {
+            "_id": 2,
+            "name": "어피치",
+            "image": "uploadFiles/user-apeach.webp"
+          },
+          "content": "Safe Mode 옵션이 있군요! 처음 사용할 때는 이 옵션을 켜두는 게 안전할 것 같아요."
+        },
+        {
+          "user": {
+            "_id": 1,
+            "name": "무지",
+            "image": "uploadFiles/user-muzi.webp"
+          },
+          "content": "프로젝트별로 Collection을 나누면 관리가 훨씬 쉬워지겠네요. 여러 프로젝트를 동시에 진행할 때 유용할 것 같아요!"
+        }
+      ]
+    },
+    {
+      "type": "info",
+      "title": "Bruno 환경 변수 설정하기",
+      "views": 19,
+      "user": {
+        "_id": 1,
+        "name": "무지",
+        "image": "uploadFiles/user-muzi.webp"
+      },
+      "content": "Bruno에서 환경 변수를 설정하면 API URL과 client-id를 재사용할 수 있습니다.\n\n[환경 변수 생성]\n1. Bruno 우측 상단의 No Environment > Create 클릭\n2. Environment Name: prod 입력 후 Create\n3. 변수 추가:\n   - Name: url\n     Value: https://fesp-api.koyeb.app/market\n   - Name: client-id\n     Value: brunch (또는 팀 client-id)\n4. Save 클릭\n\n[사용 방법]\n요청 URL에 {{url}} 형태로 사용:\n- GET {{url}}/posts\n- POST {{url}}/users/login\n\n환경 변수를 사용하면 URL 변경 시 한 곳만 수정하면 되어서 편해요!",
+      "replies": [
+        {
+          "user": {
+            "_id": 3,
+            "name": "제이지",
+            "image": "uploadFiles/user-jayg.webp"
+          },
+          "content": "환경 변수 사용하면 개발/스테이징/프로덕션 환경을 쉽게 전환할 수 있어서 좋아요!"
+        },
+        {
+          "user": {
+            "_id": 2,
+            "name": "어피치",
+            "image": "uploadFiles/user-apeach.webp"
+          },
+          "content": "{{url}} 같은 문법이 직관적이네요. Postman과 비슷한 방식이라 익히기 쉬울 것 같아요."
+        }
+      ]
+    },
+    {
+      "type": "info",
+      "title": "Bruno에서 client-id 헤더 자동 추가하기",
+      "views": 24,
+      "user": {
+        "_id": 2,
+        "name": "어피치",
+        "image": "uploadFiles/user-apeach.webp"
+      },
+      "content": "매 요청마다 client-id 헤더를 자동으로 추가하는 설정 방법입니다.\n\n[Collection 헤더 설정]\n1. Collection에 마우스 올린 후 더보기(...) > Settings 선택\n2. Headers 탭 > Add Header 클릭\n3. 정보 입력:\n   - Name: client-id\n     Value: {{client-id}}\n4. Save 클릭\n\n[효과]\n- Collection 내 모든 요청에 자동으로 client-id 헤더가 추가됩니다\n- 환경 변수를 사용하므로 값 변경이 쉽습니다\n- 개별 요청마다 헤더를 추가할 필요가 없어집니다\n\n이렇게 설정하면 매번 헤더를 추가하지 않아도 되서 편해요!",
+      "replies": [
+        {
+          "user": {
+            "_id": 4,
+            "name": "네오",
+            "image": "uploadFiles/user-neo.webp"
+          },
+          "content": "Collection 레벨에서 헤더를 설정할 수 있다니 정말 편리하네요! 매번 헤더 추가하는 수고를 덜 수 있어요."
+        },
+        {
+          "user": {
+            "_id": 1,
+            "name": "무지",
+            "image": "uploadFiles/user-muzi.webp"
+          },
+          "content": "환경 변수와 함께 사용하면 client-id 변경도 한 번에 할 수 있어서 관리가 쉬워지겠어요!"
+        }
+      ]
+    },
+    {
+      "type": "info",
+      "title": "Bruno로 API 요청 테스트하기",
+      "views": 35,
+      "user": {
+        "_id": 3,
+        "name": "제이지",
+        "image": "uploadFiles/user-jayg.webp"
+      },
+      "content": "Bruno에서 첫 번째 API 요청을 테스트하는 방법입니다.\n\n[게시물 목록 조회 테스트]\n1. Collection에 마우스 올린 후 더보기(...) > New Request\n2. Type: HTTP 선택\n3. Request Name: 게시물 목록 조회\n4. URL: GET {{url}}/posts\n5. Create 클릭\n\n[파라미터 추가]\n- Params 탭 > Add Param\n- Name: type\n- Value: brunch\n\n[요청 전송]\n- URL 우측의 화살표(->) 클릭\n- Response 확인\n\n[에러 처리]\nclient-id 헤더가 없으면 에러가 발생합니다. Collection Settings에서 헤더를 추가해야 해요.\n\n이렇게 하면 API가 제대로 동작하는지 확인할 수 있어요!",
+      "replies": [
+        {
+          "user": {
+            "_id": 2,
+            "name": "어피치",
+            "image": "uploadFiles/user-apeach.webp"
+          },
+          "content": "첫 API 요청 테스트할 때 client-id 헤더 설정을 깜빡하기 쉬운데, 이 가이드 보면 바로 알 수 있어서 좋아요!"
+        },
+        {
+          "user": {
+            "_id": 3,
+            "name": "제이지",
+            "image": "uploadFiles/user-jayg.webp"
+          },
+          "content": "Response를 바로 확인할 수 있어서 디버깅할 때 정말 편리하네요. Postman과 비슷한 사용자 경험이에요."
+        }
+      ]
+    },
+    {
+      "type": "info",
+      "title": "JWT 토큰 기반 인증 - 로그인 API 사용법",
+      "views": 42,
+      "user": {
+        "_id": 4,
+        "name": "네오",
+        "image": "uploadFiles/user-neo.webp"
+      },
+      "content": "로그인이 필요한 API를 사용하기 위한 인증 방법입니다.\n\n[로그인 요청]\n1. POST {{url}}/users/login\n2. Body (JSON):\n{\n  \"email\": \"w1@market.com\",\n  \"password\": \"11111111\"\n}\n\n[응답 데이터]\n로그인 성공 시 JWT 토큰이 반환됩니다:\n- item.token.accessToken: 인증 토큰\n- item.token.refreshToken: 갱신 토큰\n\n[인증이 필요한 API 사용]\n- authorization 헤더에 accessToken 추가\n- Bearer Token 형식으로 전송\n\n[주의사항]\n- 토큰은 만료 시간이 있습니다\n- 만료되면 refreshToken으로 갱신하거나 재로그인해야 합니다\n\n인증이 필요한 API는 반드시 토큰을 헤더에 포함해야 해요!",
+      "replies": [
+        {
+          "user": {
+            "_id": 1,
+            "name": "무지",
+            "image": "uploadFiles/user-muzi.webp"
+          },
+          "content": "JWT 토큰 방식이 보안에 좋아요! accessToken과 refreshToken을 분리해서 사용하는 게 안전하네요."
+        },
+        {
+          "user": {
+            "_id": 4,
+            "name": "네오",
+            "image": "uploadFiles/user-neo.webp"
+          },
+          "content": "Bearer Token 형식으로 헤더에 추가하는 거 기억해야겠어요. 'Bearer ' 접두사를 붙여야 한다는 거 잊기 쉬운데요!"
+        }
+      ]
+    },
+    {
+      "type": "info",
+      "title": "Bruno에서 토큰 자동 저장 및 사용하기",
+      "views": 31,
+      "user": {
+        "_id": 1,
+        "name": "무지",
+        "image": "uploadFiles/user-muzi.webp"
+      },
+      "content": "로그인 후 받은 토큰을 환경 변수에 자동 저장하고 사용하는 방법입니다.\n\n[토큰 자동 저장]\n1. 로그인 요청의 Script 탭 선택\n2. Response에 다음 코드 추가:\n\nif(res.status === 200){\n  bru.setEnvVar('accessToken', res.body.item.token.accessToken);\n  bru.setEnvVar('refreshToken', res.body.item.token.refreshToken);\n}\n\n3. 저장 후 로그인 요청 실행\n\n[토큰 자동 사용]\n1. Collection Settings > Auth 선택\n2. Bearer Token 선택\n3. Token: {{accessToken}} 입력\n4. Save\n\n[효과]\n- 로그인 후 자동으로 토큰이 환경 변수에 저장됩니다\n- Collection 내 모든 요청에 자동으로 인증 토큰이 추가됩니다\n- 개별 요청의 Auth를 Inherit로 설정하면 토큰이 자동 적용됩니다\n\n이렇게 설정하면 매번 토큰을 복사해서 붙여넣을 필요가 없어요!",
+      "replies": [
+        {
+          "user": {
+            "_id": 2,
+            "name": "어피치",
+            "image": "uploadFiles/user-apeach.webp"
+          },
+          "content": "토큰을 자동으로 저장하고 사용할 수 있다니 정말 편리하네요! 매번 복사 붙여넣기 할 필요가 없어져서 좋아요."
+        },
+        {
+          "user": {
+            "_id": 3,
+            "name": "제이지",
+            "image": "uploadFiles/user-jayg.webp"
+          },
+          "content": "Script 탭에서 자동화할 수 있다는 게 인상적이에요. Postman의 Pre-request Script와 비슷한 기능인 것 같아요!"
+        }
+      ]
+    },
+    {
+      "type": "info",
+      "title": "Bruno 샘플 파일 다운로드하기",
+      "views": 27,
+      "user": {
+        "_id": 2,
+        "name": "어피치",
+        "image": "uploadFiles/user-apeach.webp"
+      },
+      "content": "미리 만들어진 Bruno 샘플 파일을 다운로드해서 사용하는 방법입니다.\n\n[브런치 스토리 샘플]\nnpx degit https://github.com/FEBC-API/APIServer/api/bruno/brunch api/bruno/readonly-brunch --force\nnpx degit https://github.com/FEBC-API/APIServer/api/bruno/brunch api/bruno/team-brunch --force\n\n[나이키 샘플]\nnpx degit https://github.com/FEBC-API/APIServer/api/bruno/nike api/bruno/readonly-nike --force\nnpx degit https://github.com/FEBC-API/APIServer/api/bruno/nike api/bruno/team-nike --force\n\n[사용 방법]\n1. Bruno 실행\n2. Collection > Open Collection\n3. 다운로드한 폴더 선택\n4. 환경 변수 설정 확인 및 수정\n\n[장점]\n- 모든 API 요청이 미리 구성되어 있습니다\n- 바로 테스트할 수 있습니다\n- 팀 프로젝트 시 공유하기 쉽습니다\n\n샘플 파일을 사용하면 API 테스트가 훨씬 빠르고 편해요!",
+      "replies": [
+        {
+          "user": {
+            "_id": 1,
+            "name": "무지",
+            "image": "uploadFiles/user-muzi.webp"
+          },
+          "content": "샘플 파일이 미리 준비되어 있어서 처음 시작할 때 정말 편하네요! 모든 API를 일일이 만들 필요가 없어서 좋아요."
+        },
+        {
+          "user": {
+            "_id": 4,
+            "name": "네오",
+            "image": "uploadFiles/user-neo.webp"
+          },
+          "content": "팀 프로젝트할 때 이 샘플 파일을 공유하면 팀원들도 바로 시작할 수 있어서 협업이 수월해질 것 같아요!"
+        }
+      ]
+    },
+    {
+      "type": "info",
+      "title": "팀 프로젝트 DB 초기화 가이드",
+      "views": 38,
+      "user": {
+        "_id": 3,
+        "name": "제이지",
+        "image": "uploadFiles/user-jayg.webp"
+      },
+      "content": "팀 프로젝트에서 DB를 초기화하는 방법입니다.\n\n[단계별 가이드]\n1. 팀 프로젝트 폴더에서 DB 초기화 파일 다운로드\n   - api/dbinit/team-brunch 또는 team-nike\n\n2. 팀에 맞게 데이터 수정\n   - user 데이터: 팀원 정보로 변경\n   - post 데이터: 프로젝트 주제에 맞게 수정\n   - 기타 데이터: 프로젝트에 맞게 커스터마이징\n\n3. DB 초기화 API 호출\n   - Bruno의 readonly-brunch/nike의 '00-DB초기화' 폴더 참고\n   - POST {{url}}/db/init\n   - Body에 수정한 data.json 파일 내용 전송\n\n[주의사항]\n- 팀 client-id를 사용해야 합니다\n- 초기화 후 기존 데이터는 삭제됩니다\n- 백업이 필요하면 미리 확인하세요\n\n팀 프로젝트 시작 전에 반드시 DB 초기화를 해야 해요!",
+      "replies": [
+        {
+          "user": {
+            "_id": 2,
+            "name": "어피치",
+            "image": "uploadFiles/user-apeach.webp"
+          },
+          "content": "초기화 후 기존 데이터가 삭제된다는 거 주의해야겠어요. 중요한 데이터는 미리 백업해두는 게 좋을 것 같아요!"
+        },
+        {
+          "user": {
+            "_id": 3,
+            "name": "제이지",
+            "image": "uploadFiles/user-jayg.webp"
+          },
+          "content": "팀 client-id를 사용해야 한다는 거 잊지 말아야겠어요. 잘못된 client-id로 초기화하면 문제가 생길 수 있거든요."
+        }
+      ]
+    },
+    {
+      "type": "info",
+      "title": "팀 프로젝트 API 테스트 환경 설정",
+      "views": 29,
+      "user": {
+        "_id": 4,
+        "name": "네오",
+        "image": "uploadFiles/user-neo.webp"
+      },
+      "content": "팀 프로젝트에서 Bruno를 사용한 API 테스트 환경을 설정하는 방법입니다.\n\n[환경 설정 단계]\n1. Bruno 샘플 파일 다운로드\n   - team-brunch 또는 team-nike\n\n2. Collection 열기\n   - Bruno > Collection > Open Collection\n   - 다운로드한 폴더 선택\n\n3. 환경 변수 수정\n   - prod 환경 선택 > Configure\n   - client-id를 팀 client-id로 변경\n   - 예시: febc15-vanilla05-ecad (5팀 기준)\n\n4. 팀 레포지토리에 반영\n   - PR 생성 후 push\n   - 팀원들은 pull 받아서 사용\n\n[팀원 작업]\n1. pull 받기\n2. Bruno에서 Collection 열기\n3. 담당 기능에 대한 API 테스트 추가\n\n[협업 팁]\n- 각자 담당 기능의 API 테스트를 추가하세요\n- Git으로 버전 관리하면 변경사항을 쉽게 공유할 수 있어요\n\n팀 프로젝트에서는 이렇게 환경을 통일하면 협업이 수월해요!",
+      "replies": [
+        {
+          "user": {
+            "_id": 1,
+            "name": "무지",
+            "image": "uploadFiles/user-muzi.webp"
+          },
+          "content": "팀 환경을 통일하는 게 정말 중요하네요! 각자 다른 설정으로 작업하면 충돌이 생길 수 있거든요."
+        },
+        {
+          "user": {
+            "_id": 4,
+            "name": "네오",
+            "image": "uploadFiles/user-neo.webp"
+          },
+          "content": "Git으로 버전 관리할 수 있어서 팀원들과 API 테스트 케이스를 쉽게 공유할 수 있는 게 큰 장점이에요!"
+        }
+      ]
+    },
+    {
+      "type": "info",
+      "title": "MongoDB Compass 설치 및 사용법",
+      "views": 33,
+      "user": {
+        "_id": 1,
+        "name": "무지",
+        "image": "uploadFiles/user-muzi.webp"
+      },
+      "content": "MongoDB 데이터베이스를 시각적으로 탐색하고 조작할 수 있는 GUI 도구입니다.\n\n[설치 방법]\n1. https://www.mongodb.com/try/download/compass 접속\n2. 본인의 플랫폼에 맞는 설치파일 다운로드\n3. 기본 옵션으로 설치\n\n[데이터베이스 접속]\n1. MongoDB Compass 실행\n2. + 버튼(Add new connection) 클릭\n3. 접속 정보 입력:\n   - URI: mongodb+srv://팀client-id:팀비밀번호@openmarket.ehetjb8.mongodb.net/\n   - 팀비밀번호는 client-id 뒤에 __ 추가\n   - 예시: mongodb+srv://febc15-vanilla05-ecad:febc15-vanilla05-ecad__@openmarket.ehetjb8.mongodb.net/\n4. Name: vanilla팀번호-프로젝트명\n5. Save & Connect\n\n[데이터 확인]\n- file_uploads 컬렉션에서 업로드한 파일 수 확인\n- brunch는 17개, nike는 471개\n\nDB를 직접 확인할 수 있어서 디버깅할 때 정말 유용해요!",
+      "replies": [
+        {
+          "user": {
+            "_id": 2,
+            "name": "어피치",
+            "image": "uploadFiles/user-apeach.webp"
+          },
+          "content": "비밀번호에 __를 추가하는 거 기억해야겠어요! 접속 정보 입력할 때 실수하기 쉬운 부분이에요."
+        },
+        {
+          "user": {
+            "_id": 3,
+            "name": "제이지",
+            "image": "uploadFiles/user-jayg.webp"
+          },
+          "content": "GUI로 DB를 직접 확인할 수 있어서 디버깅할 때 정말 편해요. 쿼리 결과를 시각적으로 볼 수 있어서 좋네요!"
+        }
+      ]
+    },
+    {
+      "type": "info",
+      "title": "API 문서 활용하기 - Swagger UI",
+      "views": 41,
+      "user": {
+        "_id": 2,
+        "name": "어피치",
+        "image": "uploadFiles/user-apeach.webp"
+      },
+      "content": "API 서버에서 제공하는 Swagger UI 문서를 활용하는 방법입니다.\n\n[API 문서 접속]\n- URL: https://fesp-api.koyeb.app/market/apidocs\n- 브라우저에서 바로 접속 가능\n\n[주요 기능]\n1. API 엔드포인트 목록 확인\n   - 모든 API를 카테고리별로 확인 가능\n\n2. 요청/응답 형식 확인\n   - Request Body 구조\n   - Response 데이터 형식\n   - 파라미터 설명\n\n3. 직접 테스트\n   - Try it out 버튼으로 API 직접 호출\n   - 응답 결과 즉시 확인\n\n4. 인증 설정\n   - Authorize 버튼으로 토큰 설정\n   - 로그인 후 토큰 입력하면 인증 필요 API도 테스트 가능\n\n[활용 팁]\n- API 개발 전에 문서를 먼저 확인하세요\n- 요청 형식이 맞는지 문서와 비교하세요\n- 에러 발생 시 문서의 예시를 참고하세요\n\nAPI 문서를 잘 활용하면 개발 속도가 훨씬 빨라져요!",
+      "replies": [
+        {
+          "user": {
+            "_id": 3,
+            "name": "제이지",
+            "image": "uploadFiles/user-jayg.webp"
+          },
+          "content": "Swagger UI에서 직접 API를 테스트할 수 있어서 정말 편해요! 문서 보면서 바로 확인할 수 있어서 좋네요."
+        },
+        {
+          "user": {
+            "_id": 1,
+            "name": "무지",
+            "image": "uploadFiles/user-muzi.webp"
+          },
+          "content": "요청/응답 형식을 문서에서 바로 확인할 수 있어서 개발할 때 정말 유용해요. API 스펙을 정확히 알 수 있어서 좋아요!"
+        }
+      ]
+    },
+    {
+      "type": "info",
+      "title": "API 에러 처리 및 디버깅 팁",
+      "views": 36,
+      "user": {
+        "_id": 3,
+        "name": "제이지",
+        "image": "uploadFiles/user-jayg.webp"
+      },
+      "content": "API 호출 시 발생하는 에러를 처리하고 디버깅하는 방법입니다.\n\n[자주 발생하는 에러]\n1. client-id 헤더 없음\n   - 에러: \"client-id 헤더가 없습니다.\"\n   - 해결: Collection Settings에서 client-id 헤더 추가\n\n2. authorization 헤더 없음\n   - 에러: \"authorization 헤더가 없습니다.\"\n   - 해결: 로그인 후 토큰을 환경 변수에 저장하고 Auth 설정\n\n3. 토큰 만료\n   - 에러: \"토큰이 만료되었습니다.\"\n   - 해결: 재로그인 또는 refreshToken으로 갱신\n\n[디버깅 팁]\n1. Response 확인\n   - Status Code 확인 (200, 400, 401, 404 등)\n   - errorName으로 에러 유형 파악\n   - message로 상세 에러 내용 확인\n\n2. Request 확인\n   - Headers에 필요한 값이 있는지 확인\n   - Body 형식이 올바른지 확인\n   - URL 파라미터 확인\n\n3. MongoDB Compass 활용\n   - DB에 데이터가 제대로 저장되었는지 확인\n   - 데이터 형식이 올바른지 검증\n\n[유용한 도구]\n- Bruno: API 요청/응답 확인\n- MongoDB Compass: DB 데이터 확인\n- 브라우저 개발자도구: 네트워크 요청 확인\n\n에러 메시지를 자세히 읽으면 대부분 해결 방법을 알 수 있어요!",
+      "replies": [
+        {
+          "user": {
+            "_id": 4,
+            "name": "네오",
+            "image": "uploadFiles/user-neo.webp"
+          },
+          "content": "에러 메시지를 자세히 읽는 게 정말 중요하네요! errorName과 message를 확인하면 문제를 빠르게 파악할 수 있어요."
+        },
+        {
+          "user": {
+            "_id": 2,
+            "name": "어피치",
+            "image": "uploadFiles/user-apeach.webp"
+          },
+          "content": "MongoDB Compass로 DB를 직접 확인하는 팁이 정말 유용해요. API 응답만 봐서는 알 수 없는 문제를 찾을 수 있거든요!"
+        }
+      ]
+    },
+    {
+      "type": "info",
+      "title": "프론트엔드에서 API 연동하기 - fetch 사용법",
+      "views": 52,
+      "user": {
+        "_id": 4,
+        "name": "네오",
+        "image": "uploadFiles/user-neo.webp"
+      },
+      "content": "JavaScript에서 fetch를 사용해 API 서버와 연동하는 방법입니다.\n\n[기본 사용법]\n\n// GET 요청\nconst response = await fetch('https://fesp-api.koyeb.app/market/posts?type=brunch', {\n  headers: {\n    'client-id': 'brunch'\n  }\n});\nconst data = await response.json();\n\n// POST 요청 (로그인)\nconst loginResponse = await fetch('https://fesp-api.koyeb.app/market/users/login', {\n  method: 'POST',\n  headers: {\n    'Content-Type': 'application/json',\n    'client-id': 'brunch'\n  },\n  body: JSON.stringify({\n    email: 'w1@market.com',\n    password: '11111111'\n  })\n});\nconst loginData = await loginResponse.json();\nconst accessToken = loginData.item.token.accessToken;\n\n// 인증이 필요한 요청\nconst protectedResponse = await fetch('https://fesp-api.koyeb.app/market/bookmarks/post', {\n  method: 'POST',\n  headers: {\n    'Content-Type': 'application/json',\n    'client-id': 'brunch',\n    'authorization': `Bearer ${accessToken}`\n  },\n  body: JSON.stringify({\n    target_id: 3,\n    memo: '게시판 사용법 북마크'\n  })\n});\n\n[에러 처리]\ntry {\n  const response = await fetch(url, options);\n  if (!response.ok) {\n    throw new Error(`HTTP error! status: ${response.status}`);\n  }\n  const data = await response.json();\n  if (data.ok === 0) {\n    throw new Error(data.message);\n  }\n  return data.item;\n} catch (error) {\n  console.error('API Error:', error);\n  throw error;\n}\n\n[팁]\n- 토큰은 localStorage나 sessionStorage에 저장\n- 환경 변수로 API URL 관리\n- 공통 fetch 함수 만들어서 재사용\n\n이렇게 하면 프론트엔드에서 API를 쉽게 연동할 수 있어요!",
+      "replies": [
+        {
+          "user": {
+            "_id": 1,
+            "name": "무지",
+            "image": "uploadFiles/user-muzi.webp"
+          },
+          "content": "공통 fetch 함수를 만들어서 재사용하는 팁이 정말 좋아요! 코드 중복을 줄이고 에러 처리도 통일할 수 있어서 좋네요."
+        },
+        {
+          "user": {
+            "_id": 3,
+            "name": "제이지",
+            "image": "uploadFiles/user-jayg.webp"
+          },
+          "content": "에러 처리 부분이 특히 유용해요! data.ok === 0 체크하는 거 잊기 쉬운데, 이렇게 하면 API 에러를 제대로 잡을 수 있어요."
+        }
+      ]
+    },
+    {
+      "type": "free",
+      "title": "오늘도 코딩하느라 하루가 금방 지나갔네요",
+      "views": 28,
+      "user": {
+        "_id": 2,
+        "name": "어피치",
+        "image": "uploadFiles/user-apeach.webp"
+      },
+      "content": "오늘 하루 종일 React 프로젝트 작업했는데 시간이 너무 빨리 지나갔어요. 컴포넌트 구조 설계하고 상태 관리하는 게 생각보다 복잡하네요.\n\n특히 Context API와 useState 조합해서 쓰는 부분에서 고민이 많았는데, 결국 Redux로 갈아타는 게 나을까요? 아니면 Context API로 충분할까요?\n\n프로젝트 규모가 중간 정도인데 어떤 상태 관리 라이브러리를 쓰는 게 좋을지 고민입니다. 경험 있으신 분들 조언 부탁드려요!",
+      "replies": [
+        {
+          "user": {
+            "_id": 3,
+            "name": "제이지",
+            "image": "uploadFiles/user-jayg.webp"
+          },
+          "content": "중간 규모면 Context API로도 충분할 수 있어요. Redux는 학습 곡선이 좀 있거든요."
+
+        }
+      ]
+    },
+    {
+      "type": "free",
+      "title": "Git 브랜치 전략에 대해 궁금해요",
+      "views": 19,
+      "user": {
+        "_id": 3,
+        "name": "제이지",
+        "image": "uploadFiles/user-jayg.webp"
+      },
+      "content": "팀 프로젝트를 하면서 Git 브랜치 전략에 대해 고민이 생겼어요.\n\n현재는 main 브랜치에서 직접 작업하고 있는데, 이게 맞는 건지 모르겠네요. feature 브랜치를 만들어서 작업하는 게 더 좋을까요?\n\n작은 프로젝트라서 굳이 브랜치를 나눌 필요가 있을까 싶기도 하고, 하지만 나중에 충돌이 생기면 어쩌지 걱정도 되고...\n\n팀원이 3명 정도인데 어떤 브랜치 전략을 쓰는 게 좋을까요?",
+      "replies": [
+        {
+          "user": {
+            "_id": 4,
+            "name": "네오",
+            "image": "uploadFiles/user-neo.webp"
+          },
+          "content": "3명이면 feature 브랜치 쓰는 게 안전해요. 충돌 방지도 되고 코드 리뷰도 할 수 있거든요."
+
+        },
+        {
+          "user": {
+            "_id": 2,
+            "name": "어피치",
+            "image": "uploadFiles/user-apeach.webp"
+          },
+          "content": "Git Flow나 GitHub Flow 같은 전략도 참고해보세요!"
+
+        }
+      ]
+    },
+    {
+      "type": "free",
+      "title": "포트폴리오 프로젝트 아이디어 공유",
+      "views": 35,
+      "user": {
+        "_id": 4,
+        "name": "네오",
+        "image": "uploadFiles/user-neo.webp"
+      },
+      "content": "취업 준비하면서 포트폴리오 프로젝트를 만들고 있는데, 아이디어가 떠오르지 않네요.\n\n현재까지 배운 것:\n- HTML/CSS/JavaScript\n- React\n- Node.js 기초\n- MongoDB\n\n이 정도로 뭘 만들 수 있을까요? 실무에서 인정받을 만한 프로젝트를 만들고 싶은데...\n\n혹시 좋은 포트폴리오 프로젝트 아이디어나 참고할 만한 사이트 있으면 공유해주세요!",
+      "replies": [
+        {
+          "user": {
+            "_id": 1,
+            "name": "무지",
+            "image": "uploadFiles/user-muzi.webp"
+          },
+          "content": "할 일 관리 앱이나 간단한 블로그 정도가 좋을 것 같아요. CRUD 기능이 다 들어가거든요."
+
+        }
+      ]
+    },
+    {
+      "type": "qna",
+      "title": "useEffect에서 무한 루프가 발생하는 이유가 뭔가요?",
+      "views": 42,
+      "user": {
+        "_id": 2,
+        "name": "어피치",
+        "image": "uploadFiles/user-apeach.webp"
+      },
+      "content": "React에서 useEffect를 사용할 때 무한 루프가 발생하는 문제가 있어요.\n\n```javascript\nuseEffect(() => {\n  setCount(count + 1);\n}, [count]);\n```\n\n이런 코드를 작성했는데 계속 렌더링이 반복되네요. 왜 이런 일이 발생하는 걸까요? 그리고 어떻게 해결할 수 있나요?\n\n의존성 배열에 count를 넣었는데도 왜 문제가 생기는지 이해가 안 가요.",
+      "replies": [
+        {
+          "user": {
+            "_id": 3,
+            "name": "제이지",
+            "image": "uploadFiles/user-jayg.webp"
+          },
+          "content": "useEffect 안에서 setCount를 호출하면 count가 변경되고, 그러면 useEffect가 다시 실행되어서 무한 루프가 발생해요. 의존성 배열에서 count를 제거하거나, 함수형 업데이트를 사용하세요: setCount(prev => prev + 1)"
+
+        },
+        {
+          "user": {
+            "_id": 4,
+            "name": "네오",
+            "image": "uploadFiles/user-neo.webp"
+          },
+          "content": "의존성 배열을 빈 배열 []로 두면 마운트 시 한 번만 실행돼요. 필요에 따라 사용하세요!"
+
+        }
+      ]
+    },
+    {
+      "type": "qna",
+      "title": "async/await와 Promise의 차이점이 뭔가요?",
+      "views": 38,
+      "user": {
+        "_id": 3,
+        "name": "제이지",
+        "image": "uploadFiles/user-jayg.webp"
+      },
+      "content": "JavaScript 비동기 처리에 대해 공부하고 있는데, async/await와 Promise의 차이점이 명확하게 이해가 안 가요.\n\n둘 다 비동기 처리를 하는 건 알겠는데, 언제 어떤 걸 사용해야 하는지 모르겠어요.\n\n```javascript\n// Promise\nfetch('/api/data')\n  .then(response => response.json())\n  .then(data => console.log(data));\n\n// async/await\nconst response = await fetch('/api/data');\nconst data = await response.json();\nconsole.log(data);\n```\n\n이 두 방식의 차이점과 각각의 장단점을 알려주세요!",
+      "replies": [
+        {
+          "user": {
+            "_id": 1,
+            "name": "무지",
+            "image": "uploadFiles/user-muzi.webp"
+          },
+          "content": "async/await는 Promise의 문법적 설탕(syntactic sugar)이에요. 코드가 더 읽기 쉽고 동기 코드처럼 보여요. 하지만 에러 처리는 try-catch를 써야 해요."
+
+        },
+        {
+          "user": {
+            "_id": 4,
+            "name": "네오",
+            "image": "uploadFiles/user-neo.webp"
+          },
+          "content": "Promise.all() 같은 경우는 Promise 방식이 더 직관적일 수 있어요. 상황에 따라 선택하시면 됩니다!"
+
+        }
+      ]
+    },
+    {
+      "type": "qna",
+      "title": "CORS 에러는 왜 발생하고 어떻게 해결하나요?",
+      "views": 31,
+      "user": {
+        "_id": 4,
+        "name": "네오",
+        "image": "uploadFiles/user-neo.webp"
+      },
+      "content": "프론트엔드에서 API를 호출할 때 CORS 에러가 발생해요.\n\n에러 메시지:\n\"Access to fetch at 'http://localhost:3000/api' from origin 'http://localhost:5173' has been blocked by CORS policy\"\n\n왜 이런 에러가 발생하는 건가요? 그리고 어떻게 해결할 수 있나요?\n\n서버 쪽에서 설정을 해야 하는 건지, 프론트엔드에서 해결할 수 있는 건지 궁금해요.",
+      "replies": [
+        {
+          "user": {
+            "_id": 1,
+            "name": "무지",
+            "image": "uploadFiles/user-muzi.webp"
+          },
+          "content": "CORS는 브라우저의 보안 정책이에요. 서버에서 Access-Control-Allow-Origin 헤더를 설정해야 해요. Express에서는 cors 미들웨어를 사용하면 돼요."
+
+        },
+        {
+          "user": {
+            "_id": 2,
+            "name": "어피치",
+            "image": "uploadFiles/user-apeach.webp"
+          },
+          "content": "개발 환경에서는 프록시 설정으로 우회할 수도 있어요. Vite나 Create React App에서 proxy 옵션 사용하면 됩니다!"
+
+        }
+      ]
+    }
+
+  ],
+  "bookmark": [
+    {
+      "type": "post",
+      "user_id": 2,
+      "target_id": 2,
+      "user": {
+        "_id": 2,
+        "name": "어피치",
+        "email": "appeach@board.com",
+        "image": "uploadFiles/user-apeach.webp"
+      },
+      "memo": "단축키 정리"
+    },
+    {
+      "type": "post",
+      "user_id": 2,
+      "target_id": 7,
+      "user": {
+        "_id": 2,
+        "name": "어피치",
+        "email": "appeach@board.com",
+        "image": "uploadFiles/user-apeach.webp"
+      },
+      "memo": "API 연동 참고"
+    },
+    {
+      "type": "user",
+      "user_id": 2,
+      "target_id": 3,
+      "user": {
+        "_id": 2,
+        "name": "어피치",
+        "email": "appeach@board.com",
+        "image": "uploadFiles/user-apeach.webp"
+      },
+      "memo": "제이지 - 디버깅 전문가"
+    },
+    {
+      "type": "post",
+      "user_id": 3,
+      "target_id": 3,
+      "user": {
+        "_id": 3,
+        "name": "제이지",
+        "email": "jayg@board.com",
+        "image": "uploadFiles/user-jayg.webp"
+      },
+      "memo": "디버깅 팁"
+    },
+    {
+      "type": "post",
+      "user_id": 3,
+      "target_id": 8,
+      "user": {
+        "_id": 3,
+        "name": "제이지",
+        "email": "jayg@board.com",
+        "image": "uploadFiles/user-jayg.webp"
+      },
+      "memo": "JWT 토큰 인증"
+    },
+    {
+      "type": "post",
+      "user_id": 3,
+      "target_id": 10,
+      "user": {
+        "_id": 3,
+        "name": "제이지",
+        "email": "jayg@board.com",
+        "image": "uploadFiles/user-jayg.webp"
+      },
+      "memo": "Bruno 사용법"
+    },
+    {
+      "type": "user",
+      "user_id": 3,
+      "target_id": 4,
+      "user": {
+        "_id": 3,
+        "name": "제이지",
+        "email": "jayg@board.com",
+        "image": "uploadFiles/user-jayg.webp"
+      },
+      "memo": "네오 - 설정 최적화 전문가"
+    },
+    {
+      "type": "post",
+      "user_id": 4,
+      "target_id": 4,
+      "user": {
+        "_id": 4,
+        "name": "네오",
+        "email": "neo@board.com",
+        "image": "uploadFiles/user-neo.webp"
+      },
+      "memo": "VSCode 설정 최적화"
+    },
+    {
+      "type": "post",
+      "user_id": 4,
+      "target_id": 5,
+      "user": {
+        "_id": 4,
+        "name": "네오",
+        "email": "neo@board.com",
+        "image": "uploadFiles/user-neo.webp"
+      },
+      "memo": "개발 환경 설정"
+    },
+    {
+      "type": "post",
+      "user_id": 4,
+      "target_id": 13,
+      "user": {
+        "_id": 4,
+        "name": "네오",
+        "email": "neo@board.com",
+        "image": "uploadFiles/user-neo.webp"
+      },
+      "memo": "MongoDB Compass"
+    },
+    {
+      "type": "user",
+      "user_id": 4,
+      "target_id": 2,
+      "user": {
+        "_id": 4,
+        "name": "네오",
+        "email": "neo@board.com",
+        "image": "uploadFiles/user-neo.webp"
+      },
+      "memo": "어피치 - 단축키 마스터"
+    }
+  ]
+}

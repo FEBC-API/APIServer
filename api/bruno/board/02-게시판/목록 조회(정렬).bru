@@ -1,0 +1,16 @@
+meta {
+  name: 목록 조회(정렬)
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{url}}/posts?type=info&sort={"views": -1}
+  body: none
+  auth: none
+}
+
+params:query {
+  type: info
+  sort: {"views": -1}
+}
