@@ -351,19 +351,30 @@ async function handleInitDataOnlyUpload(initData, db) {
       const documentsWithNewIds = [];
       for(let i=0; i<documents.length; i++){
         const doc = documents[i];
-        const newId = i + 1;
+        const newId = await db.nextSeq(collectionName);
         documentsWithNewIds.push({
           _id: newId,
           createdAt: moment().tz('Asia/Seoul').format('YYYY.MM.DD HH:mm:ss'),
           updatedAt: moment().tz('Asia/Seoul').format('YYYY.MM.DD HH:mm:ss'),
-          ...doc
+          ...doc,
         });
+
+        // 하위 데이터 중 replies 배열의 경우 각 데이터에 _id 추가
+        if (doc.replies && Array.isArray(doc.replies)) {
+          for(let j=0; j<doc.replies.length; j++){
+            const newId = await db.nextSeq('reply');
+            const reply = doc.replies[j];
+            reply._id = newId;
+            reply.createdAt = moment().tz('Asia/Seoul').format('YYYY.MM.DD HH:mm:ss');
+            reply.updatedAt = moment().tz('Asia/Seoul').format('YYYY.MM.DD HH:mm:ss');
+          }
+        }
       }
       
       // 컬렉션이 새로 생성되므로 setSeq로 다음 ID 설정 (file_uploads 제외)
-      if (collectionName !== 'file_uploads') {
-        db.setSeq(collectionName, documents.length + 1);
-      }
+      // if (collectionName !== 'file_uploads') {
+      //   db.setSeq(collectionName, documents.length + 1);
+      // }
 
       const result = await db.collection(collectionName).insertMany(documentsWithNewIds);
       const insertedCount = result.insertedCount;
@@ -491,26 +502,37 @@ async function handleBothInitDataAndFilesUpload(initData, uploadFiles, clientId,
           const newId = await db.nextSeq('file_uploads');
           documentsWithNewIds.push({
             _id: newId,
-            ...doc,
             createdAt: moment().tz('Asia/Seoul').format('YYYY.MM.DD HH:mm:ss'),
-            updatedAt: moment().tz('Asia/Seoul').format('YYYY.MM.DD HH:mm:ss')
+            updatedAt: moment().tz('Asia/Seoul').format('YYYY.MM.DD HH:mm:ss'),
+            ...doc,
           });
         } else {
           // 다른 컬렉션들은 새로 생성
-          const newId = i + 1;
+          const newId = await db.nextSeq(collectionName);
           documentsWithNewIds.push({
             _id: newId,
-            ...doc,
             createdAt: moment().tz('Asia/Seoul').format('YYYY.MM.DD HH:mm:ss'),
-            updatedAt: moment().tz('Asia/Seoul').format('YYYY.MM.DD HH:mm:ss')
+            updatedAt: moment().tz('Asia/Seoul').format('YYYY.MM.DD HH:mm:ss'),
+            ...doc,
           });
+
+          // 하위 데이터 중 replies 배열의 경우 각 데이터에 _id 추가
+          if (doc.replies && Array.isArray(doc.replies)) {
+            for(let j=0; j<doc.replies.length; j++){
+              const reply = doc.replies[j];
+              const newId = await db.nextSeq('reply');
+              reply._id = newId;
+              reply.createdAt = moment().tz('Asia/Seoul').format('YYYY.MM.DD HH:mm:ss');
+              reply.updatedAt = moment().tz('Asia/Seoul').format('YYYY.MM.DD HH:mm:ss');
+            }
+          }
         }
       }
       
       // 새 컬렉션은 setSeq로 다음 ID 설정
-      if (collectionName !== 'file_uploads') {
-        db.setSeq(collectionName, documents.length + 1);
-      }
+      // if (collectionName !== 'file_uploads') {
+      //   db.setSeq(collectionName, documents.length + 1);
+      // }
 
       const result = await db.collection(collectionName).insertMany(documentsWithNewIds);
       const insertedCount = result.insertedCount;
