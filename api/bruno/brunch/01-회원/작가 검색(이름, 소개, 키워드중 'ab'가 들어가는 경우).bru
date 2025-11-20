@@ -1,0 +1,20 @@
+meta {
+  name: 작가 검색(이름, 소개, 키워드중 'ab'가 들어가는 경우)
+  type: http
+  seq: 6
+}
+
+get {
+  url: {{url}}/users?custom={ "$or": [{ "name": { "$regex": "ab", "$options": "i" } }, { "extra.keyword": { "$regex": "ab", "$options": "i" } }, { "extra.biography": { "$regex": "ab", "$options": "i" } }] }
+  body: none
+  auth: inherit
+}
+
+params:query {
+  custom: { "$or": [{ "name": { "$regex": "ab", "$options": "i" } }, { "extra.keyword": { "$regex": "ab", "$options": "i" } }, { "extra.biography": { "$regex": "ab", "$options": "i" } }] }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
