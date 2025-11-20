@@ -22,11 +22,14 @@ const postModel = {
   },
 
   // 게시글 목록 조회
-  async find(clientId, { type='post', userId, search={}, sortBy={}, page=1, limit=0 }){
+  async find(clientId, { type, userId, search={}, sortBy={}, page=1, limit=0 }){
     logger.trace(arguments);
     const db = await getDb(clientId);
     
-    let query = { type, ...search };
+    let query = { ...search };
+    if(type){
+      query.type = type;
+    }
     logger.trace(query);
 
     const skip = (page-1) * limit;

@@ -31,7 +31,7 @@ router.post('/', jwtAuth.auth('user', true), [ // 익명 가능
         모든 속성은 선택사항입니다.<br>
         type, title, content, image, tag 속성은 목록 조회에서 확인할 수 있습니다.<br>
         이외에 지정된 속성은 상세 조회에서만 확인할 수 있습니다.<br>
-        type: 게시판 종류를 나타내고 게시판을 구분할 수 있는 이름이며 자유롭게 지정할 수 있고 게시물 목록 조회시 전달해야 합니다.(생략시 post)<br>
+        type: 게시판 종류를 나타내고 게시판을 구분할 수 있는 이름이며 자유롭게 지정할 수 있습니다.(info, free, qna 등) 게시물 목록 조회시 전달하면 해당 type의 게시물만 조회가 가능합니다.(생략시 기본값: post)<br>
         title: 제목(키워드 검색에 사용)<br>
         content: 내용(키워드 검색에 사용)<br>
         image: 첨부 이미지(여러개일 경우 배열로 전달)<br>
@@ -115,7 +115,6 @@ router.get('/', [
       description: "게시판 종류",
       in: 'query',
       type: 'string',
-      default: 'post',
       example: 'qna'
     }
     #swagger.parameters['keyword'] = {
@@ -219,7 +218,6 @@ router.get('/users', [
       description: "게시판 종류",
       in: 'query',
       type: 'string',
-      default: 'post',
       example: 'qna'
     }
     #swagger.parameters['keyword'] = {
@@ -330,7 +328,6 @@ router.get('/users/:_id', [
       description: "게시판 종류",
       in: 'query',
       type: 'string',
-      default: 'post',
       example: 'qna'
     }
     #swagger.parameters['keyword'] = {
@@ -484,7 +481,11 @@ router.get('/:_id', jwtAuth.auth('user', true), async function (req, res, next) 
 });
 
 // 게시글 수정
-router.patch('/:_id', jwtAuth.auth('user'), async function (req, res, next) {
+router.patch('/:_id', jwtAuth.auth('user'), [
+    body('title').optional().trim().isLength({ min: 2 }).withMessage('제목은 2글자 이상 입력해야 합니다.'),
+    body('content').optional().trim().isLength({ min: 2 }).withMessage('내용은 2글자 이상 입력해야 합니다.'),
+    body('tag').optional().trim().isLength({ min: 2 }).withMessage('태그는 2글자 이상 입력해야 합니다.'),
+  ], validator.checkResult, async function (req, res, next) {
 
   /*
     #swagger.tags = ['게시판']
