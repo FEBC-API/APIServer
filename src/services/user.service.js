@@ -87,7 +87,8 @@ const userService = {
 
   // 로그인 성공한 회원 정보에 토큰 부여
   async setToken(clientId, user, expiresIn){
-    const token = await authService.sign({ _id: user._id, type: user.type, name: user.name, email: user.email, image: user.image, loginType: user.loginType }, expiresIn);
+    // const token = await authService.sign({ _id: user._id, type: user.type, name: user.name, email: user.email, image: user.image, loginType: user.loginType }, expiresIn);
+    const token = await authService.sign({ _id: user._id, type: user.type }, expiresIn);
     logger.log('token', token);
     await userModel.updateRefreshToken(clientId, user._id, token.refreshToken);
     user.token = token;
