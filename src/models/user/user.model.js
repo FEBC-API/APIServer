@@ -51,7 +51,7 @@ const userModel = {
   },
 
   // 회원 정보 조회(모든 속성)
-  async findById(clientId, _id) {
+  async findById(clientId, { _id, userId }) {
     logger.trace(arguments);
 
     const pipeline = [
@@ -251,7 +251,50 @@ const userModel = {
         }
       },
 
-
+      {
+        $addFields: {
+          myBookmarkId: { // userId가 북마크한 회원일때 북마크 id
+            $map: {
+              input: {
+                $filter: {
+                  input: "$bookmarkedBy.userItems",
+                  as: "bookmark",
+                  cond: { $eq: ["$$bookmark.user._id", userId] } // userId 북마크한 항목 필터링
+                }
+              },
+              as: "bookmark",
+              in: "$$bookmark._id"
+            }
+          },
+          myLikeId: { // userId가 좋아요한 회원일때 좋아요 id
+            $map: {
+              input: {
+                $filter: {
+                  input: "$likedBy.userItems",
+                  as: "like",
+                  cond: { $eq: ["$$like.user._id", userId] } // userId 좋아요한 항목 필터링
+                }
+              },
+              as: "like",
+              in: "$$like._id"
+            }
+          }
+        }
+      },
+      
+      { 
+        $unwind: {
+          path: "$myBookmarkId",
+          preserveNullAndEmptyArrays: true
+        }
+      },
+      { 
+        $unwind: {
+          path: "$myLikeId",
+          preserveNullAndEmptyArrays: true
+        }
+      },
+      
       // 북마크 수
       {
         $addFields: {
@@ -287,23 +330,23 @@ const userModel = {
         }
       },
 
-      {
-        $project: {
-          'user.password': 0,
-          'user.refreshToken': 0,
-          'user.private': 0,
-          'user.postItems': 0,
-          'user.bookmark.productItems': 0,
-          'user.bookmark.userItems': 0,
-          'user.bookmark.postItems': 0,
-          'user.bookmarkedBy.userItems': 0,
-          'user.like.productItems': 0,
-          'user.like.userItems': 0,
-          'user.like.postItems': 0,
-          'user.likedBy.userItems': 0,
+      // {
+      //   $project: {
+      //     'user.password': 0,
+      //     'user.refreshToken': 0,
+      //     'user.private': 0,
+      //     'user.postItems': 0,
+      //     'user.bookmark.productItems': 0,
+      //     'user.bookmark.userItems': 0,
+      //     'user.bookmark.postItems': 0,
+      //     'user.bookmarkedBy.userItems': 0,
+      //     'user.like.productItems': 0,
+      //     'user.like.userItems': 0,
+      //     'user.like.postItems': 0,
+      //     'user.likedBy.userItems': 0,
 
-        }
-      },
+      //   }
+      // },
 
     ];
 

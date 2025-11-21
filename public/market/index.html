@@ -50,6 +50,28 @@
         <h2 id="changelog-section">변경 사항</h2>
 
         <div class="version-item">
+          <h3 id="v2.5.0"><a href="#v2.5.0">v2.5.0 - 2025.11.21</a></h3>
+          <ul>
+            <li>[버그 수정] accessToken에 저장된 사용자 정보중 _id, type 만 남기고 제거
+              <ul>
+                <li>변경 사유: 서버에서는 토큰에 저장된 사용자 정보를 이용하다보니 회원 정보를 수정한 후 수정된 내용이 반영되지 않는 문제 발생</li>
+                <li>변경 내용: 토큰에는 _id, type만 남기고 나머지 사용자 정보는 서버에서 DB 실시간 조회하는 방식으로 변경</li>
+                <li>변경전: accessToken에 담긴 사용자 정보: _id, type, name, email, image, loginType</li>
+                <li>변경후: accessToken에 담긴 사용자 정보: _id, type</li>
+              </ul>
+            </li>
+            <li>[기능 수정] 다른 회원 정보 조회시 내가 북마크/좋아요 한 회원인지 여부를 응답에 추가
+              <ul>
+                <li>변경 사유: 게시글, 상품에 대해서는 이미 구현되어 있었으나 회원에 대해서는 누락되어 있었음</li>
+                <li>회원 정보 조회시 내가 북마크 한 회원이라면 응답 데이터에 myBookmarkId 속성으로 북마크 id가 추가됨</li>
+                <li>회원 정보 조회시 내가 좋아요 한 회원이라면 응답 데이터에 myLikeId 속성으로 좋아요 id가 추가됨</li>
+                <li>API 문서 보기: <a href="/market/apidocs/#/회원/get_users___id_" target="_blank">회원 정보 조회(모든 속성)</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+
+        <div class="version-item">
           <h3 id="v2.4.0"><a href="#v2.4.0">v2.4.0 - 2025.11.20</a></h3>
           <ul>
             <li>[기능 수정] 게시물 목록 조회 시 type 파라미터가 전달되지 않을 경우 모든 게시물을 조회하도록 수정

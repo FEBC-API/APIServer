@@ -33,7 +33,7 @@ router.post('/', [
     }]
 
     #swagger.requestBody = {
-      description: "회원 정보가 저장된 객체입니다.<br>
+      description: `회원 정보가 저장된 객체입니다.<br>
         type: 회원 구분(필수, 구매회원: user, 판매회원: seller)<br>
         email: 이메일(필수)<br>
         password: 비밀번호(필수)<br>
@@ -42,8 +42,11 @@ router.post('/', [
         phone: 전화번호(선택)<br>
         address: 주소(선택)<br>
         extra: 추가 데이터(선택, 추가하고 싶은 아무 속성이나 지정)<br>
-        extra.emailConfirm: 이메일 인증 여부(선택, 이메일 인증이 필수일 경우 false로 지정, 이메일 인증이 완료되면 true로 변경됨)<br>
-        extra.adminConfirm: 관리자 승인 여부(선택, 관리자 승인이 필수일 경우 false로 지정, 관리자 승인이 완료되면 true로 변경됨)<br>",
+        extra.emailConfirm: 이메일 인증 여부(선택, 회원 가입시 이메일 인증이 필수일 경우 false로 지정, 이메일 인증이 완료되면 true로 변경됨)<br>
+          사용자에게 인증 이메일을 보내는 방법은 <a target=\"_blank\" href=\"/market/apidocs/#/이메일\">이메일 인증 API</a>를 참고하면 됩니다.<br>
+        extra.adminConfirm: 관리자 승인 여부(선택, 회원 가입시 관리자 승인이 필수일 경우 false로 지정)<br>
+          회원 가입 요청을 승인하는 방법은 <a target=\"_blank\" href=\"/market/apidocs/#/회원/patch_users___id_\">회원 정보 수정 API</a>를 참고해서 extra.adminConfirm 속성을 true로 변경하면 됩니다.(관리자만 가능)<br>
+      `,
       required: true,
       content: {
         "application/json": {
@@ -726,18 +729,24 @@ router.get('/:_id/*', /*jwtAuth.auth('user'),*/ async function (req, res, next) 
 });
 
 // 회원 조회(모든 속성)
-router.get('/:_id', /*jwtAuth.auth('user'),*/ async function (req, res, next) {
+router.get('/:_id', jwtAuth.auth('user', true) /* 익명 가능 */, async function (req, res, next) {
   /*
     #swagger.tags = ['회원']
     #swagger.summary  = '회원 정보 조회(모든 속성)'
     #swagger.description = `회원 정보의 모든 속성을 조회합니다.<br>
       등록한 회원 정보 이외에 다음의 정보가 추가됩니다.<br><br>
-      posts: 지정한 사용자가 작성한 게시글 수<br>
-      postViews: 지정한 사용자가 작성한 모든 게시글 조회수<br>
-      bookmark.products: 지정한 사용자가 북마크 한 상품 수<br>
-      bookmark.users: 지정한 사용자가 북마크 한 사용자 수<br>
-      bookmark.posts: 지정한 사용자가 북마크 한 게시글 수<br>
-      bookmarkedBy.users: 지정한 사용자를 북마크한 사용자 수<br>
+      posts: 조회된 회원이 작성한 게시글 수<br>
+      postViews: 조회된 회원이 작성한 모든 게시글 조회수<br>
+      bookmark.products: 조회된 회원이 북마크 한 상품 수<br>
+      bookmark.users: 조회된 회원이 북마크 한 사용자 수<br>
+      bookmark.posts: 조회된 회원이 북마크 한 게시글 수<br>
+      like.products: 조회된 회원이 좋아요 한 상품 수<br>
+      like.users: 조회된 회원이 좋아요 한 사용자 수<br>
+      like.posts: 조회된 회원이 좋아요 한 게시글 수<br>
+      bookmarkedBy.users: 조회된 회원을 북마크한 회원 수<br>
+      likedBy.users: 조회된 회원을 좋아요 한 회원 수<br>
+      myBookmarkId: 조회된 회원을 조회한 회원이 북마크 한 경우, 북마크 id<br>
+      myLikeId: 조회된 회원을 조회한 회원이 좋아요 한 경우, 좋아요 id<br>
     `
 
     #swagger.security = [{
@@ -782,7 +791,7 @@ router.get('/:_id', /*jwtAuth.auth('user'),*/ async function (req, res, next) {
 
   try {
     const clientId = getClientId(req);
-    const result = await userModel.findById(clientId, Number(req.params._id));
+    const result = await userModel.findById(clientId, { _id: Number(req.params._id), userId: req.user?._id });
 
     if (result) {
       res.json({ ok: 1, item: result });
@@ -870,8 +879,8 @@ router.patch('/:_id', jwtAuth.auth('user'), async function (req, res, next) {
       if (req.user.type !== 'admin') { // 관리자가 아니라면 회원 타입과 회원 승인 정보는 수정 못함
         delete req.body.type;
         // delete (req.body.extra && req.body.extra.confirm);
-        if (req.body['extra.confirm'] === true) { // 일반 유저가 confirm 처리하지 못하도록
-          delete req.body['extra.confirm'];
+        if (req.body['extra.adminConfirm'] === true) { // 일반 유저가 confirm 처리하지 못하도록
+          delete req.body['extra.adminConfirm'];
         }
       }
       const clientId = getClientId(req);
