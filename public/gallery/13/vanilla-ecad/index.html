@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>멋쟁이사자처럼 프로젝트 갤러리</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+      :root {
+        --likelion-orange: #FF7710;
+        --likelion-black: #333333;
+        --likelion-gray: #F5F5F5;
+      }
+      
+      * {
+        font-family: 'Noto Sans KR', sans-serif;
+      }
+
+      body {
+        background-color: var(--likelion-gray);
+      }
+
+      .card {
+        transition: transform 0.3s ease;
+        height: 100%;
+        border: none;
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.12);
+        background: white;
+      }
+
+      .card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 12px 30px rgba(0,0,0,0.18);
+      }
+
+      .clickable-card {
+        cursor: pointer;
+      }
+
+      .clickable-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 35px rgba(255, 119, 16, 0.25);
+      }
+
+      .team-badge {
+        position: absolute;
+        top: 16px;
+        right: 16px;
+        background: rgba(0,0,0,0.8);
+        color: white;
+        padding: 6px 12px;
+        border-radius: 4px;
+        font-weight: 500;
+        font-size: 0.8rem;
+        z-index: 10;
+        backdrop-filter: blur(10px);
+        box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      }
+
+      .project-links {
+        display: flex;
+        gap: 8px;
+        margin-top: 16px;
+        flex-wrap: nowrap;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .project-links a {
+        text-decoration: none;
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        border-radius: 50px;
+        padding: 8px 12px;
+        font-size: 0.8rem;
+        font-weight: 500;
+        flex-shrink: 0;
+      }
+
+      .btn-primary {
+        background-color: var(--likelion-orange);
+        border-color: var(--likelion-orange);
+      }
+
+      .btn-primary:hover {
+        background-color: #e66700;
+        border-color: #e66700;
+        transform: scale(1.05);
+      }
+
+      .btn-outline-secondary {
+        color: var(--likelion-black);
+        border-color: #ddd;
+      }
+
+      .btn-outline-secondary:hover {
+        background-color: var(--likelion-black);
+        border-color: var(--likelion-black);
+        transform: scale(1.05);
+      }
+
+      .team-members {
+        font-size: 0.9rem;
+        line-height: 1.6;
+        color: #666;
+      }
+
+      .project-topic {
+        font-size: 0.95rem;
+        color: #666;
+        min-height: 60px;
+        margin-bottom: 16px;
+        line-height: 1.6;
+        word-break: keep-all;
+      }
+
+      .project-image {
+        height: 240px;
+        object-fit: cover;
+        background: linear-gradient(135deg, #FF7710, #FFB366);
+      }
+
+      .project-header {
+        height: 240px;
+        background: linear-gradient(135deg, #FFF5F0, #FFEEE5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        border-bottom: 1px solid #f0f0f0;
+      }
+
+      .project-name {
+        color: var(--likelion-orange);
+        font-size: 1.8rem;
+        font-weight: 700;
+        text-align: center;
+        margin: 0;
+        word-break: keep-all;
+        line-height: 1.3;
+      }
+
+      .card-title {
+        color: var(--likelion-black);
+        font-weight: 700;
+        font-size: 1.3rem;
+        margin-bottom: 12px;
+        word-break: keep-all;
+        line-height: 1.4;
+      }
+
+      header {
+        background: linear-gradient(135deg, #FF7710, #FFB366);
+        color: white;
+      }
+
+      header h1 {
+        color: white;
+        font-size: 2.2rem;
+        font-weight: 700;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      }
+
+      header p {
+        color: rgba(255,255,255,0.9);
+        font-weight: 500;
+        font-size: 1.2rem;
+      }
+
+      .card-body {
+        padding: 24px;
+      }
+
+      footer {
+        background-color: white;
+        border-top: 1px solid #eee;
+      }
+
+      .modal-content {
+        border-radius: 16px;
+        border: none;
+      }
+
+      .modal-header {
+        border-bottom: 1px solid #eee;
+        padding: 20px 24px;
+      }
+
+      .modal-body {
+        padding: 24px;
+      }
+
+      .container {
+        max-width: 1200px;
+      }
+
+      .team-members strong {
+        color: var(--likelion-orange);
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <header class="py-5">
+        <div class="container">
+          <h1 class="text-center fw-bold mb-3">멋쟁이사자처럼 FrontEnd BootCamp 13기</h1>
+          <p class="text-center mb-0">JavaScript 프로젝트 갤러리</p>
+        </div>
+      </header>
+
+      <main class="container py-5">
+        <div class="row g-4" id="project-cards">
+          <!-- 프로젝트 카드들이 여기에 동적으로 추가됩니다 -->
+        </div>
+      </main>
+
+      <footer class="bg-white py-4 mt-5">
+        <div class="container">
+          <p class="text-center text-muted mb-0">
+            © 2025 멋쟁이사자처럼 프론트엔드 스쿨 13기
+          </p>
+        </div>
+      </footer>
+    </div>
+
+    <!-- 프로젝트 상세 정보 모달 -->
+    <div class="modal fade" id="projectModal" tabindex="-1">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title"></h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+          <div class="modal-body">
+            <!-- 모달 내용은 동적으로 추가됩니다 -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="module" src="./main.js"></script>
+  </body>
+</html>
