@@ -3,6 +3,7 @@ import userRouter from '#routes/user/index.js';
 import sellerRouter from '#routes/seller/index.js';
 import systemRouter from '#routes/system/index.js';
 import todoRouter from '#routes/todo/index.js';
+import todoListRouter from '#routes/todolist/index.js';
 import mcpRouter from '#routes/mcp/index.js';
 
 import express from 'express';
@@ -13,5 +14,6 @@ router.use('/market', userRouter);
 router.use('/market', sellerRouter);
 router.use('/market', systemRouter);
 router.use('/todo', todoRouter);
+router.use('/todolist', todoListRouter);
 router.use('/mcp', mcpRouter);
 export default router;
