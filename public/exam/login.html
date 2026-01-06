@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>로그인</title>
+  <script>
+    window.addEventListener('DOMContentLoaded',()=>{const a=document.querySelector('form');a.addEventListener('submit',b)});
+    const c=['email','password','https://fesp-api.koyeb.app/market/users/login','application/json','Client-Id','openmarket'];
+    const b=d=>{
+      d.preventDefault();
+      const e=document.getElementById(c[0]).value;
+      const f=document.getElementById(c[1]).value;
+      const g=new XMLHttpRequest();
+      g.open('POST',c[2]);
+      g.setRequestHeader('Content-Type',c[3]);
+      g.setRequestHeader(c[4],c[5]);
+      g.send(JSON.stringify({email:e,password:f}));
+      g.onload=()=>{
+        const h=JSON.parse(g.responseText);
+        h.ok?alert(h.item.name+'님 환영합니다.'):alert(h.message);
+      };
+      g.onerror=()=>alert('네트워크 오류가 발생했습니다.');
+    };
+  </script>
+</head>
+<body>
+  <h1>로그인</h1>
+
+  <form>
+    <label for="email">이메일</label>
+    <input type="email" id="email" name="email" placeholder="이메일" /><br />
+    <label for="password">비밀번호</label>
+    <input type="password" id="password" name="password" placeholder="비밀번호" />
+    <button type="submit">로그인</button>
+  </form>
+</body>
+</html>
