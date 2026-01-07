@@ -50,6 +50,19 @@
         <h2 id="changelog-section">변경 사항</h2>
 
         <div class="version-item">
+          <h3 id="v2.5.1"><a href="#v2.5.1">v2.5.1 - 2026.01.07</a></h3>
+          <ul>
+            <li>[기능 수정] Access Token 재발행 시 Refresh Token 도 재발행해서 응답하도록 수정
+              <ul>
+                <li>변경전: Access Token 재발행 시 Access Token만 재발행해서 응답</li>
+                <li>변경후: Access Token 재발행 시 Access Token과 Refresh Token을 모두 재발행해서 응답</li>
+                <li>API 문서 보기: <a href="/market/apidocs/#/인증/get_auth_refresh" target="_blank">Access Token 재발행</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+
+        <div class="version-item">
           <h3 id="v2.5.0"><a href="#v2.5.0">v2.5.0 - 2025.11.21</a></h3>
           <ul>
             <li>[버그 수정] accessToken에 저장된 사용자 정보중 _id, type 만 남기고 제거

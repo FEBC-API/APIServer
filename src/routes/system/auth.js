@@ -9,7 +9,7 @@ router.get('/refresh', async (req, res, next) => {
   /*
     #swagger.tags = ['인증']
     #swagger.summary  = 'Access 토큰 재발행'
-    #swagger.description = 'Authorization 헤더에 Bearer 방식의 Refresh Token을 보내서 Access Token을 재발급 합니다.'
+    #swagger.description = 'Authorization 헤더에 Bearer 방식의 Refresh Token을 보내서 Access Token과 Refresh Token을 재발급 합니다.'
 
     #swagger.security = [{
       "Refresh Token": [],
@@ -51,9 +51,9 @@ router.get('/refresh', async (req, res, next) => {
   try{
     const refreshToken = req.headers.authorization && req.headers.authorization.split('Bearer ')[1];
     const clientId = getClientId(req);
-    const accessToken = await authService.refresh(clientId, refreshToken);
+    const newToken = await authService.refresh(clientId, refreshToken);
   
-    res.json({ ok: 1, accessToken });
+    res.json({ ok: 1, ...newToken });
   }catch(err){
     next(err);
   }
