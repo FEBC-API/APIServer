@@ -21,6 +21,7 @@ export const db = {
     ...['febc13-final01-emjf', 'febc13-final06-emjf', 'febc13-final07-emjf', 'febc13-final09-emjf', 'febc13-final10-emjf', 'febc13-final12-emjf', 'febc13-final15-emjf'],
     ...new Array(10).fill(0).map((_, index) => `febc15-vanilla${index.toString().padStart(2, '0')}-ecad`),
     ...['febc15-vanilla10-brunch', 'febc15-vanilla10-nike'], // 15기 보조강사 jbm
+    ...new Array(10).fill(0).map((_, index) => `febc15-final${index.toString().padStart(2, '0')}-ecad`),
   ],
 };
 
