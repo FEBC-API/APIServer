@@ -1,0 +1,21 @@
+meta {
+  name: DB 초기화(파일과 initData 같이 업로드)
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{url}}/db/init
+  body: multipartForm
+  auth: inherit
+}
+
+body:multipart-form {
+  initData: @file()
+  attach: @file()
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
