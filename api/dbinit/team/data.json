@@ -8,7 +8,7 @@
       "address": "서울시 강남구 역삼동 123",
       "type": "admin",
       "loginType": "email",
-      "image": "files/team/user-muzi.png",
+      "image": "uploadFiles/user-muzi.png",
       "extra": {
         "birthday": "03-23"
       }
@@ -21,7 +21,7 @@
       "address": "서울시 강남구 삼성동 456",
       "type": "seller",
       "loginType": "email",
-      "image": "files/team/user-neo.png",
+      "image": "uploadFiles/user-neo.png",
       "extra": {
         "birthday": "11-23"
       }
