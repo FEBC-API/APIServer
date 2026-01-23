@@ -50,6 +50,19 @@
         <h2 id="changelog-section">변경 사항</h2>
 
         <div class="version-item">
+          <h3 id="v2.6.0"><a href="#v2.6.0">v2.6.0 - 2026.01.23</a></h3>
+          <ul>
+            <li>[기능 추가] 판매자에 의한 상품 구매 처리
+              <ul>
+                <li>구매자가 시스템을 통해서 직접 구매하지 않고 판매자와 대화를 통해서 오프라인이나 직거래로 구매할 경우에 판매자가 지정한 사용자에게 판매 처리를 하기 위해서 사용</li>
+                <li>상품 구매 API는 구매자가 호출하고 구매자의 로그인 id를 기반으로 처리되지만 판매자 주도로 구매 처리를 위해서는 전용 API가 따로 만들어져야 함</li>
+                <li>API 문서 보기: <a href="/market/apidocs/#/주문%20관리/post_seller_orders_" target="_blank">판매자에 의한 상품 구매 처리</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+
+        <div class="version-item">
           <h3 id="v2.5.1"><a href="#v2.5.1">v2.5.1 - 2026.01.07</a></h3>
           <ul>
             <li>[기능 수정] Access Token 재발행 시 Refresh Token 도 재발행해서 응답하도록 수정
@@ -92,6 +105,17 @@
                 <li>변경전: type 파라미터가 전달되지 않을 경우 'post' 타입의 게시물만 조회</li>
                 <li>변경후: type 파라미터가 전달되지 않을 경우 모든 게시물을 조회</li>
                 <li>API 문서 보기: <a href="/market/apidocs/#/게시판/get_posts_" target="_blank">전체 게시글 목록</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+
+        <div class="version-item">
+          <h3 id="v2.3.2"><a href="#v2.3.2">v2.3.2 - 2025.11.17</a></h3>
+          <ul>
+            <li>[기능 수정] DB 초기화 작업시 replies 속성이 있는 데이터는 replies에 _id, createdAt, updatedAt 자동으로 추가
+              <ul>
+                <li>API 문서 보기: <a href="/market/apidocs/#/시스템/post_db_init" target="_blank">DB 초기화</a></li>
               </ul>
             </li>
           </ul>
