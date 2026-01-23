@@ -8,6 +8,8 @@ import validator from '#middlewares/validator.js';
 import { getClientId } from '#utils/dbUtil.js';
 import SellerOrderModel from '#models/seller/order.model.js';
 import OrderModel from '#models/user/order.model.js';
+import productModel from '#models/user/product.model.js';
+import createError from 'http-errors';
 
 const router = express.Router();
 
@@ -15,7 +17,7 @@ const router = express.Router();
 router.get('/', [
   query('custom').optional().isJSON().withMessage('custom 값은 JSON 형식의 문자열이어야 합니다.'),
   query('sort').optional().isJSON().withMessage('sort 값은 JSON 형식의 문자열이어야 합니다.')
-], validator.checkResult, async function(req, res, next) {
+], validator.checkResult, async function (req, res, next) {
 
   /*
     #swagger.tags = ['주문 관리']
@@ -83,7 +85,7 @@ router.get('/', [
     }
   */
 
-  try{
+  try {
     const clientId = getClientId(req);
     logger.trace(req.query);
 
@@ -93,15 +95,15 @@ router.get('/', [
     const user_id = Number(req.query.user_id);
     const custom = req.query.custom;
 
-    if(state){
+    if (state) {
       search['state'] = state;
     }
 
-    if(user_id){
+    if (user_id) {
       search['user_id'] = user_id;
     }
-    
-    if(custom){
+
+    if (custom) {
       search = { ...search, ...JSON.parse(custom) };
     }
 
@@ -114,10 +116,10 @@ router.get('/', [
     const page = Number(req.query.page || 1);
     const limit = Number(req.query.limit || 0);
 
-    const result = await SellerOrderModel.findBy(clientId, {seller_id: req.user._id, search, sortBy, page, limit });
+    const result = await SellerOrderModel.findBy(clientId, { seller_id: req.user._id, search, sortBy, page, limit });
     res.json({ ok: 1, ...result });
 
-  }catch(err){
+  } catch (err) {
     next(err);
   }
 });
@@ -125,70 +127,70 @@ router.get('/', [
 // 주문 상세 조회
 router.get('/:_id', [
   param('_id').isInt().withMessage('주문 id는 정수만 지정 가능합니다.'),
-], validator.checkResult, async function(req, res, next) {
+], validator.checkResult, async function (req, res, next) {
 
-   /*
-    #swagger.tags = ['주문 관리']
-    #swagger.summary  = '주문 상세 조회'
-    #swagger.description = '주문 상세 내역을 조회합니다.'
-    
-    #swagger.security = [{
-      "Access Token": [],
-      "Client ID": []
-    }]
-    
-    #swagger.parameters['_id'] = {
-      description: '주문 id',
-      in: 'path',
-      required: true,
-      type: 'number',
-      example: '2'
-    }
+  /*
+   #swagger.tags = ['주문 관리']
+   #swagger.summary  = '주문 상세 조회'
+   #swagger.description = '주문 상세 내역을 조회합니다.'
+   
+   #swagger.security = [{
+     "Access Token": [],
+     "Client ID": []
+   }]
+   
+   #swagger.parameters['_id'] = {
+     description: '주문 id',
+     in: 'path',
+     required: true,
+     type: 'number',
+     example: '2'
+   }
 
-    #swagger.responses[200] = {
-      description: '성공',
-      content: {
-        "application/json": {
-          schema: { $ref: "#/components/schemas/orderInfoSellerRes" }
-          }
-        }
-      }
-    }
-    #swagger.responses[401] = {
-      description: '인증 실패',
-      content: {
-        "application/json": {
-          schema: { $ref: "#/components/schemas/error401" }
-        }
-      }
-    }
-    #swagger.responses[404] = {
-      description: '리소스가 존재하지 않음',
-      content: {
-        "application/json": {
-          schema: { $ref: "#/components/schemas/error404" }
-        }
-      }
-    }
-    #swagger.responses[500] = {
-      description: '서버 에러',
-      content: {
-        "application/json": {
-          schema: { $ref: '#/components/schemas/error500' }
-        }
-      }
-    }
-  */
+   #swagger.responses[200] = {
+     description: '성공',
+     content: {
+       "application/json": {
+         schema: { $ref: "#/components/schemas/orderInfoSellerRes" }
+         }
+       }
+     }
+   }
+   #swagger.responses[401] = {
+     description: '인증 실패',
+     content: {
+       "application/json": {
+         schema: { $ref: "#/components/schemas/error401" }
+       }
+     }
+   }
+   #swagger.responses[404] = {
+     description: '리소스가 존재하지 않음',
+     content: {
+       "application/json": {
+         schema: { $ref: "#/components/schemas/error404" }
+       }
+     }
+   }
+   #swagger.responses[500] = {
+     description: '서버 에러',
+     content: {
+       "application/json": {
+         schema: { $ref: '#/components/schemas/error500' }
+       }
+     }
+   }
+ */
 
-  try{
+  try {
     const clientId = getClientId(req);
     const item = await SellerOrderModel.findById(clientId, Number(req.params._id), req.user._id);
-    if(item){
+    if (item) {
       res.json({ ok: 1, item });
-    }else{
+    } else {
       next();
     }
-  }catch(err){
+  } catch (err) {
     next(err);
   }
 });
@@ -196,137 +198,237 @@ router.get('/:_id', [
 // 상품별 주문 상태 수정
 router.patch('/:_id/products/:product_id', [
   body('state').trim().notEmpty().withMessage('주문 상태 코드를 전달해야 합니다.'),
-], validator.checkResult, async function(req, res, next) {
+], validator.checkResult, async function (req, res, next) {
 
-   /*
-    #swagger.tags = ['주문 관리']
-    #swagger.summary  = '상품별 주문 상태 수정'
-    #swagger.description = '상품별로 주문 상태를 수정합니다.(배송 시작, 환불 완료 등)<br>여러 판매자의 상품을 한번에 주문하고 결제했을 경우 하나의 주문에 여러 상품이 있고 각 상품별로 주문 상태를 관리하고 싶을 때 사용합니다.'
-    
-    #swagger.security = [{
-      "Access Token": [],
-      "Client ID": []
-    }]
-    
-    #swagger.parameters['_id'] = {
-      description: "주문 id",
-      in: 'path',
-      type: 'number',
-      example: 2
-    }
-    #swagger.parameters['product_id'] = {
-      description: "상품 id",
-      in: 'path',
-      type: 'number',
-      example: 3
-    }
-    #swagger.requestBody = {
-      description: "수정할 주문 정보가 저장된 객체입니다.<br>state: 주문한 상품의 state 값으로 지정됩니다.<br>나머지 속성은 주문한 상품의 history 속성에 추가됩니다.",
-      required: true,
-      content: {
-        "application/json": {
-          schema: { $ref: "#/components/schemas/updateOrderProductSellerBody" },
-        }
-      }
-    },
+  /*
+   #swagger.tags = ['주문 관리']
+   #swagger.summary  = '상품별 주문 상태 수정'
+   #swagger.description = '상품별로 주문 상태를 수정합니다.(배송 시작, 환불 완료 등)<br>여러 판매자의 상품을 한번에 주문하고 결제했을 경우 하나의 주문에 여러 상품이 있고 각 상품별로 주문 상태를 관리하고 싶을 때 사용합니다.'
+   
+   #swagger.security = [{
+     "Access Token": [],
+     "Client ID": []
+   }]
+   
+   #swagger.parameters['_id'] = {
+     description: "주문 id",
+     in: 'path',
+     type: 'number',
+     example: 2
+   }
+   #swagger.parameters['product_id'] = {
+     description: "상품 id",
+     in: 'path',
+     type: 'number',
+     example: 3
+   }
+   #swagger.requestBody = {
+     description: "수정할 주문 정보가 저장된 객체입니다.<br>state: 주문한 상품의 state 값으로 지정됩니다.<br>나머지 속성은 주문한 상품의 history 속성에 추가됩니다.",
+     required: true,
+     content: {
+       "application/json": {
+         schema: { $ref: "#/components/schemas/updateOrderProductSellerBody" },
+       }
+     }
+   },
 
-    #swagger.responses[200] = {
-      description: '성공',
-      content: {
-        "application/json": {
-          schema: { $ref: "#/components/schemas/updateOrderProductSellerRes" },
-        }
-      }
-    }
-    #swagger.responses[401] = {
-      description: '인증 실패',
-      content: {
-        "application/json": {
-          schema: { $ref: "#/components/schemas/error401" }
-        }
-      }
-    }
-    #swagger.responses[404] = {
-      description: '리소스가 존재하지 않음',
-      content: {
-        "application/json": {
-          schema: { $ref: "#/components/schemas/error404" }
-        }
-      }
-    }
-    #swagger.responses[500] = {
-      description: '서버 에러',
-      content: {
-        "application/json": {
-          schema: { $ref: '#/components/schemas/error500' }
-        }
-      }
-    }
-  */
+   #swagger.responses[200] = {
+     description: '성공',
+     content: {
+       "application/json": {
+         schema: { $ref: "#/components/schemas/updateOrderProductSellerRes" },
+       }
+     }
+   }
+   #swagger.responses[401] = {
+     description: '인증 실패',
+     content: {
+       "application/json": {
+         schema: { $ref: "#/components/schemas/error401" }
+       }
+     }
+   }
+   #swagger.responses[404] = {
+     description: '리소스가 존재하지 않음',
+     content: {
+       "application/json": {
+         schema: { $ref: "#/components/schemas/error404" }
+       }
+     }
+   }
+   #swagger.responses[500] = {
+     description: '서버 에러',
+     content: {
+       "application/json": {
+         schema: { $ref: '#/components/schemas/error500' }
+       }
+     }
+   }
+ */
 
-  try{
+  try {
     const clientId = getClientId(req);
     const _id = Number(req.params._id);
     const product_id = Number(req.params.product_id);
     const order = await SellerOrderModel.findById(clientId, _id, req.user._id);
-    
 
 
 
-    if(order){
-      if(req.user.type === 'admin' || order.products.length > 0){
+
+    if (order) {
+      if (req.user.type === 'admin' || order.products.length > 0) {
         const history = {
           actor: req.user._id,
           updated: { ...req.body },
           createdAt: moment().format('YYYY.MM.DD HH:mm:ss')
         };
         const result = await OrderModel.updateStateByProduct(clientId, _id, product_id, req.body, history);
-        res.json({ok: 1, item: result});
-      }else{
+        res.json({ ok: 1, item: result });
+      } else {
         next();
       }
-    }else{
+    } else {
       next();
     }
-  }catch(err){
+  } catch (err) {
     next(err);
   }
 });
 
 // 주문별 주문 상태 수정
-router.patch('/:_id', async function(req, res, next) {
+router.patch('/:_id', async function (req, res, next) {
 
-   /*
+  /*
+   #swagger.tags = ['주문 관리']
+   #swagger.summary  = '주문별 주문 상태 수정'
+   #swagger.description = '주문별로 주문 상태를 수정합니다.(배송 시작, 환불 완료 등)<br>하나의 주문에 하나의 상품만 있을 경우 주문별로 주문 상태를 관리하고 싶을 때 사용합니다.'
+   
+   #swagger.security = [{
+     "Access Token": [],
+     "Client ID": []
+   }]
+   
+   #swagger.parameters['_id'] = {
+     description: "주문 id",
+     in: 'path',
+     type: 'number',
+     example: 2
+   }
+   #swagger.requestBody = {
+     description: "수정할 주문 정보가 저장된 객체입니다.<br>state: 주문 정보의 state 값으로 지정됩니다.<br>나머지 속성은 주문 정보의 history 속성에 추가됩니다.",
+     required: true,
+     content: {
+       "application/json": {
+         schema: { $ref: "#/components/schemas/updateOrderSellerBody" },
+       }
+     }
+   },
+
+   #swagger.responses[200] = {
+     description: '성공',
+     content: {
+       "application/json": {
+         schema: { $ref: "#/components/schemas/updateOrderSellerRes" },
+       }
+     }
+   }
+   #swagger.responses[401] = {
+     description: '인증 실패',
+     content: {
+       "application/json": {
+         schema: { $ref: "#/components/schemas/error401" }
+       }
+     }
+   }
+   #swagger.responses[404] = {
+     description: '리소스가 존재하지 않음',
+     content: {
+       "application/json": {
+         schema: { $ref: "#/components/schemas/error404" }
+       }
+     }
+   }
+   #swagger.responses[500] = {
+     description: '서버 에러',
+     content: {
+       "application/json": {
+         schema: { $ref: '#/components/schemas/error500' }
+       }
+     }
+   }
+ */
+
+  try {
+    const clientId = getClientId(req);
+    const _id = Number(req.params._id);
+    const order = await SellerOrderModel.findById(clientId, _id, req.user._id);
+
+    if (order) {
+      // const orderProducts = _.filter(order.products, { seller_id: req.user._id });
+
+      if (req.user.type === 'admin' || order.products.length > 0) {
+        const history = {
+          actor: req.user._id,
+          updated: { ...req.body },
+          createdAt: moment().format('YYYY.MM.DD HH:mm:ss')
+        };
+        const result = await OrderModel.updateState(clientId, _id, req.body, history);
+        res.json({ ok: 1, item: result });
+      } else {
+        next();
+      }
+    } else {
+      next();
+    }
+
+
+  } catch (err) {
+    next(err);
+  }
+});
+
+// 지정한 구매자의 상품 구매 처리
+router.post('/', [
+  body('user_id').isInt().withMessage('구매자 id는 정수만 입력 가능합니다.'),
+  body('product_id').isInt().withMessage('상품 id는 정수만 입력 가능합니다.'),
+  body('quantity').isInt().withMessage('구매 수량은 정수만 입력 가능합니다.'),
+], validator.checkResult, async function (req, res, next) {
+
+  /*
+    #swagger.auto = false
+
     #swagger.tags = ['주문 관리']
-    #swagger.summary  = '주문별 주문 상태 수정'
-    #swagger.description = '주문별로 주문 상태를 수정합니다.(배송 시작, 환불 완료 등)<br>하나의 주문에 하나의 상품만 있을 경우 주문별로 주문 상태를 관리하고 싶을 때 사용합니다.'
-    
+    #swagger.summary  = '판매자에 의한 상품 구매 처리'
+    #swagger.description = '판매자가 구매자의 상품 구매를 처리 합니다.<br>
+    구매자가 직접 구매를 하지 않고 판매자의 재량에 의해서 구매처리를 해야 할 경우에 사용합니다.<br>
+    주로 중고거래 시스템에서 거래가 완료되면 판매자가 완료처리를 해야 할 경우에 사용합니다.<br>
+    본인이 판매하고 있는 제품에 한해서 구매 처리가 가능합니다.'
+
     #swagger.security = [{
       "Access Token": [],
       "Client ID": []
     }]
     
-    #swagger.parameters['_id'] = {
-      description: "주문 id",
-      in: 'path',
-      type: 'number',
-      example: 2
-    }
     #swagger.requestBody = {
-      description: "수정할 주문 정보가 저장된 객체입니다.<br>state: 주문 정보의 state 값으로 지정됩니다.<br>나머지 속성은 주문 정보의 history 속성에 추가됩니다.",
+      description: "<p>구매 정보가 저장된 객체입니다.</p>
+      <ul>
+        <li><b>*user_id</b>: 구매자 id</li>
+        <li><b>*product_id</b>: 상품 id</li>
+        <li><b>*quantity</b>: 구매 수량</li>
+        <li>이외의 추가 속성은 자유롭게 지정하면 됩니다.</li>
+      </ul>",
       required: true,
       content: {
         "application/json": {
-          schema: { $ref: "#/components/schemas/updateOrderSellerBody" },
+          schema: { $ref: '#components/schemas/createSellerOrder' },
         }
       }
     },
-
-    #swagger.responses[200] = {
+    #swagger.responses[201] = {
       description: '성공',
       content: {
         "application/json": {
-          schema: { $ref: "#/components/schemas/updateOrderSellerRes" },
+          schema: { $ref: "#/components/schemas/createSellerOrderRes" },
         }
       }
     }
@@ -338,11 +440,30 @@ router.patch('/:_id', async function(req, res, next) {
         }
       }
     }
+
+    #swagger.responses[403] = {
+      description: '리소스 접근 권한 없음',
+      content: {
+        "application/json": {
+          schema: { $ref: "#/components/schemas/error403Resource" }
+        }
+      }
+    }
+
     #swagger.responses[404] = {
-      description: '리소스가 존재하지 않음',
+      description: '상품이 존재하지 않음',
       content: {
         "application/json": {
           schema: { $ref: "#/components/schemas/error404" }
+        }
+      }
+    }
+    
+    #swagger.responses[422] = {
+      description: '입력값 검증 오류',
+      content: {
+        "application/json": {
+          schema: { $ref: '#/components/schemas/error422' }
         }
       }
     }
@@ -354,37 +475,28 @@ router.patch('/:_id', async function(req, res, next) {
         }
       }
     }
+    
   */
 
-  try{
+  try {
+    req.body.state = req.body.state || 'OS020'; // 결제 완료 상태로 주문
     const clientId = getClientId(req);
-    const _id = Number(req.params._id);
-    const order = await SellerOrderModel.findById(clientId, _id, req.user._id);
-
-    if(order){
-      // const orderProducts = _.filter(order.products, { seller_id: req.user._id });
-
-      if(req.user.type === 'admin' || order.products.length > 0){
-        const history = {
-          actor: req.user._id,
-          updated: { ...req.body },
-          createdAt: moment().format('YYYY.MM.DD HH:mm:ss')
-        };
-        const result = await OrderModel.updateState(clientId, _id, req.body, history);
-        res.json({ok: 1, item: result});
-      }else{
-        next();
-      }
-    }else{
-      next();
+    // 로그인한 사용자의 판매 상품인지 확인
+    const product = await productModel.findById(clientId, { _id: req.body.product_id });
+    if (product?.seller_id === req.user._id) { // 본인이 판매중인 상품일 경우
+      const products = [{
+        _id: req.body.product_id,
+        quantity: req.body.quantity,
+      }];
+      const item = await orderModel.create(clientId, { ...req.body, products });
+      res.status(201).json({ ok: 1, item });
+    } else {
+      throw createError(403, `본인이 판매중인 상품만 구매 처리가 가능합니다.`);
     }
-
-    
-  }catch(err){
+  } catch (err) {
     next(err);
   }
 });
-
 
 
 export default router;

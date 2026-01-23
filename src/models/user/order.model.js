@@ -5,10 +5,6 @@ import createError from 'http-errors';
 import logger from '#utils/logger.js';
 import priceUtil from '#utils/priceUtil.js';
 import { getDb } from '#utils/dbUtil.js';
-import cartModel from '#models/user/cart.model.js';
-import productModel from '#models/user/product.model.js';
-import userModel from '#models/user/user.model.js';
-import codeModel from '#models/system/code.model.js';
 import reviewModel from '#models/user/review.model.js';
 
 const orderModel = {
@@ -44,7 +40,7 @@ const orderModel = {
           throw createError(422, `[${product._id} ${product.name}] 상품의 구매 가능한 수량은 ${product.quantity - product.buyQuantity}개 입니다.`);
         }
       } else {
-        throw createError(422, `상품번호 ${_id}인 상품이 존재하지 않습니다.`);
+        throw createError(404, `상품번호 ${_id}인 상품이 존재하지 않습니다.`);
       }
     }
 

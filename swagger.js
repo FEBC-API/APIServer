@@ -27,7 +27,7 @@ const doc = {
   },
   host: process.env.API_HOST,
   basePath: '/market',
-  schemes: ['https', 'http'],
+  schemes: process.env.API_HOST?.includes('localhost') ? ['http'] : ['https'],
 
   tags: [
     {
@@ -129,12 +129,6 @@ const doc = {
         bearerFormat: 'JWT',
         description: '로그인 후에 전달받은 Refresh Token'
       },
-      "Client ID": {
-        type: 'apiKey',
-        in: 'header',
-        name: 'client-id',
-        description: 'API 클라이언트 ID'
-      }
     },
     '@schemas': {
       login: {
@@ -316,7 +310,7 @@ const doc = {
 
     },
     schemas: {
-      
+
       error401: {
         "ok": 0,
         "message": "{인증 실패 사유}",
@@ -325,6 +319,10 @@ const doc = {
       error403: {
         "ok": 0,
         "message": "아이디와 패스워드를 확인하시기 바랍니다."
+      },
+      error403Resource: {
+        "ok": 0,
+        "message": "리소스에 접근할 권한이 없습니다."
       },
       errorClientId403: {
         "ok": 0,
@@ -678,6 +676,52 @@ const doc = {
             "products": 205000,
             "shippingFees": 6000,
             "total": 211000
+          }
+        }
+      },
+
+      createSellerOrder: {
+        "user_id": 4,
+        "product_id": 4,
+        "quantity": 2,
+        "address": {
+          "name": "학교",
+          "value": "서울시 강남구 역삼동 234"
+        }
+      },
+
+      createSellerOrderRes: {
+        "ok": 1,
+        "item": {
+          "product": {
+            "_id": 4,
+            "quantity": 2,
+            "seller_id": 3,
+            "name": "레고 테크닉 42151 부가티 볼리드",
+            "image": "https://res.cloudinary.com/demo/image/upload/v1/nQYGBCVZZ.png",
+            "price": 90000,
+            "size": "M",
+            "color": "RED",
+            "extra": {
+              "isNew": false,
+              "isBest": true,
+              "category": ["PC03", "PC0303"],
+              "sort": 1
+            }
+          },
+          "address": {
+            "name": "학교",
+            "value": "서울시 강남구 역삼동 234"
+          },
+          "state": "OS020",
+          "user_id": 4,
+          "_id": 4,
+          "createdAt": getRandomDate(),
+          "updatedAt": getRandomDate(),
+          "cost": {
+            "products": 180000,
+            "shippingFees": 3000,
+            "total": 183000
           }
         }
       },
@@ -1673,7 +1717,7 @@ const doc = {
         }
       },
 
-      
+
 
       configListRes: {
         "ok": 1,
@@ -1741,11 +1785,11 @@ const doc = {
                 "ok": 1,
                 "message": "uzoolove@gmail.com 메일 전송 완료"
               }
-            }, 
+            },
             "createdAt": getRandomDate(),
             "updatedAt": getRandomDate()
           },
-          
+
         ]
       },
 
@@ -1816,7 +1860,7 @@ const doc = {
               "ok": 1,
               "message": "uzoolove@gmail.com 메일 전송 완료"
             }
-          },          
+          },
           "createdAt": getRandomDate(),
           "updatedAt": getRandomDate()
         }
@@ -1838,7 +1882,7 @@ const doc = {
             "success": false,
             "errorMessage": "Request timeout",
             "status": 408,
-          },          
+          },
           "createdAt": getRandomDate(),
           "updatedAt": getRandomDate()
         }
@@ -1859,7 +1903,7 @@ const doc = {
           "executionResult": {
             "success": false,
             "errorMessage": "실행 시간이 이미 지났습니다",
-          },          
+          },
           "createdAt": getRandomDate(),
           "updatedAt": getRandomDate()
         }
@@ -1893,7 +1937,7 @@ const doc = {
         }
       },
 
-      
+
 
       loginRes: {
         "ok": 1,
@@ -3088,7 +3132,7 @@ const doc = {
         ]
       },
 
-      orderStaticsResBySeller:{
+      orderStaticsResBySeller: {
         "ok": 1,
         "item": [
           {
@@ -3135,7 +3179,7 @@ const doc = {
         ]
       },
 
-      
+
 
 
     }

@@ -14,7 +14,7 @@ router.post('/', [
   body('products').isArray().withMessage('상품 목록은 배열로 전달해야 합니다.'),
   body('products.*._id').isInt().withMessage('상품 id는 정수만 입력 가능합니다.'),
   body('products.*.quantity').isInt().withMessage('상품 수량은 정수만 입력 가능합니다.'),
-], validator.checkResult, async function(req, res, next) {
+], validator.checkResult, async function (req, res, next) {
 
   /*
     #swagger.auto = true
@@ -42,8 +42,8 @@ router.post('/', [
         "application/json": {
           schema: { $ref: '#components/schemas/orderCreate' },
           examples: {
-            "필수 속성만 지정한 경우": { $ref: "#/components/examples/createOrder" },
-            "추가 속성이 지정된 경우": { $ref: "#/components/examples/createOrderWithExtra" }
+            "상품 정보만 지정한 경우": { $ref: "#/components/examples/createOrder" },
+            "추가 속성이 지정된 경우(배송지 주소)": { $ref: "#/components/examples/createOrderWithExtra" }
           }
         }
       }
@@ -54,8 +54,8 @@ router.post('/', [
         "application/json": {
           schema: { $ref: "#/components/schemas/orderCreateRes" },
           examples: {
-            "필수 속성만 지정한 경우": { $ref: "#/components/examples/createOrderRes" },
-            "추가 속성이 지정된 경우": { $ref: "#/components/examples/createOrderWithExtraRes" }
+            "상품 정보만 지정한 경우": { $ref: "#/components/examples/createOrderRes" },
+            "추가 속성이 지정된 경우(배송지 주소)": { $ref: "#/components/examples/createOrderWithExtraRes" }
           }
         }
       }
@@ -68,6 +68,16 @@ router.post('/', [
         }
       }
     }
+
+    #swagger.responses[404] = {
+      description: '상품이 존재하지 않음',
+      content: {
+        "application/json": {
+          schema: { $ref: "#/components/schemas/error404" }
+        }
+      }
+    }
+    
     #swagger.responses[422] = {
       description: '입력값 검증 오류',
       content: {
@@ -76,6 +86,7 @@ router.post('/', [
         }
       }
     }
+    
     #swagger.responses[500] = {
       description: '서버 에러',
       content: {
@@ -91,8 +102,8 @@ router.post('/', [
     req.body.state = req.body.state || 'OS020'; // 결제 완료 상태로 주문
     const clientId = getClientId(req);
     const item = await orderModel.create(clientId, { ...req.body, user_id: req.user._id });
-    res.status(201).json({ok: 1, item});
-  } catch(err) {
+    res.status(201).json({ ok: 1, item });
+  } catch (err) {
     next(err);
   }
 });
@@ -101,7 +112,7 @@ router.post('/', [
 router.get('/', [
   query('custom').optional().isJSON().withMessage('custom 값은 JSON 형식의 문자열이어야 합니다.'),
   query('sort').optional().isJSON().withMessage('sort 값은 JSON 형식의 문자열이어야 합니다.')
-], validator.checkResult, async function(req, res, next) {
+], validator.checkResult, async function (req, res, next) {
 
   /*
     #swagger.auto = false
@@ -184,12 +195,12 @@ router.get('/', [
     const keyword = req.query.keyword;
     const custom = req.query.custom;
 
-    if(keyword){
+    if (keyword) {
       const regex = new RegExp(keyword, 'i');
       search['products'] = { $elemMatch: { name: { '$regex': regex } } };
     }
-    
-    if(custom){
+
+    if (custom) {
       search = { ...search, ...JSON.parse(custom) };
     }
 
@@ -203,15 +214,15 @@ router.get('/', [
     const limit = Number(req.query.limit || 0);
 
     const result = await orderModel.findBy(clientId, { user_id: req.user._id, search, sortBy, page, limit });
-    
+
     res.json({ ok: 1, ...result });
-  } catch(err) {
+  } catch (err) {
     next(err);
   }
 });
 
 // 구매 목록의 상태값만 조회
-router.get('/state', async function(req, res, next) {
+router.get('/state', async function (req, res, next) {
 
   /*
 
@@ -255,13 +266,13 @@ router.get('/state', async function(req, res, next) {
     const clientId = getClientId(req);
     const item = await orderModel.findState(clientId, req.user._id);
     res.json({ ok: 1, item });
-  } catch(err) {
+  } catch (err) {
     next(err);
   }
 });
 
 // 구매 상세 조회
-router.get('/:_id', async function(req, res, next) {
+router.get('/:_id', async function (req, res, next) {
 
   /*
 
@@ -318,18 +329,18 @@ router.get('/:_id', async function(req, res, next) {
   try {
     const clientId = getClientId(req);
     const item = await orderModel.findById(clientId, Number(req.params._id), req.user._id);
-    if(item){
+    if (item) {
       res.json({ ok: 1, item });
-    }else{
+    } else {
       next();
     }
-  } catch(err) {
+  } catch (err) {
     next(err);
   }
 });
 
 // 주문별 주문 상태 수정
-router.patch('/:_id', async function(req, res, next) {
+router.patch('/:_id', async function (req, res, next) {
 
   /*
     #swagger.auto = false
@@ -399,24 +410,24 @@ router.patch('/:_id', async function(req, res, next) {
     logger.trace(req.query);
     const _id = Number(req.params._id);
     const order = await orderModel.findById(clientId, _id);
-    if(req.user.type === 'admin' || req.user._id === order.user_id){
+    if (req.user.type === 'admin' || req.user._id === order.user_id) {
       const history = {
         actor: req.user._id,
         updated: { ...req.body },
         createdAt: moment().format('YYYY.MM.DD HH:mm:ss')
       };
       const result = await orderModel.updateState(clientId, _id, req.body, history);
-      res.json({ok: 1, item: result});
-    }else{
+      res.json({ ok: 1, item: result });
+    } else {
       next();
     }
-  } catch(err) {
+  } catch (err) {
     next(err);
   }
 });
 
 // 상품별 주문 상태 수정
-router.patch('/:_id/products/:product_id', async function(req, res, next) {
+router.patch('/:_id/products/:product_id', async function (req, res, next) {
 
   /*
     #swagger.auto = false
@@ -494,18 +505,18 @@ router.patch('/:_id/products/:product_id', async function(req, res, next) {
     const _id = Number(req.params._id);
     const product_id = Number(req.params.product_id);
     const order = await orderModel.findById(clientId, _id);
-    if(req.user.type === 'admin' || req.user._id === order.user_id){
+    if (req.user.type === 'admin' || req.user._id === order.user_id) {
       const history = {
         actor: req.user._id,
         updated: { ...req.body },
         createdAt: moment().format('YYYY.MM.DD HH:mm:ss')
       };
       const result = await orderModel.updateStateByProduct(clientId, _id, product_id, req.body, history);
-      res.json({ok: 1, item: result});
-    }else{
+      res.json({ ok: 1, item: result });
+    } else {
       next();
     }
-  } catch(err) {
+  } catch (err) {
     next(err);
   }
 });

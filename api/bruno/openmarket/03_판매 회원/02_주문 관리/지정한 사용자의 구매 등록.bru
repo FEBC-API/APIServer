@@ -1,0 +1,24 @@
+meta {
+  name: 지정한 사용자의 구매 등록
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{url}}/seller/orders
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+      "user_id": 4,
+      "product_id": 3,
+      "quantity": 1
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
