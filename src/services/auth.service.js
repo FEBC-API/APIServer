@@ -66,11 +66,13 @@ const authService = {
     if(user){
       // const token = await this.sign({ _id: user._id, type: user.type, name: user.name, email: user.email, image: user.image, loginType: user.loginType });
       const token = await this.sign({ _id: user._id, type: user.type });
+      // 새로운 refreshToken을 DB에 저장
+      await userModel.updateRefreshToken(clientId, user._id, token.refreshToken);
       logger.log('token', token);
       return token;
     }else{
       throw createError(401, 'refreshToken과 일치하는 사용자가 없습니다.');
-    }    
+    }
   },
 
   // 이메일 인증 번호 생성

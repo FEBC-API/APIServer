@@ -92,7 +92,7 @@ const userService = {
     logger.log('token', token);
     await userModel.updateRefreshToken(clientId, user._id, token.refreshToken);
     user.token = token;
-    delete user.refreshToken;
+    delete user.refreshToken; // 이전 로그인때 저장된 refresh token 삭제
     return user;
   },
 
