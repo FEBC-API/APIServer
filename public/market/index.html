@@ -50,6 +50,39 @@
         <h2 id="changelog-section">변경 사항</h2>
 
         <div class="version-item">
+          <h3 id="v3.0.0"><a href="#v3.0.0">v3.0.0 - 2026.01.27</a></h3>
+          <ul>
+            <li>[기능 수정] `주문별 주문 상태 수정` API를 `구매 정보 수정` API로 변경
+              <ul>
+                <li>주문 상태가 변경 된 이후에 주문 정보 수정을 못하도록 주문 수정 기능이 제공되지 않고 주문 상태만 수정하도록 제공되었지만 모든 필드를 수정 가능하도록 열어둠</li>
+                <li>주문 상태에 따라서 주문 정보를 수정하지 못하게 하는 작업(배송중에 주소 변경 같은 작업)은 프론트엔드에서 처리 해야 함</li>
+                <li>구매 회원과 판매 회원 API 모두 해당
+                  <ul>
+                    <li>PATCH /orders/{_id} `주문별 주문 상태 수정` -> `구매 정보 수정`</li>
+                    <li>PATCH /seller/orders/{_id} `주문별 주문 상태 수정` -> `주문 정보 수정`</li>
+                  </ul>
+                </li>
+                <li>API 문서 보기: <a href="/market/apidocs/#/구매/patch_orders___id_" target="_blank">구매 정보 수정</a></li>
+                <li>Bruno 파일 보기: <a href="<%= brunoUrl %>/06_시스템/06_DB%20초기화" target="_blank">06_DB 초기화</a></li>
+                <li>API 문서 보기: <a href="/market/apidocs/#/주문%20관리/patch_seller_orders___id_" target="_blank">주문 정보 수정</a></li>
+                <li>Bruno 파일 보기: <a href="<%= brunoUrl %>/06_시스템/06_DB%20초기화" target="_blank">06_DB 초기화</a></li>
+              </ul>
+            </li>
+            <li>[기능 제거] `상품별 주문 상태 수정` API 제거
+              <ul>
+                <li>`주문별 주문 상태 수정` API를 `구매(주문) 정보 수정` API로 교체하면서 통합되었기 때문에 `상품별 주문 상태 수정` API는 제거함</li>
+                <li>구매 회원과 판매 회원 API 모두 해당
+                  <ul>
+                    <li>PATCH /orders/{_id}/products/{product_id} `상품별 주문 상태 수정` -> 삭제</li>
+                    <li>PATCH /seller/orders/{_id}/products/{product_id} `상품별 주문 상태 수정` -> 삭제</li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+
+        <div class="version-item">
           <h3 id="v2.6.0"><a href="#v2.6.0">v2.6.0 - 2026.01.23</a></h3>
           <ul>
             <li>[기능 추가] 판매자에 의한 상품 구매 처리
