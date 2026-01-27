@@ -894,88 +894,6 @@ const doc = {
         }
       },
 
-      updateOrder: {
-        "state": "OS110",
-        "memo": "2개 상품 모두 동작하지 않습니다. 반품 요청합니다."
-      },
-
-      updateOrderRes: {
-        "ok": 1,
-        "item": {
-          "_id": 2,
-          "state": "OS110",
-          "memo": "2개 상품 모두 동작하지 않습니다. 반품 요청합니다.",
-          "updatedAt": getRandomDate()
-        }
-      },
-
-      updateOrderProduct: {
-        "state": "OS110",
-        "memo": "레고 클래식 상품이 동작하지 않습니다. 반품 요청합니다."
-      },
-
-      updateOrderProductRes: {
-        "ok": 1,
-        "item": {
-          "_id": 2,
-          "product_id": 3,
-          "state": "OS110",
-          "memo": "레고 클래식 상품이 동작하지 않습니다. 반품 요청합니다.",
-          "updatedAt": getRandomDate()
-        }
-      },
-
-      updateOrderProductSellerBody: {
-        "state": "OS035",
-        "memo": "레고 클래식 상품을 구매한 고객님께 서비스로 미니 레고 블럭을 드립니다.",
-        "delivery": {
-          "company": "CJ 대한통운",
-          "trackingNumber": "364746065376",
-          "url": "https://trace.cjlogistics.com/next/tracking.html?wblNo=364746065376"
-        }
-      },
-
-      updateOrderProductSellerRes: {
-        "ok": 1,
-        "item": {
-          "_id": 2,
-          "product_id": 3,
-          "state": "OS035",
-          "memo": "레고 클래식 상품을 구매한 고객님께 서비스로 미니 레고 블럭을 드립니다.",
-          "delivery": {
-            "company": "CJ 대한통운",
-            "trackingNumber": "364746065376",
-            "url": "https://trace.cjlogistics.com/next/tracking.html?wblNo=364746065376"
-          },
-          "updatedAt": getRandomDate()
-        }
-      },
-
-      updateOrderSellerBody: {
-        "state": "OS035",
-        "memo": "2건 이상 구매한 고객님에 대해 서비스로 물총을 드립니다.",
-        "delivery": {
-          "company": "CJ 대한통운",
-          "trackingNumber": "364746065376",
-          "url": "https://trace.cjlogistics.com/next/tracking.html?wblNo=364746065376"
-        }
-      },
-
-      updateOrderSellerRes: {
-        "ok": 1,
-        "item": {
-          "_id": 2,
-          "state": "OS035",
-          "memo": "2건 이상 구매한 고객님에 대해 서비스로 물총을 드립니다.",
-          "delivery": {
-            "company": "CJ 대한통운",
-            "trackingNumber": "364746065376",
-            "url": "https://trace.cjlogistics.com/next/tracking.html?wblNo=364746065376"
-          },
-          "updatedAt": getRandomDate()
-        }
-      },
-
       orderReviewCreate: {
         "order_id": 1,
         "product_id": 3,
@@ -3179,9 +3097,40 @@ const doc = {
         ]
       },
 
+      updateOrder: {
+        "products": [
+          {
+            "_id": 3,
+            "size": "S"
+          }
+        ],
+      },
 
+      updateOrderState: {
+        "state": "OS110",
+        "memo": "2개 상품 모두 동작하지 않습니다. 반품 요청합니다."
+      },
 
+      updateOrderBySeller: {
+        "products": [
+          {
+            "_id": 3,
+            "size": "M",
+            "memo": "고객 요청에 의해 사이즈 M으로 변경",
+          }
+        ],
+      },
 
+      updateOrderStateBySeller: {
+        "state": "OS035",
+        "memo": "2건 이상 구매한 고객님에 대해 서비스로 물총을 드립니다.",
+        "delivery": {
+          "company": "CJ 대한통운",
+          "trackingNumber": "364746065376",
+          "url": "https://trace.cjlogistics.com/next/tracking.html?wblNo=364746065376"
+        }
+      },
+      
     }
   }
 }

@@ -1,0 +1,21 @@
+meta {
+  name: 주문 내역 수정(사이즈)
+  type: http
+  seq: 5
+}
+
+patch {
+  url: {{url}}/seller/orders/2
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "products": [{
+      "_id": 3,
+      "size": "M",
+      "memo": "고객 요청에 의해 사이즈 M으로 변경"
+    }]
+  }
+}

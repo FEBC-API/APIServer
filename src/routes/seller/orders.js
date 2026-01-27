@@ -195,188 +195,121 @@ router.get('/:_id', [
   }
 });
 
-// 상품별 주문 상태 수정
-router.patch('/:_id/products/:product_id', [
-  body('state').trim().notEmpty().withMessage('주문 상태 코드를 전달해야 합니다.'),
+// 주문 정보 수정
+router.patch('/:_id', [
+  body('products').optional().isArray().withMessage('상품 목록은 배열로 전달해야 합니다.'),
+  body('products.*._id').optional().isInt().withMessage('상품 id는 정수만 입력 가능합니다.'),
 ], validator.checkResult, async function (req, res, next) {
 
   /*
-   #swagger.tags = ['주문 관리']
-   #swagger.summary  = '상품별 주문 상태 수정'
-   #swagger.description = '상품별로 주문 상태를 수정합니다.(배송 시작, 환불 완료 등)<br>여러 판매자의 상품을 한번에 주문하고 결제했을 경우 하나의 주문에 여러 상품이 있고 각 상품별로 주문 상태를 관리하고 싶을 때 사용합니다.'
-   
-   #swagger.security = [{
-     "Access Token": [],
-     "Client ID": []
-   }]
-   
-   #swagger.parameters['_id'] = {
-     description: "주문 id",
-     in: 'path',
-     type: 'number',
-     example: 2
-   }
-   #swagger.parameters['product_id'] = {
-     description: "상품 id",
-     in: 'path',
-     type: 'number',
-     example: 3
-   }
-   #swagger.requestBody = {
-     description: "수정할 주문 정보가 저장된 객체입니다.<br>state: 주문한 상품의 state 값으로 지정됩니다.<br>나머지 속성은 주문한 상품의 history 속성에 추가됩니다.",
-     required: true,
-     content: {
-       "application/json": {
-         schema: { $ref: "#/components/schemas/updateOrderProductSellerBody" },
-       }
-     }
-   },
-
-   #swagger.responses[200] = {
-     description: '성공',
-     content: {
-       "application/json": {
-         schema: { $ref: "#/components/schemas/updateOrderProductSellerRes" },
-       }
-     }
-   }
-   #swagger.responses[401] = {
-     description: '인증 실패',
-     content: {
-       "application/json": {
-         schema: { $ref: "#/components/schemas/error401" }
-       }
-     }
-   }
-   #swagger.responses[404] = {
-     description: '리소스가 존재하지 않음',
-     content: {
-       "application/json": {
-         schema: { $ref: "#/components/schemas/error404" }
-       }
-     }
-   }
-   #swagger.responses[500] = {
-     description: '서버 에러',
-     content: {
-       "application/json": {
-         schema: { $ref: '#/components/schemas/error500' }
-       }
-     }
-   }
- */
-
-  try {
-    const clientId = getClientId(req);
-    const _id = Number(req.params._id);
-    const product_id = Number(req.params.product_id);
-    const order = await SellerOrderModel.findById(clientId, _id, req.user._id);
-
-
-
-
-    if (order) {
-      if (req.user.type === 'admin' || order.products.length > 0) {
-        const history = {
-          actor: req.user._id,
-          updated: { ...req.body },
-          createdAt: moment().format('YYYY.MM.DD HH:mm:ss')
-        };
-        const result = await OrderModel.updateStateByProduct(clientId, _id, product_id, req.body, history);
-        res.json({ ok: 1, item: result });
-      } else {
-        next();
-      }
-    } else {
-      next();
+    #swagger.tags = ['주문 관리']
+    #swagger.summary  = '주문 정보 수정'
+    #swagger.description = '주문 정보를 수정합니다.'
+    
+    #swagger.security = [{
+      "Access Token": [],
+      "Client ID": []
+    }]
+    
+    #swagger.parameters['_id'] = {
+      description: "주문 id",
+      in: 'path',
+      type: 'number',
+      example: 2
     }
-  } catch (err) {
-    next(err);
-  }
-});
+    #swagger.requestBody = {
+      description: `
+        수정할 주문 정보가 저장된 객체입니다.<br>
+        state 속성이 지정된 경우 구매 상태의 변경 내역을 기록하기 위에 history 배열이 자동으로 추가됩니다.<br>
+        주문한 상품 정보를 수정할 경우 products 속성 배열에 수정할 상품 정보를 지정합니다.<br>
+        user_id(구매자), cost(결제금액), products.*.name(상품명), products.*.price(상품 가격) 등의 정보는 자동으로 생성된 데이터이므로 전달하더라도 무시됩니다.`,
+      required: true,
+      content: {
+        "application/json": {
+          examples: {
+            "주문 상태 수정": { $ref: "#/components/examples/updateOrderStateBySeller" },
+            "주문 내역 수정": { $ref: "#/components/examples/updateOrderBySeller" },    
+          }
+        }
+      }
+    },
 
-// 주문별 주문 상태 수정
-router.patch('/:_id', async function (req, res, next) {
-
-  /*
-   #swagger.tags = ['주문 관리']
-   #swagger.summary  = '주문별 주문 상태 수정'
-   #swagger.description = '주문별로 주문 상태를 수정합니다.(배송 시작, 환불 완료 등)<br>하나의 주문에 하나의 상품만 있을 경우 주문별로 주문 상태를 관리하고 싶을 때 사용합니다.'
-   
-   #swagger.security = [{
-     "Access Token": [],
-     "Client ID": []
-   }]
-   
-   #swagger.parameters['_id'] = {
-     description: "주문 id",
-     in: 'path',
-     type: 'number',
-     example: 2
-   }
-   #swagger.requestBody = {
-     description: "수정할 주문 정보가 저장된 객체입니다.<br>state: 주문 정보의 state 값으로 지정됩니다.<br>나머지 속성은 주문 정보의 history 속성에 추가됩니다.",
-     required: true,
-     content: {
-       "application/json": {
-         schema: { $ref: "#/components/schemas/updateOrderSellerBody" },
-       }
-     }
-   },
-
-   #swagger.responses[200] = {
-     description: '성공',
-     content: {
-       "application/json": {
-         schema: { $ref: "#/components/schemas/updateOrderSellerRes" },
-       }
-     }
-   }
-   #swagger.responses[401] = {
-     description: '인증 실패',
-     content: {
-       "application/json": {
-         schema: { $ref: "#/components/schemas/error401" }
-       }
-     }
-   }
-   #swagger.responses[404] = {
-     description: '리소스가 존재하지 않음',
-     content: {
-       "application/json": {
-         schema: { $ref: "#/components/schemas/error404" }
-       }
-     }
-   }
-   #swagger.responses[500] = {
-     description: '서버 에러',
-     content: {
-       "application/json": {
-         schema: { $ref: '#/components/schemas/error500' }
-       }
-     }
-   }
- */
+    #swagger.responses[200] = {
+      description: '성공',
+      content: {
+        "application/json": {
+          schema: { $ref: "#/components/schemas/orderInfoRes" },
+        }
+      }
+    }
+    #swagger.responses[401] = {
+      description: '인증 실패',
+      content: {
+        "application/json": {
+          schema: { $ref: "#/components/schemas/error401" }
+        }
+      }
+    }
+    #swagger.responses[404] = {
+      description: '리소스가 존재하지 않음',
+      content: {
+        "application/json": {
+          schema: { $ref: "#/components/schemas/error404" }
+        }
+      }
+    }
+    #swagger.responses[422] = {
+      description: '입력값 검증 오류',
+      content: {
+        "application/json": {
+          schema: { $ref: '#/components/schemas/error422' }
+        }
+      }
+    }
+    #swagger.responses[500] = {
+      description: '서버 에러',
+      content: {
+        "application/json": {
+          schema: { $ref: '#/components/schemas/error500' }
+        }
+      }
+    }
+  */
 
   try {
     const clientId = getClientId(req);
     const _id = Number(req.params._id);
-    const order = await SellerOrderModel.findById(clientId, _id, req.user._id);
+    
+    let order;
+    if (req.user.type === 'admin') {
+      order = await OrderModel.findById(clientId, _id);
+    } else {
+      order = await SellerOrderModel.findById(clientId, _id, req.user._id);
+    }
 
     if (order) {
-      // const orderProducts = _.filter(order.products, { seller_id: req.user._id });
+      if (req.user.type !== 'admin') {
+        // 일반 판매자일 경우 본인이 판매하는 상품 ID만 추출
+        const myProductIds = order.products
+          .filter(p => p.seller_id === req.user._id)
+          .map(p => p._id);
 
-      if (req.user.type === 'admin' || order.products.length > 0) {
-        const history = {
-          actor: req.user._id,
-          updated: { ...req.body },
-          createdAt: moment().format('YYYY.MM.DD HH:mm:ss')
-        };
-        const result = await OrderModel.updateState(clientId, _id, req.body, history);
-        res.json({ ok: 1, item: result });
-      } else {
-        next();
+        // 수정 요청된 상품이 본인 상품인지 검증
+        if (req.body.products) {
+          const isAllMine = req.body.products.every(p => myProductIds.includes(Number(p._id)));
+          if (!isAllMine) {
+            throw createError(403, '본인이 판매하는 상품만 수정 가능합니다.');
+          }
+        }
       }
+
+      const history = {
+        actor: req.user._id,
+        updated: { ...req.body },
+        createdAt: moment().tz('Asia/Seoul').format('YYYY.MM.DD HH:mm:ss')
+      };
+      const result = await OrderModel.update(clientId, _id, req.body, history);
+      res.json({ ok: 1, item: result });
     } else {
       next();
     }

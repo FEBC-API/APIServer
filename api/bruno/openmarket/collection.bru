@@ -18,6 +18,7 @@ script:post-response {
       bru.setEnvVar('refreshToken', res.body.item.token.refreshToken);
     }else if(req.url === `${bru.getEnvVar('url')}/auth/refresh`){ // accessToken 재발행 후
       bru.setEnvVar('accessToken', res.body.accessToken);
+      bru.setEnvVar('refreshToken', res.body.refreshToken);
     }
   }
 }

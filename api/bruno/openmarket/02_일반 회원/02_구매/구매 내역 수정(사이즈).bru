@@ -1,0 +1,20 @@
+meta {
+  name: 구매 내역 수정(사이즈)
+  type: http
+  seq: 5
+}
+
+patch {
+  url: {{url}}/orders/3
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "products": [{
+      "_id": 4,
+      "size": "S"
+    }]
+  }
+}

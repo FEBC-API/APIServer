@@ -5,13 +5,13 @@ meta {
 }
 
 post {
-  url: {{url}}/users/login?expiresIn=30d
+  url: {{url}}/users/login?expiresIn=1d
   body: json
   auth: none
 }
 
 params:query {
-  expiresIn: 30d
+  expiresIn: 1d
 }
 
 body:json {

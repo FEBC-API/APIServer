@@ -160,54 +160,53 @@ const orderModel = {
     return result;
   },
 
-  // 주문별 주문 상태 수정
-  async updateState(clientId, _id, order, history) {
+  // 주문 정보 수정
+  async update(clientId, _id, order, history) {
     logger.trace(arguments);
     const db = await getDb(clientId);
 
     order.updatedAt = moment().tz('Asia/Seoul').format('YYYY.MM.DD HH:mm:ss');
 
-    const set = { state: order.state };
-    if (order.delivery) {
-      set['delivery'] = order.delivery;
+    let set = { ...order };
+    const orderBlackList = ['_id', 'createdAt', 'user_id', 'cost', 'history', 'products']; // 수정 금지 필드
+    orderBlackList.forEach(key => delete set[key]);
+    let updateQuery = { $set: set };
+    let options = {};
+
+    if(order.products && order.products.length > 0){
+      const arrayFilters = [];
+      const blackList = ['_id', 'seller_id', 'review_id', 'name', 'image', 'price']; // 수정 금지 필드
+
+      // products 배열의 상품 id를
+      order.products.forEach((product, index) => {
+        const identifier = `p${index}`;
+        for (const key in product) {
+          if (!blackList.includes(key)) {
+            set[`products.$[${identifier}].${key}`] = product[key];
+          }
+        }
+        arrayFilters.push({ [`${identifier}._id`]: product._id });
+      });
+
+      if (arrayFilters.length > 0) {
+        options.arrayFilters = arrayFilters;
+      }
     }
 
-    logger.log(set);
-
+    if (order.state) {
+      updateQuery.$push = { history };
+    }
+    
     const result = await db.collection('order').updateOne(
       { _id },
-      { $set: set, $push: { history } }
+      updateQuery,
+      options
     );
 
-    logger.debug(result);
-    const item = { _id, ...order };
+    const item = await this.findById(clientId, _id, order.user_id);
+
     return item;
   },
-
-  // 상품별 주문 상태 수정
-  async updateStateByProduct(clientId, _id, product_id, order, history) {
-    logger.trace(arguments);
-    const db = await getDb(clientId);
-
-    order.updatedAt = moment().tz('Asia/Seoul').format('YYYY.MM.DD HH:mm:ss');
-
-    const set = { 'products.$[elem].state': order.state };
-    if (order.delivery) {
-      set['products.$[elem].delivery'] = order.delivery;
-    }
-
-    logger.log(set);
-
-    const result = await db.collection('order').updateOne(
-      { _id },
-      { $set: set, $push: { 'products.$[elem].history': history } },
-      { arrayFilters: [{ 'elem._id': product_id }] }
-    );
-
-    logger.debug(result);
-    const item = { _id, product_id, ...order };
-    return item;
-  }
 }
 
 export default orderModel;

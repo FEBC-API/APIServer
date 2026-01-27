@@ -339,15 +339,18 @@ router.get('/:_id', async function (req, res, next) {
   }
 });
 
-// 주문별 주문 상태 수정
-router.patch('/:_id', async function (req, res, next) {
+// 구매 정보 수정
+router.patch('/:_id', [
+  body('products').optional().isArray().withMessage('상품 목록은 배열로 전달해야 합니다.'),
+  body('products.*._id').optional().isInt().withMessage('상품 id는 정수만 입력 가능합니다.'),
+], validator.checkResult, async function (req, res, next) {
 
   /*
     #swagger.auto = false
 
     #swagger.tags = ['구매']
-    #swagger.summary  = '주문별 주문 상태 수정'
-    #swagger.description = '주문별로 주문 상태를 수정합니다.(반품 요청, 환불 요청 등)<br>하나의 주문에 하나의 상품만 있을 경우 주문별로 주문 상태를 관리하고 싶을 때 사용합니다.'
+    #swagger.summary  = '구매 정보 수정'
+    #swagger.description = '구매 정보를 수정합니다.'
     
     #swagger.security = [{
       "Access Token": [],
@@ -362,11 +365,18 @@ router.patch('/:_id', async function (req, res, next) {
     }
 
     #swagger.requestBody = {
-      description: "주문 상태 정보",
+      description: `
+        수정할 구매 정보가 저장된 객체입니다.<br>
+        state 속성이 지정된 경우 구매 상태의 변경 내역을 기록하기 위에 history 배열이 자동으로 추가됩니다.<br>
+        구매한 상품 정보를 수정할 경우 products 속성 배열에 수정할 상품 정보를 지정합니다.<br>
+        user_id(구매자), cost(결제금액), products.*.name(상품명), products.*.price(상품 가격) 등의 정보는 자동으로 생성된 데이터이므로 전달하더라도 무시됩니다.`,
       required: true,
       content: {
         "application/json": {
-          schema: { $ref: '#components/schemas/updateOrder' }
+          examples: {
+            "구매 상태 수정": { $ref: "#/components/examples/updateOrderState" },
+            "구매 내역 수정": { $ref: "#/components/examples/updateOrder" },    
+          }
         }
       }
     }
@@ -375,7 +385,7 @@ router.patch('/:_id', async function (req, res, next) {
       description: '성공',
       content: {
         "application/json": {
-          schema: { $ref: "#/components/schemas/updateOrderRes" }
+          schema: { $ref: "#/components/schemas/orderInfoRes" }
         }
       }
     }
@@ -392,6 +402,14 @@ router.patch('/:_id', async function (req, res, next) {
       content: {
         "application/json": {
           schema: { $ref: "#/components/schemas/error404" }
+        }
+      }
+    }
+    #swagger.responses[422] = {
+      description: '입력값 검증 오류',
+      content: {
+        "application/json": {
+          schema: { $ref: '#/components/schemas/error422' }
         }
       }
     }
@@ -416,102 +434,7 @@ router.patch('/:_id', async function (req, res, next) {
         updated: { ...req.body },
         createdAt: moment().format('YYYY.MM.DD HH:mm:ss')
       };
-      const result = await orderModel.updateState(clientId, _id, req.body, history);
-      res.json({ ok: 1, item: result });
-    } else {
-      next();
-    }
-  } catch (err) {
-    next(err);
-  }
-});
-
-// 상품별 주문 상태 수정
-router.patch('/:_id/products/:product_id', async function (req, res, next) {
-
-  /*
-    #swagger.auto = false
-
-    #swagger.tags = ['구매']
-    #swagger.summary  = '상품별 주문 상태 수정'
-    #swagger.description = '상품별로 주문 상태를 수정합니다.(반품 요청, 환불 요청 등)<br>여러 판매자의 상품을 한번에 주문하고 결제했을 경우 하나의 주문에 여러 상품이 있고 각 상품별로 주문 상태를 관리하고 싶을 때 사용합니다.'
-    
-    #swagger.security = [{
-      "Access Token": [],
-      "Client ID": []
-    }]
-
-    #swagger.parameters['_id'] = {
-      description: "구매 id",
-      in: 'path',
-      type: 'number',
-      example: 2
-    }
-
-    #swagger.parameters['product_id'] = {
-      description: "상품 id",
-      in: 'path',
-      type: 'number',
-      example: 3
-    }
-
-    #swagger.requestBody = {
-      description: "주문 상태 정보",
-      required: true,
-      content: {
-        "application/json": {
-          schema: { $ref: '#components/schemas/updateOrderProduct' }
-        }
-      }
-    }
-
-    #swagger.responses[200] = {
-      description: '성공',
-      content: {
-        "application/json": {
-          schema: { $ref: "#/components/schemas/updateOrderProductRes" }
-        }
-      }
-    }
-    #swagger.responses[401] = {
-      description: '인증 실패',
-      content: {
-        "application/json": {
-          schema: { $ref: "#/components/schemas/error401" }
-        }
-      }
-    }
-    #swagger.responses[404] = {
-      description: '본인의 구매 id가 아니거나 존재하지 않는 구매 id',
-      content: {
-        "application/json": {
-          schema: { $ref: "#/components/schemas/error404" }
-        }
-      }
-    }
-    #swagger.responses[500] = {
-      description: '서버 에러',
-      content: {
-        "application/json": {
-          schema: { $ref: '#/components/schemas/error500' }
-        }
-      }
-    }
-  */
-
-  try {
-    const clientId = getClientId(req);
-    logger.trace(req.query);
-    const _id = Number(req.params._id);
-    const product_id = Number(req.params.product_id);
-    const order = await orderModel.findById(clientId, _id);
-    if (req.user.type === 'admin' || req.user._id === order.user_id) {
-      const history = {
-        actor: req.user._id,
-        updated: { ...req.body },
-        createdAt: moment().format('YYYY.MM.DD HH:mm:ss')
-      };
-      const result = await orderModel.updateStateByProduct(clientId, _id, product_id, req.body, history);
+      const result = await orderModel.update(clientId, _id, req.body, history);
       res.json({ ok: 1, item: result });
     } else {
       next();
