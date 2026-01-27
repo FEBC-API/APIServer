@@ -6,8 +6,8 @@ import { param, query, body } from 'express-validator';
 import logger from '#utils/logger.js';
 import validator from '#middlewares/validator.js';
 import { getClientId } from '#utils/dbUtil.js';
-import SellerOrderModel from '#models/seller/order.model.js';
-import OrderModel from '#models/user/order.model.js';
+import sellerOrderModel from '#models/seller/order.model.js';
+import orderModel from '#models/user/order.model.js';
 import productModel from '#models/user/product.model.js';
 import createError from 'http-errors';
 
@@ -116,7 +116,7 @@ router.get('/', [
     const page = Number(req.query.page || 1);
     const limit = Number(req.query.limit || 0);
 
-    const result = await SellerOrderModel.findBy(clientId, { seller_id: req.user._id, search, sortBy, page, limit });
+    const result = await sellerOrderModel.findBy(clientId, { seller_id: req.user._id, search, sortBy, page, limit });
     res.json({ ok: 1, ...result });
 
   } catch (err) {
@@ -184,7 +184,7 @@ router.get('/:_id', [
 
   try {
     const clientId = getClientId(req);
-    const item = await SellerOrderModel.findById(clientId, Number(req.params._id), req.user._id);
+    const item = await sellerOrderModel.findById(clientId, Number(req.params._id), req.user._id);
     if (item) {
       res.json({ ok: 1, item });
     } else {
@@ -282,9 +282,9 @@ router.patch('/:_id', [
     
     let order;
     if (req.user.type === 'admin') {
-      order = await OrderModel.findById(clientId, _id);
+      order = await orderModel.findById(clientId, _id);
     } else {
-      order = await SellerOrderModel.findById(clientId, _id, req.user._id);
+      order = await sellerOrderModel.findById(clientId, _id, req.user._id);
     }
 
     if (order) {
@@ -308,7 +308,7 @@ router.patch('/:_id', [
         updated: { ...req.body },
         createdAt: moment().tz('Asia/Seoul').format('YYYY.MM.DD HH:mm:ss')
       };
-      const result = await OrderModel.update(clientId, _id, req.body, history);
+      const result = await orderModel.update(clientId, _id, req.body, history);
       res.json({ ok: 1, item: result });
     } else {
       next();

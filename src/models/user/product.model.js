@@ -242,6 +242,12 @@ const productModel = {
     logger.trace(arguments);
     const db = await getDb(clientId);
 
+    // 조회수 증가
+    await db.collection('product').updateOne(
+      { _id: _id },
+      { $inc: { views: 1 } }
+    );
+
     const item = await db.collection('product').aggregate([
       { $match: { _id } },
       // 판매자 정보 추가
