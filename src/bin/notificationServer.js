@@ -1,6 +1,6 @@
 import logger from '#utils/logger.js';
 import { db as DBConfig } from '#config/index.js';
-import { getDb } from '#utils/dbUtil.js';
+import notificationModel from '#models/user/notification.model.js';
 
 const clients = new Map();
 const listen = io => {
@@ -9,15 +9,19 @@ const listen = io => {
       logger.debug('클라이언트 접속', clientId, socket.id);
   
       socket.on('setUserId', async (userId, callback) => {
-        const db = await getDb(clientId);
         logger.debug('setUserId', clientId, userId);
         clients.set(`${clientId}/${userId}`, socket);
-        const list = await db.collection('notification').find({ userId: Number(userId) });
-        sendMsg(clientId, userId, { list });
-        callback();
+        if(typeof userId === "number" ? Number.isFinite(userId) : userId !== "" && Number.isFinite(Number(userId))){
+          userId = Number(userId);
+          const list = await notificationModel.find(clientId, { userId });
+          sendMsg(clientId, userId, { list });
+          callback?.();
+        }
       });
     });
   });
+
+  logger.info(`notificationServer 구동 완료. ${process.env.API_HOST}:${process.env.PORT || 80}/noti/{clientId}`);
   
   // io.of('/00-next-level').on('disconnect', function(socket){
   //   logger.debug('클라이언트 접속 종료', socket.id);
