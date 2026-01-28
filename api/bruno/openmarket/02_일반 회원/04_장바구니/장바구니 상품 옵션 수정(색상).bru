@@ -1,0 +1,17 @@
+meta {
+  name: 장바구니 상품 옵션 수정(색상)
+  type: http
+  seq: 6
+}
+
+patch {
+  url: {{url}}/carts/2
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+      "color": "빨강"
+  }
+}
