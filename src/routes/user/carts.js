@@ -187,15 +187,17 @@ router.get('/', jwtAuth.auth('user'), async function (req, res, next) {
   }
 });
 
-// 장바구니 상품 수량 수정
+// 장바구니 상품 수량/옵션 수정
 router.patch('/:_id', jwtAuth.auth('user'), [
-  body('quantity').isInt().withMessage('상품 수량은 정수만 입력 가능합니다.'),
+  body('quantity').optional().isInt().withMessage('상품 수량은 정수만 입력 가능합니다.'),
+  body('size').optional().isString().withMessage('사이즈는 문자열로 입력 가능합니다.'),
+  body('color').optional().isString().withMessage('색상은 문자열로 입력 가능합니다.'),
 ], validator.checkResult, async function (req, res, next) {
 
   /*
     #swagger.tags = ['장바구니']
-    #swagger.summary  = '장바구니 상품 수량 수정'
-    #swagger.description = '장바구니 상품의 수량을 수정합니다.'
+    #swagger.summary  = '장바구니 상품 수량/옵션 수정'
+    #swagger.description = '장바구니 상품의 수량/옵션을 수정합니다.'
     
     #swagger.security = [{
       "Access Token": [],
@@ -210,11 +212,18 @@ router.patch('/:_id', jwtAuth.auth('user'), [
     }
 
     #swagger.requestBody = {
-      description: "수량이 저장된 객체입니다.<br>quantity: 수정할 수량(필수, 정수)",
+      description: "수정할 정보가 저장된 객체입니다.<br>quantity: 수정할 수량<br>size: 수정할 사이즈<br>color: 수정할 색상",
       required: true,
       content: {
         "application/json": {
-          schema: { $ref: "#/components/schemas/cartUpdate" },
+          schema: { 
+            type: 'object',
+            properties: {
+              quantity: { type: 'number', example: 3 },
+              size: { type: 'string', example: 'L' },
+              color: { type: 'string', example: 'Black' }
+            }
+          },
         }
       }
     },
@@ -258,7 +267,7 @@ router.patch('/:_id', jwtAuth.auth('user'), [
     const _id = Number(req.params._id);
     const cart = await cartModel.findById(clientId, _id);
     if (req.user.type === 'admin' || cart?.user_id == req.user._id) {
-      const item = await cartModel.update(clientId, req.user._id, _id, req.body.quantity);
+      const item = await cartModel.update(clientId, req.user._id, _id, req.body);
       const cost = item.cost;
       delete item.cost;
       res.json({ ok: 1, item, cost });

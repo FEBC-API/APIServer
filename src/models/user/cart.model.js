@@ -35,12 +35,6 @@ const cartModel = {
     } else {
       cartInfo._id = await db.nextSeq('cart');
       cartInfo.updatedAt = cartInfo.createdAt = updatedAt;
-      const product = await db.collection('product').findOne({ _id: product_id }, { name: 1, price: 1, mainImages: 1 });
-      if (!product) {
-        throw createError(422, `product_id: ${product_id}인 상품이 존재하지 않습니다.`);
-      }
-      product.image = product.mainImages[0];
-      cartInfo.product = product;
       if (!cartInfo.dryRun) {
         await db.collection('cart').insertOne(cartInfo);
       }
@@ -57,18 +51,52 @@ const cartModel = {
       products: [],
       cost: {}
     };
-    for (let { _id, quantity } of products) {
-      const product = await db.collection('product').findOne({ _id });
+
+    const productIds = _.map(products, '_id');
+    const productList = await db.collection('product').aggregate([
+      { $match: { _id: { $in: productIds } } },
+      {
+        $lookup: {
+          from: 'user',
+          localField: 'seller_id',
+          foreignField: '_id',
+          as: 'user'
+        }
+      },
+      {
+        $unwind: {
+          path: '$user',
+          preserveNullAndEmptyArrays: true
+        }
+      },
+      {
+        $project: {
+          _id: 1,
+          seller_id: 1,
+          name: 1,
+          price: 1,
+          quantity: 1,
+          buyQuantity: 1,
+          image: { $arrayElemAt: ['$mainImages', 0] },
+          extra: 1,
+          'seller._id': '$user._id',
+          'seller.name': '$user.name',
+          'seller.image': '$user.image',
+        }
+      }
+    ]).toArray();
+
+    for (let { _id, quantity, size, color } of products) {
+      const product = _.find(productList, { _id });
       if (product) {
         carts.products.push({
+          ...product,
           _id,
           quantity,
+          size,
+          color,
           quantityInStock: product.quantity - product.buyQuantity,
-          seller_id: product.seller_id,
-          name: product.name,
-          image: product.mainImages[0],
           price: product.price * quantity,
-          extra: product.extra
         });
       } else {
         throw createError(422, `상품번호 ${_id}인 상품이 존재하지 않습니다.`);
@@ -103,6 +131,20 @@ const cartModel = {
         }
       },
       {
+        $lookup: {
+          from: 'user',
+          localField: 'product.seller_id',
+          foreignField: '_id',
+          as: 'user'
+        }
+      },
+      {
+        $unwind: {
+          path: '$user',
+          preserveNullAndEmptyArrays: true
+        }
+      },
+      {
         $project: {
           _id: 1,
           product_id: 1,
@@ -119,6 +161,9 @@ const cartModel = {
           'product.buyQuantity': '$product.buyQuantity',
           'product.image': { $arrayElemAt: ['$product.mainImages', 0] },
           'product.extra': '$product.extra',
+          'product.seller._id': '$user._id',
+          'product.seller.name': '$user.name',
+          'product.seller.image': '$user.image',
         }
       }
     ]).sort({ _id: -1 }).toArray();
@@ -137,15 +182,55 @@ const cartModel = {
     return item;
   },
 
-  // 장바구니 상품 수량 수정
-  async update(clientId, user_id, _id, quantity) {
+  // 장바구니 상품 수량/옵션 수정
+  async update(clientId, user_id, _id, { quantity, size, color }) {
     logger.trace(arguments);
     const db = await getDb(clientId);
-
     const updatedAt = moment().tz('Asia/Seoul').format('YYYY.MM.DD HH:mm:ss');
 
-    const result = await db.collection('cart').updateOne({ _id }, { $set: { quantity, updatedAt } });
-    logger.debug(result);
+    const cart = await this.findById(clientId, _id);
+    if (!cart) {
+      throw createError(404, `장바구니 항목이 존재하지 않습니다.`);
+    }
+
+    // 수정하려는 정보가 기존과 같다면 아무 작업도 하지 않음
+    if (quantity === cart.quantity && size === cart.size && color === cart.color) {
+      return this.findByUser(clientId, user_id);
+    }
+
+    // 옵션(size, color)이 변경되는 경우, 변경 후의 조건과 일치하는 다른 장바구니 항목이 있는지 확인
+    if (size !== cart.size || color !== cart.color) {
+      const matchCondition = {
+        user_id,
+        product_id: cart.product_id,
+        _id: { $ne: _id } // 자기 자신 제외
+      };
+      if (size !== undefined) matchCondition.size = size;
+      else if (cart.size) matchCondition.size = cart.size;
+
+      if (color !== undefined) matchCondition.color = color;
+      else if (cart.color) matchCondition.color = cart.color;
+
+      const sameProduct = await db.collection('cart').findOne(matchCondition);
+
+      if (sameProduct) {
+        // 이미 동일한 옵션의 항목이 있다면, 기존 항목은 삭제하고 수량을 합침
+        const newQuantity = (quantity !== undefined ? quantity : cart.quantity) + sameProduct.quantity;
+        await db.collection('cart').deleteOne({ _id });
+        await db.collection('cart').updateOne({ _id: sameProduct._id }, { $set: { quantity: newQuantity, updatedAt } });
+      } else {
+        // 동일 항목이 없으면 현재 항목 업데이트
+        const updateData = { updatedAt };
+        if (quantity !== undefined) updateData.quantity = quantity;
+        if (size !== undefined) updateData.size = size;
+        if (color !== undefined) updateData.color = color;
+        await db.collection('cart').updateOne({ _id }, { $set: updateData });
+      }
+    } else {
+      // 수량만 변경되는 경우
+      await db.collection('cart').updateOne({ _id }, { $set: { quantity, updatedAt } });
+    }
+
     const list = await this.findByUser(clientId, user_id);
     return list;
   },
@@ -207,16 +292,13 @@ const cartModel = {
           await db.collection('cart').updateOne({ _id: sameProduct._id }, { $set: { quantity, updatedAt } });
         }
       } else {
-        const dbProduct = await db.collection('product').findOne({ _id: product._id }, { projection: { _id: 0, name: 1, price: 1, mainImages: 1 } });
-        dbProduct.image = dbProduct.mainImages[0];
-        delete dbProduct.mainImages;
-        logger.debug();
         const cart = {
           _id: await db.nextSeq('cart'),
           user_id,
           product_id: product._id,
+          size: product.size,
+          color: product.color,
           quantity: product.quantity,
-          product: dbProduct
         };
         cart.updatedAt = cart.createdAt = updatedAt;
         logger.debug(cart);

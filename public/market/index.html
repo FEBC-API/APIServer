@@ -48,6 +48,27 @@
 
       <div class="changelog-section">
         <h2 id="changelog-section">변경 사항</h2>
+        
+        <div class="version-item">
+          <h3 id="v3.0.1"><a href="#v3.0.1">v3.0.1 - 2026.01.27</a></h3>
+          <ul>
+            <li>[기능 수정] `장바구니 상품 수량 수정` API에 옵션 수정 기능 추가
+              <ul>
+                <li>`장바구니 상품 수량 수정` API에 옵션 수정 기능 추가</li>
+                <li>변경전: quantity만 수정 가능</li>
+                <li>변경후: quantity, size, color 수정 가능</li>
+                <li>API 문서 보기: <a href="/market/apidocs/#/장바구니/patch_carts___id_" target="_blank">장바구니 상품 수량/옵션 수정</a></li>
+              </ul>
+            </li>
+            <li>[기능 수정] `장바구니 목록 조회(비로그인)`, `장바구니 목록 조회(로그인)` API에 판매자 정보 추가
+              <ul>
+                <li>`장바구니 목록 조회(비로그인)`, `장바구니 목록 조회(로그인)` API에 판매자 정보를 `product` 속성 하위에 `seller` 속성으로 추가</li>
+                <li>API 문서 보기: <a href="/market/apidocs/#/장바구니/post_carts_local" target="_blank">장바구니 목록 조회(비로그인)</a></li>
+                <li>API 문서 보기: <a href="/market/apidocs/#/장바구니/get_carts_" target="_blank">장바구니 목록 조회(로그인)</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
 
         <div class="version-item">
           <h3 id="v3.0.0"><a href="#v3.0.0">v3.0.0 - 2026.01.27</a></h3>

@@ -1030,6 +1030,8 @@ const doc = {
             {
               "_id": 4,
               "quantity": 2,
+              "size": "L",
+              "color": "Black",
               "quantityInStock": 11,
               "seller_id": 3,
               "name": "레고 테크닉 42151 부가티 볼리드",
@@ -1046,6 +1048,11 @@ const doc = {
                   "PC0303"
                 ],
                 "sort": 1
+              },
+              "seller": {
+                "_id": 3,
+                "name": "어피치",
+                "image": "https://res.cloudinary.com/demo/image/upload/v1/Lm9NpQrS8t.webp"
               }
             }
           ]
@@ -1068,6 +1075,8 @@ const doc = {
             "_id": 1,
             "product_id": 1,
             "quantity": 2,
+            "size": "M",
+            "color": "Red",
             "createdAt": getRandomDate(),
             "updatedAt": getRandomDate(),
             "product": {
@@ -1089,6 +1098,11 @@ const doc = {
                   "PC0301"
                 ],
                 "sort": 5
+              },
+              "seller": {
+                "_id": 2,
+                "name": "네오",
+                "image": "https://res.cloudinary.com/demo/image/upload/v1/Lm9NpQrS8t.webp"
               }
             }
           }
@@ -1118,6 +1132,8 @@ const doc = {
             "_id": 5,
             "product_id": 4,
             "quantity": 2,
+            "size": "XL",
+            "color": "Blue",
             "createdAt": getRandomDate(),
             "updatedAt": getRandomDate(),
             "product": {
@@ -1139,6 +1155,11 @@ const doc = {
                   "PC0303"
                 ],
                 "sort": 1
+              },
+              "seller": {
+                "_id": 3,
+                "name": "어피치",
+                "image": "https://res.cloudinary.com/demo/image/upload/v1/Lm9NpQrS8t.webp"
               }
             }
           },
@@ -1146,7 +1167,9 @@ const doc = {
       },
 
       cartUpdate: {
-        "quantity": 2
+        "quantity": 2,
+        "size": "L",
+        "color": "Black"
       },
 
       cartDeleteBody: {
