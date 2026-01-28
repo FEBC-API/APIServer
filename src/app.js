@@ -1,4 +1,5 @@
 import express from 'express';
+import axios from 'axios';
 import cookieParser from 'cookie-parser';
 import morgan from 'morgan';
 import cors from 'cors';
@@ -9,8 +10,9 @@ import indexRouter from './routes/index.js';
 import timer from 'node:timers/promises';
 import config from './config/index.js';
 import rateLimit from 'express-rate-limit';
-import moment from 'moment';
+import moment from 'moment-timezone';
 import { readFile } from 'fs/promises';
+import { getDb } from './utils/dbUtil.js';
 import proxy from '#bin/proxy.js';
 
 var app = express();
@@ -51,18 +53,40 @@ async function loadSwaggerFiles() {
       docExpansion: 'list', // none, list, full
       defaultModelsExpandDepth: -1,
       displayRequestDuration: true,
+      requestInterceptor: (req) => {
+        console.log(req.headers);
+        req.headers['client-id'] = 'openmarket';
+        return req;
+      },
     }
+
+    // swagger ui에서 자동으로 client-id 헤더를 추가하도록 fetch api 수정
+    const customJsStr = `
+      (function() {
+        const originalFetch = window.fetch;
+        window.fetch = function(...args) {
+          if (args[1] && args[1].headers) {
+            args[1].headers['client-id'] = 'openmarket';
+          } else if (args[1]) {
+            args[1].headers = { ...args[1].headers, 'client-id': 'openmarket' };
+          } else {
+            args[1] = { headers: { 'client-id': 'openmarket' } };
+          }
+          return originalFetch.apply(this, args);
+        };
+      })();
+    `;
 
     // Todo API 문서용 별도 인스턴스
     app.use('/todo/apidocs', swaggerUi.serveFiles(todoSwaggerJson), swaggerUi.setup(todoSwaggerJson, {
-      // explorer: true,
-      swaggerOptions
+      swaggerOptions,
+      customJsStr
     }));
 
     // Market API 문서용 별도 인스턴스  
     app.use('/market/apidocs', swaggerUi.serveFiles(marketSwaggerJson), swaggerUi.setup(marketSwaggerJson, {
-      // explorer: true,
-      swaggerOptions
+      swaggerOptions,
+      customJsStr
     }));
 
   } catch (error) {
@@ -72,97 +96,118 @@ async function loadSwaggerFiles() {
 await loadSwaggerFiles();
 
 
-// // 요청 제한 설정 (10초에 100번 요청 가능)
-// const limiter = rateLimit({
-//   windowMs: 1000 * 10, // 10초
-//   max: 100, // 최대 요청 횟수
-//   keyGenerator: (req) => req.headers['x-forwarded-for'] || req.ip, // 요청 IP를 키로 사용
-//   skip: (req) => req.path.startsWith('/files/'), // /files/ 경로는 제한을 두지 않음
-//   handler: function(req, res /*, next*/) {
-//     const blockTime = 1000*60*60; // 한 시간
-//     const ip = req.headers['x-forwarded-for'] || req.ip;
-//     // 차단된 IP 목록에 추가
-//     blacklistedIps.set(ip, { ip, time: Date.now() });
-//     setTimeout(() => {
-//       errorLogger.error('블랙리스트 해제', ip);
-//       // 차단된 IP 목록에서 제거
-//       blacklistedIps.delete(ip);
-//     }, blockTime);
-//     errorLogger.error('블랙리스트 추가', ip);
-//     res.status(429).json({ ok: 0, message: '요청 횟수 제한 초과(100회/10초)로 인해 IP를 차단합니다.' });
-//   }
-// });
-
-// app.use((req, res, next) => {
-//   // 블랙리스트에 등록된 IP는 요청을 차단
-//   const ip = req.headers['x-forwarded-for'] || req.ip;
-//   const blacklist = blacklistedIps.get(ip);
-//   if (blacklist) {
-//     const blockEndTime = moment(blacklist.time).add(1, 'hour');
-//     const minutesLeft = blockEndTime.diff(moment(), 'minutes'); // 남은 시간(분) 계산
-//     return res.status(403).json({ ok: 0, message: `요청 횟수 제한 초과(100회/10초)로 인해 이 IP는 1시간 동안 접속이 차단되었습니다. 차단 해제까지 남은 시간 ${minutesLeft}분 동안 어디에서 무한루프가 발생했는지 확인한 후 버그를 수정하고 재도전하세요^^`});
-//   }
-//   next();
-// });
-
-
-
-// // 클라이언트 도메인에 따른 요청 제한 설정(개발 서버는 100회 까지, 배포 주소는 1000회 까지)
-// const getRequestLimit = (req) => {
-//   const origin = req.headers.origin || req.headers.referer || '';
-//   const isVercelClient = origin.includes('vercel.app');
-  
-//   return {
-//     limit: isVercelClient ? 1000 : 100,
-//     message: isVercelClient ? '1000회/10초' : '100회/10초'
-//   };
-// };
-
-// // 동적 요청 제한 설정 (최신 express-rate-limit 사용)
-// const limiter = rateLimit({
-//   windowMs: 1000 * 10, // 10초
-//   limit: (req) => getRequestLimit(req).limit, // 동적으로 제한 결정
-//   keyGenerator: (req) => req.headers['x-forwarded-for'] || req.ip, // 요청 IP를 키로 사용
-//   skip: (req) => req.path.startsWith('/files/'), // /files/ 경로는 제한을 두지 않음
-//   handler: function(req, res /*, next*/) {
-//     const blockTime = 1000*60*60; // 한 시간
-//     const ip = req.headers['x-forwarded-for'] || req.ip;
-//     const requestLimit = getRequestLimit(req);
-//     // 차단된 IP 목록에 추가
-//     blacklistedIps.set(ip, { ip, time: Date.now() });
-//     setTimeout(() => {
-//       errorLogger.error('블랙리스트 해제', ip);
-//       // 차단된 IP 목록에서 제거
-//       blacklistedIps.delete(ip);
-//     }, blockTime);
-//     errorLogger.error('블랙리스트 추가', ip);
-//     res.status(429).json({ ok: 0, message: `요청 횟수 제한 초과(${requestLimit.message})로 인해 IP를 차단합니다.` });
-//   }
-// });
-
-// app.use((req, res, next) => {
-//   // 블랙리스트에 등록된 IP는 요청을 차단
-//   const ip = req.headers['x-forwarded-for'] || req.ip;
-//   const blacklist = blacklistedIps.get(ip);
-//   if (blacklist) {
-//     const blockEndTime = moment(blacklist.time).add(1, 'hour');
-//     const minutesLeft = blockEndTime.diff(moment(), 'minutes'); // 남은 시간(분) 계산
-//     const requestLimit = getRequestLimit(req);
-//     return res.status(403).json({ ok: 0, message: `요청 횟수 제한 초과(${requestLimit.message})로 인해 이 IP는 1시간 동안 접속이 차단되었습니다. 차단 해제까지 남은 시간 ${minutesLeft}분 동안 어디에서 무한루프가 발생했는지 확인한 후 버그를 수정하고 재도전하세요^^`});
-//   }
-//   next();
-// });
-
-
-// // 모든 경로에 제한 적용
-// app.use(limiter);
-
 app.use(
   cors({
     origin: config.cors.origin,
     credentials: true,
   })
 );
+
+// 요청 제한 정보를 req 객체에 저장하는 미들웨어(배포는 1000회, 개발은 100회)
+app.use((req, res, next) => {
+  const origin = req.headers.origin || req.headers.referer || '';
+  const isVercelClient = origin.includes('vercel.app');
+  req.rateLimitInfo = {
+    limit: isVercelClient ? 1000 : 100,
+    message: isVercelClient ? '1000회/10초' : '100회/10초'
+  };
+  next();
+});
+
+app.use((req, res, next) => {
+  // 블랙리스트에 등록된 IP는 요청을 차단
+  const ip = req.headers['x-forwarded-for'] || req.ip;
+  const blacklist = blacklistedIps.get(ip);
+  if (blacklist) {
+    const blockEndTime = moment(blacklist.time).add(1, 'hour');
+    const minutesLeft = blockEndTime.diff(moment(), 'minutes'); // 남은 시간(분) 계산
+    return res.status(403).json({ ok: 0, message: `요청 횟수 제한 초과(${req.rateLimitInfo.message})로 인해
+해당 IP는 1시간 동안 접속이 차단되었습니다.
+차단 해제까지 남은 시간은 ${minutesLeft}분입니다.
+이 기간 동안 무한 루프나 불필요한 대량 요청이 발생하지 않았는지 확인한 뒤,
+버그를 수정하고 다시 시도해 주세요 🙂`});
+  }
+  next();
+});
+
+// 요청 제한 설정 (express-rate-limit 사용)
+app.use(rateLimit({
+  windowMs: 1000 * 10, // 10초
+  limit: (req) => req.rateLimitInfo.limit, // req에 저장된 값 사용
+  keyGenerator: (req) => req.headers['x-forwarded-for'] || req.ip, // 요청 IP를 키로 사용
+  // 첨부파일은 cloudinary에 저장되므로 /files 경로는 더이상 사용하지 않으므로 제외할 필요도 없음
+  // skip: (req) => req.path.startsWith('/files/'), // /files/ 경로는 제한을 두지 않음
+  handler: async function(req, res /*, next*/) {
+    const blockTime = 1000*60*60; // 한 시간
+    const ip = req.headers['x-forwarded-for'] || req.ip;
+    const clientId = 'openmarket';
+
+    try {
+      const db = await getDb(clientId);
+
+      // IP 위치 정보 조회 (로컬 IP 제외)
+      let location = null;
+      if (ip !== '::1' && ip !== '127.0.0.1' && !ip.startsWith('192.168.')) {
+        try {
+          const locRes = await axios.get(`http://ip-api.com/json/${ip}`);
+          if (locRes.data.status === 'success') {
+            location = {
+              country: locRes.data.country,
+              region: locRes.data.regionName,
+              city: locRes.data.city,
+              isp: locRes.data.isp,
+              lat: locRes.data.lat,
+              lon: locRes.data.lon
+            };
+          }
+        } catch (err) {
+          errorLogger.error('IP 위치 정보 조회 실패:', err.message);
+        }
+      }
+
+      const logData = {
+        clientId,
+        ip,
+        location,
+        type: 'blacklist',
+        start: moment().tz('Asia/Seoul').format('YYYY.MM.DD HH:mm:ss'),
+        limitInfo: req.rateLimitInfo,
+      };
+      const result = await db.collection('logs').insertOne(logData);
+      const logId = result.insertedId;
+
+      // 차단된 IP 목록에 추가
+      blacklistedIps.set(ip, { ip, time: Date.now() });
+
+      setTimeout(async () => {
+        errorLogger.error('블랙리스트 해제', ip);
+        // 차단된 IP 목록에서 제거
+        blacklistedIps.delete(ip);
+
+        try {
+          const db = await getDb(clientId);
+          await db.collection('logs').updateOne(
+            { _id: logId },
+            { 
+              $set: { 
+                finish: moment().tz('Asia/Seoul').format('YYYY.MM.DD HH:mm:ss'),
+                cause: 'timeout'
+              } 
+            }
+          );
+        } catch (err) {
+          errorLogger.error('블랙리스트 로그 업데이트 실패(해제):', err);
+        }
+      }, blockTime);
+
+    } catch (err) {
+      errorLogger.error('블랙리스트 로그 저장 실패(추가):', err);
+    }
+
+    errorLogger.error('블랙리스트 추가', ip);
+    res.status(429).json({ ok: 0, message: `요청 횟수 제한 초과(${req.rateLimitInfo.message})로 인해 IP를 차단합니다.` });
+  }
+}));
 
 app.use(
   // '/api',
@@ -184,7 +229,7 @@ app.use(function(req, res, next){
 });
 
 // 500 에러
-app.use(function(err, req, res, next){
+app.use(function(err, req, res, _next){
   logger.error(err.status === 404 ? req.method + ' ' + err.message : err.stack+'\n\n');
   if(err.cause){
     logger.error(err.cause);
@@ -193,15 +238,34 @@ app.use(function(err, req, res, next){
   const status = err.cause?.status || err.status || 500;
   delete err.status;
 
-  // let message = status === 500 ? '요청하신 작업 처리에 실패했습니다. 잠시 후 다시 이용해 주시기 바랍니다.' : err.message;
-  let message = err.message;
-
-  res.status(status);
-  let result = { ok: 0, message };
-  if(status === 401 || status === 422){
-    result = { ...result, ...err };  
-  }
-  res.json(result);
+  logger.debug(status, err)
+  res.status(status).json({ ok: 0, message: err.message, ...err });
 });
+
+// 서버 시작 로그 기록 및 미해제 블랙리스트 정리
+(async () => {
+  try {
+    const db = await getDb('openmarket');
+    const now = moment().tz('Asia/Seoul').format('YYYY.MM.DD HH:mm:ss');
+
+    // 서버 시작 전에 해제되지 않은(finish가 없는) 블랙리스트 로그 정리
+    const result = await db.collection('logs').updateMany(
+      { type: 'blacklist', finish: { $exists: false } },
+      { $set: { finish: now, cause: 'server_restart' } }
+    );
+    
+    if (result.matchedCount > 0) {
+      logger.log(`서버 재시작으로 인해 미해제된 블랙리스트 ${result.matchedCount}건을 정리했습니다.`);
+    }
+
+    // 서버 시작 로그 기록
+    await db.collection('logs').insertOne({
+      type: 'server_restart',
+      createdAt: now
+    });
+  } catch (err) {
+    errorLogger.error('서버 시작 로그 및 정리 실패:', err);
+  }
+})();
 
 export default app;
