@@ -86,7 +86,7 @@ router.post('/', jwtAuth.auth('user'), [
     const item = await notificationModel.create(clientId, notification);
     const list = await notificationModel.find(clientId, { userId: req.body.target_id });
 
-    notificationServer.sendMsg(req.clientId, req.body.target_id, { newNoti: item, list });
+    notificationServer.sendMsg(clientId, req.body.target_id, { newNoti: item, list });
     res.status(201).json({ok: 1, item});
   } catch(err) {
     next(err);
