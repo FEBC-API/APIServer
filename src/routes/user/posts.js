@@ -106,16 +106,12 @@ router.get('/', [
     #swagger.tags = ['게시판']
     #swagger.summary  = '전체 게시글 목록'
     #swagger.description = '전체 게시글 목록을 조회합니다.<br>지원되는 검색 조건 이외의 속성으로 검색할 경우 custom 파라미터를 이용하면 됩니다.'
-    
-    #swagger.security = [{
-      "Client ID": []
-    }]
 
     #swagger.parameters['type'] = {
       description: "게시판 종류",
       in: 'query',
       type: 'string',
-      example: 'qna'
+      example: 'notice'
     }
     #swagger.parameters['keyword'] = {
       description: "검색어<br>제목, 내용, 태그 검색에 사용되는 키워드",
@@ -127,26 +123,28 @@ router.get('/', [
       description: "custom 검색 조건",
       in: 'query',
       type: 'string',
-      example: '{\"createdAt\": {\"$gte\": \"2024.04\", \"$lt\": \"2024.05\"}}'
+      example: {createdAt: {$gte: "2025.12", $lt: "2099.01"}}
     }
     #swagger.parameters['page'] = {
       description: "페이지",
       in: 'query',
       type: 'number',
-      example: 2
+      example: 1,
+      default: 1
     }
     #swagger.parameters['limit'] = {
       description: "한 페이지당 항목 수",
       in: 'query',
       type: 'number',
-      example: 10
+      example: 10,
+      default: 10
     }
     #swagger.parameters['sort'] = {
       description: "정렬(내림차순: -1, 오름차순: 1)",
       in: 'query',
       type: 'string',
-      example: '{\"createdAt\": 1}',
-      default: '{\"createdAt\": -1}'
+      example: {createdAt: 1},
+      default: {createdAt: -1}
     }
 
     #swagger.responses[200] = {
@@ -230,13 +228,13 @@ router.get('/users', [
       description: "custom 검색 조건",
       in: 'query',
       type: 'string',
-      example: '{\"createdAt\": {\"$gte\": \"2024.04\", \"$lt\": \"2024.05\"}}'
+      example: {createdAt: {$gte: "2025.12", $lt: "2099.01"}}
     }
     #swagger.parameters['page'] = {
       description: "페이지",
       in: 'query',
       type: 'number',
-      example: 2
+      example: 1
     }
     #swagger.parameters['limit'] = {
       description: "한 페이지당 항목 수",
@@ -248,8 +246,8 @@ router.get('/users', [
       description: "정렬(내림차순: -1, 오름차순: 1)",
       in: 'query',
       type: 'string',
-      example: '{\"createdAt\": 1}',
-      default: '{\"_id\": -1}'
+      example: {createdAt: 1},
+      default: {_id: -1}
     }
 
     #swagger.responses[200] = {
@@ -340,13 +338,13 @@ router.get('/users/:_id', [
       description: "custom 검색 조건",
       in: 'query',
       type: 'string',
-      example: '{\"createdAt\": {\"$gte\": \"2024.04\", \"$lt\": \"2024.05\"}}'
+      example: {createdAt: {$gte: "2025.12", $lt: "2099.01"}}
     }
     #swagger.parameters['page'] = {
       description: "페이지",
       in: 'query',
       type: 'number',
-      example: 2
+      example: 1
     }
     #swagger.parameters['limit'] = {
       description: "한 페이지당 항목 수",
@@ -358,8 +356,8 @@ router.get('/users/:_id', [
       description: "정렬(내림차순: -1, 오름차순: 1)",
       in: 'query',
       type: 'string',
-      example: '{\"createdAt\": 1}',
-      default: '{\"_id\": -1}'
+      example: {createdAt: 1},
+      default: {_id: -1}
     }
 
     #swagger.responses[200] = {
@@ -665,7 +663,7 @@ router.get('/:_id/replies', [
       description: "페이지",
       in: 'query',
       type: 'number',
-      example: 2
+      example: 1
     }
     #swagger.parameters['limit'] = {
       description: "한 페이지당 항목 수",
@@ -677,8 +675,8 @@ router.get('/:_id/replies', [
       description: "정렬(내림차순: -1, 오름차순: 1)",
       in: 'query',
       type: 'string',
-      example: '{\"createdAt\": 1}',
-      default: '{\"_id\": 1}'
+      example: {createdAt: 1},
+      default: {_id: 1}
     }
 
     #swagger.responses[200] = {
