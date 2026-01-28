@@ -81,7 +81,11 @@ const orderModel = {
 
     for (const order of list) {
       for (const product of order.products) {
-        const review = await reviewModel.findById(clientId, { _id: product.review_id });
+        // 판매자 정보 추가
+        const seller = await db.collection('user').findOne({ _id: product.seller_id }, { projection: { _id: 1, name: 1, image: 1 } });
+        product.seller = seller;
+
+        const review = await reviewModel.findById(clientId, product.review_id);
         if (review) {
           delete review._id;
           delete review.user_id;
@@ -135,6 +139,24 @@ const orderModel = {
       query['user_id'] = user_id;
     }
     const item = await db.collection('order').findOne(query);
+
+    if (item) {
+      for (const product of item.products) {
+        // 판매자 정보 추가
+        const seller = await db.collection('user').findOne({ _id: product.seller_id }, { projection: { _id: 1, name: 1, image: 1 } });
+        product.seller = seller;
+
+        const review = await reviewModel.findById(clientId, product.review_id);
+        if (review) {
+          delete review._id;
+          delete review.user_id;
+          delete review.order_id;
+          delete review.product_id;
+          product.review = review;
+        }
+      }
+    }
+
     logger.debug(item);
     return item;
   },

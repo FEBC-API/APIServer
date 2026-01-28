@@ -737,6 +737,11 @@ const doc = {
               {
                 "_id": 2,
                 "seller_id": 2,
+                "seller": {
+                  "_id": 2,
+                  "name": "네오",
+                  "image": "https://res.cloudinary.com/demo/image/upload/v1/Lm9NpQrS8t.webp"
+                },
                 "state": "OS020",
                 "name": "헬로카봇 스톰다이버",
                 "image": "https://res.cloudinary.com/demo/image/upload/v1/Km8PqRsT9v.jpg",
@@ -800,6 +805,11 @@ const doc = {
             {
               "_id": 4,
               "seller_id": 3,
+              "seller": {
+                "_id": 3,
+                "name": "어피치",
+                "image": "https://res.cloudinary.com/demo/image/upload/v1/Lm9NpQrS8t.webp"
+              },
               "state": "OS110",
               "name": "레고 테크닉 42151 부가티 볼리드",
               "image": "https://res.cloudinary.com/demo/image/upload/v1/nQYGBCVZZ.png",
