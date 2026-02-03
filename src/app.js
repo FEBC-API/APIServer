@@ -17,20 +17,14 @@ import proxy from '#bin/proxy.js';
 
 var app = express();
 
+// 프록시(Koyeb, AWS 등)를 신뢰
+app.set('trust proxy', true);
+
 const blacklistedIps = new Map();
 
 morgan.token('client-id', (req) => req.headers['client-id'] || '-');
-morgan.token('ip', (req) => req.headers['x-forwarded-for'] || req.ip);
-morgan.token('date-local', () => {
-  const now = new Date();
-  const yyyy = now.getFullYear();
-  const mm = String(now.getMonth() + 1).padStart(2, '0');
-  const dd = String(now.getDate()).padStart(2, '0');
-  const hh = String(now.getHours()).padStart(2, '0');
-  const min = String(now.getMinutes()).padStart(2, '0');
-  const ss = String(now.getSeconds()).padStart(2, '0');
-  return `${yyyy}.${mm}.${dd} ${hh}:${min}:${ss}`;
-});
+morgan.token('ip', (req) => req.ip);
+morgan.token('date-local', () => moment().tz('Asia/Seoul').format('YYYY.MM.DD HH:mm:ss'));
 app.use(morgan(':date-local :client-id :ip :method :url :status :response-time ms - :res[content-length]'));
 
 // 프록시 서버 구동
@@ -116,7 +110,7 @@ app.use((req, res, next) => {
 
 app.use((req, res, next) => {
   // 블랙리스트에 등록된 IP는 요청을 차단
-  const ip = req.headers['x-forwarded-for'] || req.ip;
+  const ip = req.ip;
   const blacklist = blacklistedIps.get(ip);
   if (blacklist) {
     const blockEndTime = moment(blacklist.time).add(1, 'hour');
@@ -134,16 +128,21 @@ app.use((req, res, next) => {
 app.use(rateLimit({
   windowMs: 1000 * 10, // 10초
   limit: (req) => req.rateLimitInfo.limit, // req에 저장된 값 사용
-  keyGenerator: (req) => req.headers['x-forwarded-for'] || req.ip, // 요청 IP를 키로 사용
-  // 첨부파일은 cloudinary에 저장되므로 /files 경로는 더이상 사용하지 않으므로 제외할 필요도 없음
-  // skip: (req) => req.path.startsWith('/files/'), // /files/ 경로는 제한을 두지 않음
+  validate: { xForwardedForHeader: false }, // Koyeb 등 프록시 환경에서의 경고 방지
   handler: async function(req, res /*, next*/) {
     const blockTime = 1000*60*60; // 한 시간
-    const ip = req.headers['x-forwarded-for'] || req.ip;
-    const clientId = 'openmarket';
+    const ip = req.ip;
+
+    // 이미 블랙리스트에 추가 중이거나 추가된 IP라면 중복 로그 방지를 위해 리턴
+    if (blacklistedIps.has(ip)) {
+      return res.status(429).json({ ok: 0, message: `요청 횟수 제한 초과(${req.rateLimitInfo.message})로 인해 IP를 차단합니다.` });
+    }
+
+    // 즉시 블랙리스트에 추가(동기적으로 실행되어 다음 요청의 중복 진입 방지)
+    blacklistedIps.set(ip, { ip, time: Date.now() });
 
     try {
-      const db = await getDb(clientId);
+      const db = await getDb('openmarket');
 
       // IP 위치 정보 조회 (로컬 IP 제외)
       let location = null;
@@ -166,18 +165,18 @@ app.use(rateLimit({
       }
 
       const logData = {
-        clientId,
+        _id: await db.nextSeq('logs'),
+        type: 'blacklist',
+        clientId: req.headers['client-id'],
         ip,
         location,
-        type: 'blacklist',
-        start: moment().tz('Asia/Seoul').format('YYYY.MM.DD HH:mm:ss'),
         limitInfo: req.rateLimitInfo,
+        path: `${req.method} ${req.originalUrl}`,
+        body: req.body,
+        start: moment().tz('Asia/Seoul').format('YYYY.MM.DD HH:mm:ss'),
       };
-      const result = await db.collection('logs').insertOne(logData);
-      const logId = result.insertedId;
-
-      // 차단된 IP 목록에 추가
-      blacklistedIps.set(ip, { ip, time: Date.now() });
+      await db.collection('logs').insertOne(logData);
+      const logId = logData._id;
 
       setTimeout(async () => {
         errorLogger.error('블랙리스트 해제', ip);
@@ -185,13 +184,12 @@ app.use(rateLimit({
         blacklistedIps.delete(ip);
 
         try {
-          const db = await getDb(clientId);
           await db.collection('logs').updateOne(
             { _id: logId },
             { 
               $set: { 
                 finish: moment().tz('Asia/Seoul').format('YYYY.MM.DD HH:mm:ss'),
-                cause: 'timeout'
+                releaseReason: 'timeout'
               } 
             }
           );
@@ -260,6 +258,7 @@ app.use(function(err, req, res, _next){
 
     // 서버 시작 로그 기록
     await db.collection('logs').insertOne({
+      _id: await db.nextSeq('logs'),
       type: 'server_restart',
       createdAt: now
     });
