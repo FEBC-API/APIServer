@@ -39,6 +39,28 @@ const bookmarkModel = {
       //   }
       // },
       {
+        $lookup: {
+          from: 'user',
+          localField: `${query.type}.seller_id`,
+          foreignField: '_id',
+          as: 'seller'
+        }
+      },
+      {
+        $unwind: {
+          path: '$seller',
+          preserveNullAndEmptyArrays: true
+        }
+      },
+      {
+        $lookup: {
+          from: 'bookmark',
+          localField: 'target_id',
+          foreignField: 'target_id',
+          as: 'all_bookmarks'
+        }
+      },
+      {
         $project: {
           // bookmark
           _id: 1,
@@ -60,6 +82,30 @@ const bookmarkModel = {
           [`${query.type}.buyQuantity`]: `$${query.type}.buyQuantity`,
           [`${query.type}.mainImages`]: `$${query.type}.mainImages`,
           [`${query.type}.extra`]: `$${query.type}.extra`,
+          [`${query.type}.seller`]: {
+            _id: '$seller._id',
+            name: '$seller.name',
+            email: '$seller.email',
+            image: '$seller.image'
+          },
+          [`${query.type}.bookmarks`]: {
+            $size: {
+              $filter: {
+                input: '$all_bookmarks',
+                as: 'item',
+                cond: { $ne: ['$$item.is_like', true] }
+              }
+            }
+          },
+          [`${query.type}.likes`]: {
+            $size: {
+              $filter: {
+                input: '$all_bookmarks',
+                as: 'item',
+                cond: { $eq: ['$$item.is_like', true] }
+              }
+            }
+          },
 
           // user
           [`${query.type}.email`]: `$${query.type}.email`,
