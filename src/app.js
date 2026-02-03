@@ -18,7 +18,7 @@ import proxy from '#bin/proxy.js';
 var app = express();
 
 // 프록시(Koyeb, AWS 등)를 신뢰
-app.set('trust proxy', true);
+app.set('trust proxy', 1);
 
 const blacklistedIps = new Map();
 
