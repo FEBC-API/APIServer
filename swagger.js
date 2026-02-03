@@ -660,7 +660,15 @@ const doc = {
                 "isBest": true,
                 "category": ["PC03", "PC0303"],
                 "sort": 1
-              }
+              },
+              "seller": {
+                "_id": 3,
+                "name": "어피치",
+                "email": "s2@market.com",
+                "image": "https://res.cloudinary.com/demo/image/upload/v1/Lm9NpQrS8t.webp"
+              },
+              "bookmarks": 5,
+              "likes": 2
             }
           ],
           "address": {
@@ -1301,7 +1309,7 @@ const doc = {
         }
       },
 
-      bookmarkListRes: {
+      bookmarkProductListRes: {
         "ok": 1,
         "item": [
           {
@@ -1327,13 +1335,22 @@ const doc = {
                   "PC0303"
                 ],
                 "sort": 1
-              }
+              },
+              "seller": {
+                "_id": 3,
+                "name": "어피치",
+                "email": "s2@market.com",
+                "image": "https://res.cloudinary.com/demo/image/upload/v1/Lm9NpQrS8t.webp"
+              },
+              "bookmarks": 5,
+              "likes": 2
             }
           }
         ]
       },
 
-      bookmarkInfoRes: {
+
+      bookmarkProductInfoRes: {
         "ok": 1,
         "item": {
           "_id": 9,
@@ -1346,10 +1363,10 @@ const doc = {
             "price": 45000,
             "quantity": 100,
             "buyQuantity": 89,
-            "image": {
-              "url": "https://res.cloudinary.com/demo/image/upload/v1/nQYGBCVZZ.png",
+            "mainImages": [{
+              "path": "https://res.cloudinary.com/demo/image/upload/v1/nQYGBCVZZ.png",
               "name": "sample-bugatti.png",
-            },
+            }],
             "extra": {
               "isNew": false,
               "isBest": true,
@@ -1358,10 +1375,19 @@ const doc = {
                 "PC0303"
               ],
               "sort": 1
-            }
+            },
+            "seller": {
+              "_id": 3,
+              "name": "어피치",
+              "email": "s2@market.com",
+              "image": "https://res.cloudinary.com/demo/image/upload/v1/Lm9NpQrS8t.webp"
+            },
+            "bookmarks": 5,
+            "likes": 2
           }
         }
       },
+
 
       myProductListRes: {
         "ok": 1,
@@ -3070,6 +3096,166 @@ const doc = {
           "_id": 10,
           "createdAt": getRandomDate(),
           "updatedAt": getRandomDate()
+        }
+      },
+
+      bookmarkProductListRes: {
+        "ok": 1,
+        "item": [
+          {
+            "_id": 9,
+            "user_id": 4,
+            "memo": "다음에 재구매",
+            "createdAt": getRandomDate(),
+            "product": {
+              "_id": 4,
+              "name": "레고 테크닉 42151 부가티 볼리드",
+              "price": 45000,
+              "quantity": 100,
+              "buyQuantity": 89,
+              "image": {
+                "url": "https://res.cloudinary.com/demo/image/upload/v1/nQYGBCVZZ.png",
+                "name": "sample-bugatti.png",
+              },
+              "extra": {
+                "isNew": false,
+                "isBest": true,
+                "category": [
+                  "PC03",
+                  "PC0303"
+                ],
+                "sort": 1
+              },
+              "seller": {
+                "_id": 3,
+                "name": "어피치",
+                "email": "s2@market.com",
+                "image": "https://res.cloudinary.com/demo/image/upload/v1/Lm9NpQrS8t.webp"
+              },
+              "bookmarks": 5,
+              "likes": 2
+            }
+          }
+        ]
+      },
+
+      bookmarkUserListRes: {
+        "ok": 1,
+        "item": [
+          {
+            "_id": 19,
+            "memo": "항상 배송이 빠름",
+            "createdAt": getRandomDate(),
+            "user": {
+              "_id": 2,
+              "name": "네오",
+              "bookmarks": 4,
+              "likes": 2,
+              "email": "s1@market.com",
+              "image": "https://res.cloudinary.com/ddedslqvv/image/upload/v1762361890/openmarket/B-4WMNdc8_6.png",
+              "type": "seller"
+            }
+          }
+        ]
+      },
+
+      bookmarkPostListRes: {
+        "ok": 1,
+        "item": [
+          {
+            "_id": 23,
+            "memo": "좋은글",
+            "createdAt": getRandomDate(),
+            "post": {
+              "_id": 1,
+              "type": "qna",
+              "title": "크기가 얼만만한가요?",
+              "user": {
+                "_id": 4,
+                "name": "제이지",
+                "image": "user-jayg.webp"
+              },
+              "bookmarks": 8,
+              "likes": 3
+            }
+          }
+        ]
+      },
+
+      bookmarkProductInfoRes: {
+        "ok": 1,
+        "item": {
+          "_id": 9,
+          "user_id": 4,
+          "memo": "다음에 재구매",
+          "createdAt": getRandomDate(),
+          "product": {
+            "_id": 4,
+            "name": "레고 테크닉 42151 부가티 볼리드",
+            "price": 45000,
+            "quantity": 100,
+            "buyQuantity": 89,
+            "mainImages": [{
+              "path": "https://res.cloudinary.com/demo/image/upload/v1/nQYGBCVZZ.png",
+              "name": "sample-bugatti.png",
+            }],
+            "extra": {
+              "isNew": false,
+              "isBest": true,
+              "category": [
+                "PC03",
+                "PC0303"
+              ],
+              "sort": 1
+            },
+            "seller": {
+              "_id": 3,
+              "name": "어피치",
+              "email": "s2@market.com",
+              "image": "https://res.cloudinary.com/demo/image/upload/v1/Lm9NpQrS8t.webp"
+            },
+            "bookmarks": 5,
+            "likes": 2
+          }
+        }
+      },
+
+      bookmarkUserInfoRes: {
+        "ok": 1,
+        "item": {
+          "_id": 19,
+          "memo": "항상 배송이 빠름",
+          "createdAt": getRandomDate(),
+          "user": {
+            "_id": 2,
+            "bookmarks": 4,
+            "likes": 2,
+            "email": "s1@market.com",
+            "image": "https://res.cloudinary.com/ddedslqvv/image/upload/v1/openmarket/B-4WMNdc8_6.png",
+            "type": "seller",
+            "name": "네오"
+          }
+        }
+      },
+
+      bookmarkPostInfoRes: {
+        "ok": 1,
+        "item": {
+          "_id": 23,
+          "memo": "좋은글",
+          "createdAt": getRandomDate(),
+          "post": {
+            "_id": 1,
+            "type": "qna",
+            "title": "크기가 얼만만한가요?",
+            "user": {
+              "_id": 4,
+              "name": "제이지",
+              "image": "user-jayg.webp"
+            },
+            "bookmarks": 8,
+            "likes": 3
+          }
         }
       },
 

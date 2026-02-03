@@ -162,7 +162,11 @@ router.get('/:type', [
       description: '성공',
       content: {
         "application/json": {
-          schema: { $ref: "#/components/schemas/bookmarkListRes" }
+          schema: { $ref: '#components/schemas/bookmarkProductListRes' },
+          examples: {
+            "상품": { $ref: "#/components/examples/bookmarkProductListRes" },
+            "사용자": { $ref: "#/components/examples/bookmarkUserListRes" },
+            "게시글": { $ref: "#/components/examples/bookmarkPostListRes" }
           }
         }
       }
@@ -237,7 +241,12 @@ router.get('/:type/:target_id', [
       description: '성공',
       content: {
         "application/json": {
-          schema: { $ref: "#/components/schemas/bookmarkInfoRes" }
+          schema: { $ref: '#components/schemas/bookmarkProductInfoRes' },
+          examples: {
+            "상품": { $ref: "#/components/examples/bookmarkProductInfoRes" },
+            "사용자": { $ref: "#/components/examples/bookmarkUserInfoRes" },
+            "게시글": { $ref: "#/components/examples/bookmarkPostInfoRes" }
+          }
         }
       }
     }

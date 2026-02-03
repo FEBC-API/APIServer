@@ -21,7 +21,7 @@ const bookmarkModel = {
   async findBy(clientId, query) {
     logger.trace(arguments);
     const db = await getDb(clientId);
-    const list = await db.collection('bookmark').aggregate([
+    const pipeline = [
       { $match: query },
       {
         $lookup: {
@@ -32,31 +32,44 @@ const bookmarkModel = {
         }
       },
       { $unwind: `$${query.type}` }, // 원본이 삭제된 경우 조회되지 않음
-      // {
-      //   $unwind: { // 원본이 삭제된 경우에도 원본 정보는 빈 객체로 조회됨
-      //     path: `$${query.type}`,
-      //     preserveNullAndEmptyArrays: true
-      //   }
-      // },
-      {
-        $lookup: {
-          from: 'user',
-          localField: `${query.type}.seller_id`,
-          foreignField: '_id',
-          as: 'seller'
+    ];
+
+    if (query.type === 'product') {
+      pipeline.push(
+        {
+          $lookup: {
+            from: 'user',
+            localField: `${query.type}.seller_id`,
+            foreignField: '_id',
+            as: 'seller'
+          }
+        },
+        {
+          $unwind: {
+            path: '$seller',
+            preserveNullAndEmptyArrays: true
+          }
         }
-      },
-      {
-        $unwind: {
-          path: '$seller',
-          preserveNullAndEmptyArrays: true
-        }
-      },
+      );
+    }
+
+    pipeline.push(
       {
         $lookup: {
           from: 'bookmark',
-          localField: 'target_id',
-          foreignField: 'target_id',
+          let: { targetId: '$target_id', targetType: '$type' },
+          pipeline: [
+            {
+              $match: {
+                $expr: {
+                  $and: [
+                    { $eq: ['$target_id', '$$targetId'] },
+                    { $eq: ['$type', '$$targetType'] }
+                  ]
+                }
+              }
+            }
+          ],
           as: 'all_bookmarks'
         }
       },
@@ -82,12 +95,16 @@ const bookmarkModel = {
           [`${query.type}.buyQuantity`]: `$${query.type}.buyQuantity`,
           [`${query.type}.mainImages`]: `$${query.type}.mainImages`,
           [`${query.type}.extra`]: `$${query.type}.extra`,
-          [`${query.type}.seller`]: {
-            _id: '$seller._id',
-            name: '$seller.name',
-            email: '$seller.email',
-            image: '$seller.image'
-          },
+          
+          ...(query.type === 'product' && {
+            [`${query.type}.seller`]: {
+              _id: '$seller._id',
+              name: '$seller.name',
+              email: '$seller.email',
+              image: '$seller.image'
+            }
+          }),
+
           [`${query.type}.bookmarks`]: {
             $size: {
               $filter: {
@@ -121,7 +138,9 @@ const bookmarkModel = {
         }
 
       }
-    ]).toArray();
+    );
+
+    const list = await db.collection('bookmark').aggregate(pipeline).toArray();
 
     logger.debug(list);
     return list;
