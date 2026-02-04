@@ -5,11 +5,13 @@ meta {
 }
 
 get {
-  url: {{url}}/replies/seller/2
+  url: {{url}}/replies/seller/2?page=1&limit=2
   body: none
   auth: none
 }
 
 params:query {
+  page: 1
+  limit: 2
   ~full_name: true
 }

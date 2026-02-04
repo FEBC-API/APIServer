@@ -960,7 +960,13 @@ const doc = {
               "name": "헬로카봇 스톰다이버"
             }
           }
-        ]
+        ],
+        "pagination": {
+          "page": 1,
+          "limit": 10,
+          "total": 1,
+          "totalPages": 1
+        }
       },
 
       reviewInfoRes: {
@@ -1025,7 +1031,13 @@ const doc = {
               }
             ]
           }
-        ]
+        ],
+        "pagination": {
+          "page": 1,
+          "limit": 10,
+          "total": 1,
+          "totalPages": 1
+        }
       },
 
       cartList: {

@@ -21,9 +21,13 @@ const reviewModel = {
   },
 
   // 조건에 맞는 후기 목록 조회
-  async findBy(clientId, { query = {}, sortBy, fullName } = {}) {
+  async findBy(clientId, { query = {}, sortBy, fullName, page = 1, limit = 0 } = {}) {
     logger.trace(arguments);
     const db = await getDb(clientId);
+
+    page = Number(page);
+    limit = Number(limit) || 100;
+    const skip = (page - 1) * limit;
 
     const pipeline = [
       { $match: query },
@@ -72,20 +76,28 @@ const reviewModel = {
             ]
           }
         }
-      }
+      },
+      { $sort: sortBy || { _id: -1 } },
+      { $skip: skip },
+      { $limit: limit }
     ];
 
-    if (sortBy) {
-      pipeline.push({ $sort: sortBy });
-    }
-
+    const totalCount = await db.collection('review').countDocuments(query);
     let list = await db.collection('review').aggregate(pipeline).toArray();
 
-    logger.debug(list);
-    return list;
+    const result = { item: list };
+    result.pagination = {
+      page,
+      limit,
+      total: totalCount,
+      totalPages: Math.ceil(totalCount / limit)
+    };
+
+    logger.debug(list.length);
+    return result;
   },
 
-  // 후기만 조회
+  // 후기 상세 조회
   async findById(clientId, _id) {
     logger.trace(arguments);
     const db = await getDb(clientId);
@@ -120,11 +132,15 @@ const reviewModel = {
   },
 
   // 판매자 후기 목록 조회
-  async findBySeller(clientId, seller_id, fullName) {
+  async findBySeller(clientId, seller_id, fullName, page = 1, limit = 0, sortBy) {
     logger.trace(arguments);
     const db = await getDb(clientId);
 
-    const list = await db.collection('product').aggregate([
+    page = Number(page);
+    limit = Number(limit) || 100;
+    const skip = (page - 1) * limit;
+
+    const pipeline = [
       { $match: { seller_id } },
       {
         $lookup: {
@@ -182,11 +198,43 @@ const reviewModel = {
           image: { $first: '$image' },
           replies: { $push: '$review' }
         }
-      }
-    ]).sort({ _id: -1 }).toArray();
+      },
+      { $sort: sortBy || { _id: -1 } },
+      { $skip: skip },
+      { $limit: limit }
+    ];
 
-    logger.debug(list);
-    return list;
+    // 전체 개수 계산 (후기가 있는 상품의 개수)
+    const countPipeline = [
+      { $match: { seller_id } },
+      {
+        $lookup: {
+          from: 'review',
+          localField: '_id',
+          foreignField: 'product_id',
+          as: 'reviewItems'
+        }
+      },
+      { $match: { 'reviewItems.0': { $exists: true } } },
+      { $count: 'total' }
+    ];
+    const countResult = await db.collection('product').aggregate(countPipeline).next();
+    const totalCount = countResult ? countResult.total : 0;
+
+    const list = await db.collection('product').aggregate(pipeline).toArray();
+
+    const result = {
+      item: list,
+      pagination: {
+        page,
+        limit,
+        total: totalCount,
+        totalPages: Math.ceil(totalCount / limit)
+      }
+    };
+
+    logger.debug(list.length);
+    return result;
   }
 }
 

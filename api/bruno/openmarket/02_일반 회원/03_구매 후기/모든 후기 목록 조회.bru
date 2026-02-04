@@ -5,11 +5,14 @@ meta {
 }
 
 get {
-  url: {{url}}/replies/all
+  url: {{url}}/replies/all?sort={"rating": -1}
   body: none
   auth: inherit
 }
 
 params:query {
+  sort: {"rating": -1}
   ~full_name: true
+  ~page: 2
+  ~limit: 2
 }

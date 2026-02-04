@@ -5,11 +5,13 @@ meta {
 }
 
 get {
-  url: {{url}}/replies
+  url: {{url}}/replies?page=1&limit=2
   body: none
   auth: inherit
 }
 
 params:query {
+  page: 1
+  limit: 2
   ~full_name: true
 }

@@ -127,6 +127,19 @@ router.get('/products/:_id', [
       example: 'true'
     }
 
+    #swagger.parameters['page'] = {
+      description: "페이지 번호",
+      in: 'query',
+      type: 'number',
+      example: 1
+    }
+    #swagger.parameters['limit'] = {
+      description: "한 페이지당 출력할 개수",
+      in: 'query',
+      type: 'number',
+      example: 10
+    }
+
     #swagger.responses[200] = {
       description: '성공',
       content: {
@@ -161,15 +174,20 @@ router.get('/products/:_id', [
     let sortBy = JSON.parse(req.query.sort || '{}');
     sortBy['_id'] = sortBy['_id'] || -1; // 내림차순
 
-    const item = await reviewModel.findBy(clientId, { query: search, sortBy, fullName: req.query.full_name });
-    res.json({ ok: 1, item });
+    const page = Number(req.query.page || 1);
+    const limit = Number(req.query.limit || 0);
+
+    const result = await reviewModel.findBy(clientId, { query: search, sortBy, fullName: req.query.full_name, page, limit });
+    res.json({ ok: 1, ...result });
   } catch (err) {
     next(err);
   }
 });
 
 // 모든 후기 목록 조회
-router.get('/all', async function (req, res, next) {
+router.get('/all', [
+  query('sort').optional().isJSON().withMessage('sort 값은 JSON 형식의 문자열이어야 합니다.'),
+], validator.checkResult, async function (req, res, next) {
 
   /*
     #swagger.tags = ['구매 후기']
@@ -185,6 +203,25 @@ router.get('/all', async function (req, res, next) {
       in: 'query',
       type: 'string',
       example: 'true'
+    }
+    #swagger.parameters['sort'] = {
+      description: "정렬(내림차순: -1, 오름차순: 1)",
+      in: 'query',
+      type: 'string',
+      example: '{\"rating\": -1}'
+    }
+
+    #swagger.parameters['page'] = {
+      description: "페이지 번호",
+      in: 'query',
+      type: 'number',
+      example: 1
+    }
+    #swagger.parameters['limit'] = {
+      description: "한 페이지당 출력할 개수",
+      in: 'query',
+      type: 'number',
+      example: 10
     }
 
     #swagger.responses[200] = {
@@ -209,8 +246,15 @@ router.get('/all', async function (req, res, next) {
 
   try {
     const clientId = getClientId(req);
-    const item = await reviewModel.findBy(clientId, { fullName: req.query.full_name });
-    res.json({ ok: 1, item });
+    const page = Number(req.query.page || 1);
+    const limit = Number(req.query.limit || 0);
+
+    // 정렬 옵션
+    let sortBy = JSON.parse(req.query.sort || '{}');
+    sortBy['_id'] = sortBy['_id'] || -1; 
+
+    const result = await reviewModel.findBy(clientId, { fullName: req.query.full_name, page, limit, sortBy });
+    res.json({ ok: 1, ...result });
   } catch (err) {
     next(err);
   }
@@ -270,9 +314,9 @@ router.get('/:_id', async function (req, res, next) {
 
   try {
     const clientId = getClientId(req);
-    const item = await reviewModel.findBy(clientId, { query: { _id: Number(req.params._id) }, fullName: req.query.full_name });
-    if (item) {
-      res.json({ ok: 1, item });
+    const result = await reviewModel.findBy(clientId, { query: { _id: Number(req.params._id) }, fullName: req.query.full_name });
+    if (result.item.length > 0) {
+      res.json({ ok: 1, item: result.item[0] });
     } else {
       next();
     }
@@ -282,7 +326,9 @@ router.get('/:_id', async function (req, res, next) {
 });
 
 // 내 후기 목록 조회
-router.get('/', jwtAuth.auth('user'), async function (req, res, next) {
+router.get('/', jwtAuth.auth('user'), [
+  query('sort').optional().isJSON().withMessage('sort 값은 JSON 형식의 문자열이어야 합니다.'),
+], validator.checkResult, async function (req, res, next) {
 
   /*
     #swagger.tags = ['구매 후기']
@@ -300,7 +346,26 @@ router.get('/', jwtAuth.auth('user'), async function (req, res, next) {
       type: 'string',
       example: 'true'
     }
+    #swagger.parameters['sort'] = {
+      description: "정렬(내림차순: -1, 오름차순: 1)",
+      in: 'query',
+      type: 'string',
+      example: '{\"rating\": -1}'
+    }
     
+    #swagger.parameters['page'] = {
+      description: "페이지 번호",
+      in: 'query',
+      type: 'number',
+      example: 1
+    }
+    #swagger.parameters['limit'] = {
+      description: "한 페이지당 출력할 개수",
+      in: 'query',
+      type: 'number',
+      example: 10
+    }
+
     #swagger.responses[200] = {
       description: '성공',
       content: {
@@ -329,15 +394,24 @@ router.get('/', jwtAuth.auth('user'), async function (req, res, next) {
 
   try {
     const clientId = getClientId(req);
-    const item = await reviewModel.findBy(clientId, { query: { user_id: req.user._id }, fullName: req.query.full_name });
-    res.json({ ok: 1, item });
+    const page = Number(req.query.page || 1);
+    const limit = Number(req.query.limit || 0);
+
+    // 정렬 옵션
+    let sortBy = JSON.parse(req.query.sort || '{}');
+    sortBy['_id'] = sortBy['_id'] || -1; 
+
+    const result = await reviewModel.findBy(clientId, { query: { user_id: req.user._id }, fullName: req.query.full_name, page, limit, sortBy });
+    res.json({ ok: 1, ...result });
   } catch (err) {
     next(err);
   }
 });
 
 // 판매자 후기 목록 조회
-router.get('/seller/:seller_id', async function (req, res, next) {
+router.get('/seller/:seller_id', [
+  query('sort').optional().isJSON().withMessage('sort 값은 JSON 형식의 문자열이어야 합니다.'),
+], validator.checkResult, async function (req, res, next) {
 
   /*
     #swagger.tags = ['구매 후기']
@@ -359,6 +433,24 @@ router.get('/seller/:seller_id', async function (req, res, next) {
       in: 'query',
       type: 'string',
       example: 'true'
+    }
+    #swagger.parameters['sort'] = {
+      description: "정렬(내림차순: -1, 오름차순: 1)",
+      in: 'query',
+      type: 'string',
+      example: '{\"rating\": -1}'
+    }
+    #swagger.parameters['page'] = {
+      description: "페이지 번호",
+      in: 'query',
+      type: 'number',
+      example: 1
+    }
+    #swagger.parameters['limit'] = {
+      description: "한 페이지당 출력할 개수",
+      in: 'query',
+      type: 'number',
+      example: 10
     }
 
     #swagger.responses[200] = {
@@ -384,8 +476,15 @@ router.get('/seller/:seller_id', async function (req, res, next) {
   try {
     const clientId = getClientId(req);
     const seller_id = Number(req.params.seller_id);
-    const item = await reviewModel.findBySeller(clientId, seller_id, req.query.full_name);
-    res.json({ ok: 1, item });
+    const page = Number(req.query.page || 1);
+    const limit = Number(req.query.limit || 0);
+
+    // 정렬 옵션
+    let sortBy = JSON.parse(req.query.sort || '{}');
+    sortBy['_id'] = sortBy['_id'] || -1; 
+
+    const result = await reviewModel.findBySeller(clientId, seller_id, req.query.full_name, page, limit, sortBy);
+    res.json({ ok: 1, ...result });
   } catch (err) {
     next(err);
   }
