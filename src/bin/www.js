@@ -8,7 +8,8 @@ import http from 'node:http';
 import app from '#app.js';
 import logger from '#utils/logger.js';
 import { Server }  from 'socket.io';
-import webSocketServer from '#bin/webSocketServer.js';
+import publicChatSocketServer from '#bin/publicChatSocketServer_13th.js';
+import privateChatSocketServer from '#bin/privateChatSocketServer.js';
 import notificationServer from '#bin/notificationServer.js';
 import schedulerServer from '#bin/schedulerServer.js';
 
@@ -92,6 +93,7 @@ function onListening() {
 // socket.io 서버 구동
 const io = new Server(server, { cors: { origin: '*' } } );
 // const io = new Server(server, { cors: { origin: config.cors.origin } } );
-webSocketServer(io);
+publicChatSocketServer(io);
+privateChatSocketServer(io);
 notificationServer.listen(io);
 schedulerServer.start();

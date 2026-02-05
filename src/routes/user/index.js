@@ -9,6 +9,7 @@ import reviewRouter from './reviews.js';
 import bookmarkRouter from './bookmarks.js';
 import postRouter from './posts.js';
 import notificationRouter from './notifications.js';
+import chatRouter from './chats.js';
 
 const router = express.Router({ mergeParams: true });
 
@@ -20,5 +21,6 @@ router.use('/carts', cartRouter);
 router.use('/bookmarks', jwtAuth.auth('user'), bookmarkRouter);
 router.use('/posts', postRouter);
 router.use('/notifications', notificationRouter);
+router.use('/chats', chatRouter);
 
 export default router;

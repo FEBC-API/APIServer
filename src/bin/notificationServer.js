@@ -23,15 +23,6 @@ const listen = io => {
 
   logger.info(`notificationServer 구동 완료. ${process.env.API_HOST}:${process.env.PORT || 80}/noti/{clientId}`);
   
-  // io.of('/00-next-level').on('disconnect', function(socket){
-  //   logger.debug('클라이언트 접속 종료', socket.id);
-
-  //   socket.on('setUserId', (userId, callback) => {
-  //     logger.debug('setUserId', userId);
-  //     clients.set(userId, socket);
-  //     callback();
-  //   });
-  // });
 };
 
 const sendMsg = (clientId, userId, msg) => {
