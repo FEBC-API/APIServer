@@ -198,6 +198,12 @@ router.get('/all', [
       "Client ID": []
     }]
 
+    #swagger.parameters['rating'] = {
+      description: "후기 점수로 필터링",
+      in: 'query',
+      type: 'number',
+      example: 5
+    }
     #swagger.parameters['full_name'] = {
       description: "회원 이름 전체 표시 여부(true: 전체 표시, 생략시 첫글자만 표시하고 뒷부분은 마스킹 처리함)",
       in: 'query',
@@ -248,12 +254,17 @@ router.get('/all', [
     const clientId = getClientId(req);
     const page = Number(req.query.page || 1);
     const limit = Number(req.query.limit || 0);
+    const rating = Number(req.query.rating);
+    const query = {};
+    if (rating) {
+      query.rating = rating;
+    }
 
     // 정렬 옵션
     let sortBy = JSON.parse(req.query.sort || '{}');
     sortBy['_id'] = sortBy['_id'] || -1; 
 
-    const result = await reviewModel.findBy(clientId, { fullName: req.query.full_name, page, limit, sortBy });
+    const result = await reviewModel.findBy(clientId, { query, fullName: req.query.full_name, page, limit, sortBy });
     res.json({ ok: 1, ...result });
   } catch (err) {
     next(err);
