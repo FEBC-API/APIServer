@@ -269,7 +269,7 @@ router.patch('/:_id/read', jwtAuth.auth('user'), async function(req, res, next) 
     const clientId = getClientId(req);
     const _id = Number(req.params._id);
     const item = await notificationModel.findById(clientId, _id);
-    if(item && item.user._id === req.user._id){
+    if(item && item.target_id === req.user._id){
       await notificationModel.updateReadState(clientId, _id);
       res.json({ ok: 1 });
     }else{
