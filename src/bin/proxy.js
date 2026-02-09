@@ -21,6 +21,7 @@ const proxyMiddleware = createProxyMiddleware({
     return req.headers['x-target-url'] || 'https://openapi.naver.com';
   },
   changeOrigin: true,
+  followRedirects: true, // 리다이렉트 응답이 올 경우 프록시가 처리해서 최종 결과를 클라이언트에 응답
   cors: true,
   on: {
     proxyReq: (proxyReq, req, res) => {
