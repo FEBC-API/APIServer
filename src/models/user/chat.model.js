@@ -8,53 +8,7 @@ import userModel from '#models/user/user.model.js';
 import productModel from '#models/user/product.model.js';
 import postModel from '#models/user/post.model.js';
 
-const chatModel = {
-  // 채팅방 생성 (이미 존재하면 기존 방 반환)
-  // async create(clientId, chat) {
-  //   logger.trace(arguments);
-  //   const db = await getDb(clientId);
-    
-  //   // 1. 중복 체크 (참여자 구성 + postId 기반)
-  //   // 1:1 대화의 경우 동일한 멤버들과 동일한 postId(혹은 없음)를 가진 방이 있는지 확인
-  //   if (chat.members && chat.members.length === 2) {
-  //     const memberIds = chat.members.map(m => m._id).sort();
-  //     const existingRoom = await db.collection('chat').findOne({
-  //       'members._id': { $all: memberIds },
-  //       members: { $size: 2 },
-  //       postId: chat.postId || { $exists: false }
-  //     });
-      
-  //     if (existingRoom) {
-  //       return existingRoom;
-  //     }
-  //   }
-
-  //   // 2. 새로운 방 생성
-  //   chat._id = await db.nextSeq('chat');
-  //   chat.roomId = chat.roomId || chat._id; 
-  //   chat.createdAt = moment().tz('Asia/Seoul').format('YYYY.MM.DD HH:mm:ss');
-  //   chat.updatedAt = chat.createdAt;
-  //   chat.messages = chat.messages || [];
-    
-  //   // 멤버 정보 초기화 (이름, 이미지 포함)
-  //   if (chat.members && chat.members.length > 0) {
-  //     const userIds = chat.members.map(m => Number(m._id));
-  //     const users = await db.collection('user').find({ _id: { $in: userIds } }).toArray();
-  //     chat.members = chat.members.map(m => {
-  //       const fullInfo = users.find(u => Number(u._id) === Number(m._id));
-  //       return fullInfo ? { _id: fullInfo._id, name: fullInfo.name, image: fullInfo.image } : m;
-  //     });
-  //   } else {
-  //     chat.members = [];
-  //   }
-    
-  //   if (!chat.dryRun) {
-  //     await db.collection('chat').insertOne(chat);
-  //   }
-  //   return chat;
-  // },
-
-  
+const chatModel = { 
   // 사용자의 채팅방 목록 조회 (최신 메시지 기준 필터링 및 정렬)
   async find(clientId, userId) {
     logger.trace(arguments);
@@ -116,28 +70,6 @@ const chatModel = {
     }
     return item;
   },
-
-  // 지정한 사용자와의 채팅방 상세 조회 (사용자의 leftAt 기준 메시지 필터링)
-  // async findByUserId(clientId, partnerId, myId) {
-  //   logger.trace(arguments);
-  //   const db = await getDb(clientId);
-
-  //   // 나(myId)와 상대방(partnerId)이 모두 포함됨 멤버 배열을 가진 방 조회
-  //   // 게시글 문의가 아닌 순수 1:1 채팅이므로 postId가 없는 방을 찾음
-  //   const item = await db.collection('chat').findOne({ 
-  //     'members._id': { $all: [partnerId, myId] },
-  //     postId: { $exists: false },
-  //   });
-
-  //   if (item) {
-  //     const member = item.members.find(m => m._id === myId);
-  //     if (member.leftAt) {
-  //       // 나간 시점(leftAt) 이후의 메시지만 필터링
-  //       item.messages = item.messages.filter(msg => msg.createdAt > member.leftAt);
-  //     }
-  //   }
-  //   return item;
-  // },
 
   // 지정한 리소스에 대한 채팅방 상세 조회 (사용자의 leftAt 기준 메시지 필터링)
   async findBySourceId(clientId, resourceType, resourceId, user) {
