@@ -60,10 +60,8 @@
             <li>[기능 수정] 상품 목록 조회시 불필요한 데이터는 응답받지 않도록 특정 필드를 제외하는 옵션 추가
               <ul>
                 <li>상품 목록 조회시 `excludeFields` 파라미터를 사용하여 응답 데이터에서 제외할 필드를 지정할 수 있음</li>
-                <li>예: `GET /products?excludeFields=extra.embeddings&excludeFields=extra.address`</li>
-                <li>단일 필드 제외 시: `GET /products?excludeFields=extra.embeddings`</li>
+                <li>단일 필드 제외 시: `GET /products?excludeFields=extra.address`</li>
                 <li>다중 필드 제외 시: `GET /products?excludeFields=extra.embeddings&excludeFields=extra.address`</li>
-                <li>배열 형태로 전달됨</li>
               </ul>
             </li>
           </ul>
