@@ -17,7 +17,6 @@ const priceUtil = {
 
     dbProducts.forEach((product) => {
       const beforeShippingFees = sellerBaseShippingFees[product.seller_id];
-      product.price = product.price * _.find(products, {_id: product._id}).quantity;
       if(beforeShippingFees === undefined){
         // sellerBaseShippingFees[product.seller_id] = product.shippingFees === undefined ? global[clientId].config.shippingFees?.value : product.shippingFees;
         sellerBaseShippingFees[product.seller_id] = product.shippingFees === undefined ? shippingFees : product.shippingFees;
@@ -29,7 +28,10 @@ const priceUtil = {
 
     // 할인 전 금액
     const cost = {
-      products: _.sumBy(dbProducts, 'price'),
+      products: products.reduce((acc, item) => {
+        const product = _.find(dbProducts, { _id: item._id });
+        return acc + (product ? product.price * item.quantity : 0);
+      }, 0),
       shippingFees: _.sum(Object.values(sellerBaseShippingFees)) || 0, // config.shippingFees와 상품의 shippingFees가 없는 경우 0원으로 지정
     };
 
