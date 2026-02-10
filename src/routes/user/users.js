@@ -432,7 +432,7 @@ router.post('/login/kakao', async function (req, res, next) {
     const userData = req.body.user; // 카카오 회원정보 이외에 추가로 받은 회원 정보
     const redirect_uri = req.body.redirect_uri;
 
-    logger.error(userData)
+    logger.debug(userData)
 
     // 3초 안에 동일한 authcode로 인증 요청시(리액트의 Strict 모드로 구동시 개발환경에서 두번 요청할 때 회원가입 두번 되는 문제 방지)
     if (authcodeList[authcode]) {
@@ -450,7 +450,7 @@ router.post('/login/kakao', async function (req, res, next) {
       client_id: process.env.KAKAO_RESTAPI_KEY,
       redirect_uri,
       code: authcode,
-      client_secret: process.env.KAKAO_CLIENT_SECRET,  // 카카오 내 애플리케이션 > 보안 탭에서 발급함
+      // client_secret: process.env.KAKAO_CLIENT_SECRET,  // 카카오 개발자 사이트 > 앱 > 플랫폼 키 > REST API 키 > 클라이언트 시크릿에서 발급가능하지만 비활성화 해둠
     }), {
       headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8' }
     });
