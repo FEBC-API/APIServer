@@ -3,7 +3,7 @@ import { getDb } from '#utils/dbUtil.js';
 
 const productModel = {
   // 상품 검색
-  async findBy(clientId, { sellerId, search = {}, sortBy = {}, page = 1, limit, depth, showSoldOut, userId }) {
+  async findBy(clientId, { sellerId, search = {}, sortBy = {}, page = 1, limit, depth, showSoldOut, userId, excludeFields = [] }) {
     const db = await getDb(clientId);
     const query = { active: true, ...search };
 
@@ -219,6 +219,15 @@ const productModel = {
       { $skip: skip },
       { $limit: limit || 100 }, // limit가 없을 경우 100개 까지만 반환);
     ];
+
+    if (excludeFields.length > 0) {
+      pipeline.push({
+        $project: excludeFields.reduce((acc, field) => {
+          acc[field] = 0;
+          return acc;
+        }, {})
+      });
+    }
 
     const list = await db.collection('product').aggregate(pipeline).toArray();
 

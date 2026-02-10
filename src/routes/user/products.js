@@ -101,6 +101,13 @@ router.get('/', [
       example: true
     }
 
+    #swagger.parameters['excludeFields'] = {
+      description: "제외할 필드 목록",
+      in: 'query',
+      type: 'array',
+      example: ['extra.address', 'extra.embeddings']
+    }
+
     #swagger.responses[200] = {
       description: '성공',
       content: {
@@ -179,7 +186,13 @@ router.get('/', [
     const page = Number(req.query.page || 1);
     const limit = Number(req.query.limit || 0);
 
-    const result = await productModel.findBy(clientId, { search, sortBy, page, limit, showSoldOut, userId: req.user?._id });
+    const excludeFields = req.query.excludeFields 
+      ? (Array.isArray(req.query.excludeFields) 
+        ? req.query.excludeFields 
+        : [req.query.excludeFields]) 
+      : undefined;
+
+    const result = await productModel.findBy(clientId, { search, sortBy, page, limit, showSoldOut, userId: req.user?._id, excludeFields });
     
     res.json({ ok: 1, ...result });
   } catch(err) {
