@@ -139,7 +139,7 @@ export default {
         { name: '김지안', role: '발표' }
       ],
       projectName: 'Moa',
-      projectTopic: '<strong>취미공유사이트 Moa 파이널 프로젝트</strong>',
+      projectTopic: '<strong>여러 사람들과 취미를 공유하고 함께하는 공간 Moa</strong>',
       notionLink: 'https://www.notion.so/7-2e873873401a80709a8ed42bfad39a26',
       githubLink: 'https://github.com/FRONTENDBOOTCAMP-15th/final-07-donghaeng',
       figmaLink: 'https://www.figma.com/design/bQ9xGM4rZjbJu0V7hqCulL/7%ED%8C%80---Moa?node-id=1-2&p=f&t=ElobrNkcDryHPCCS-0',
