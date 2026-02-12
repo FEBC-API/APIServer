@@ -6,6 +6,14 @@ import shortid from 'shortid';
 import logger from '#utils/logger.js';
 import { getClientId, getDb } from '#utils/dbUtil.js';
 
+// SVG 파일인 경우 브라우저에서 바로 표시되도록 fl_sanitize 플래그 추가
+export function ensureSvgUrl(url, filename) {
+  if (url && filename && filename.toLowerCase().endsWith('.svg') && url.includes('/upload/') && !url.includes('/fl_sanitize')) {
+    return url.replace('/upload/', '/upload/fl_sanitize/');
+  }
+  return url;
+}
+
 // 파일 스트림에서 해시 생성
 function generateFileHash(fileStream) {
   return new Promise((resolve, reject) => {
@@ -107,11 +115,12 @@ class CloudinaryStorage {
 
       if (exactMatch) {
         // 3. 정확히 같은 파일이면 그대로 반환 (DB 저장도 안함)
-        logger.info(`완전 동일 파일 재사용: ${fileHash.substring(0, 8)}... (${filename}) -> ${exactMatch.cloudinary_url}`);
+        const finalUrl = ensureSvgUrl(exactMatch.cloudinary_url, filename);
+        logger.info(`완전 동일 파일 재사용: ${fileHash.substring(0, 8)}... (${filename}) -> ${finalUrl}`);
         return cb(null, {
           filename: exactMatch.filename,
           contentType: file.mimetype,
-          cloudinary_url: exactMatch.cloudinary_url,
+          cloudinary_url: finalUrl,
           public_id: exactMatch.public_id,
           isExisting: true
         });
@@ -139,23 +148,25 @@ class CloudinaryStorage {
 
   async _saveFileWithExistingUrl(existingFile, fileHash, filename, mimetype, clientId, fileSize, cb) {
     try {
-      // 원본명으로 DB에 레코드 저장 (Cloudinary URL은 기존 것 재사용)
+      const finalUrl = ensureSvgUrl(existingFile.cloudinary_url, filename);
+
+      // 원본명으로 DB에 레코드 저장 (Cloudinary URL은 기존 것 재사용 또는 sanitize 적용)
       await saveFileInfo({
         fileHash,
         publicId: existingFile.public_id,
-        cloudinaryUrl: existingFile.cloudinary_url,
+        cloudinaryUrl: finalUrl,
         filename: filename,
         contentType: mimetype,
         clientId,
         fileSize
       });
 
-      logger.info(`기존 URL 재사용하여 새 레코드 저장: ${filename} -> ${existingFile.cloudinary_url}`);
+      logger.info(`기존 URL 재사용하여 새 레코드 저장: ${filename} -> ${finalUrl}`);
 
       cb(null, {
         filename: filename,
         contentType: mimetype,
-        cloudinary_url: existingFile.cloudinary_url,
+        cloudinary_url: finalUrl,
         public_id: existingFile.public_id,
         isExisting: false // 새로운 레코드이므로 false
       });
@@ -163,10 +174,11 @@ class CloudinaryStorage {
     } catch (dbError) {
       logger.warn(`기존 URL 재사용 중 DB 저장 실패: ${dbError.message}`);
       // DB 저장 실패해도 기존 파일 정보로 응답
+      const finalUrl = ensureSvgUrl(existingFile.cloudinary_url, filename);
       cb(null, {
         filename: existingFile.filename,
         contentType: mimetype,
-        cloudinary_url: existingFile.cloudinary_url,
+        cloudinary_url: finalUrl,
         public_id: existingFile.public_id,
         isExisting: true
       });
@@ -176,11 +188,15 @@ class CloudinaryStorage {
   async _uploadNewFile(buffer, fileHash, filename, mimetype, clientId, ext, cb) {
     const uniqueId = shortid.generate();
 
+    // SVG 파일은 브라우저 렌더링을 위해 image 타입으로 강제
+    const isSvg = (mimetype && mimetype.includes('svg')) || (filename && filename.toLowerCase().endsWith('.svg'));
+    const resourceType = isSvg ? 'image' : 'auto';
+
     const uploadStream = cloudinary.uploader.upload_stream(
       {
         public_id: uniqueId,
         folder: clientId,
-        resource_type: 'auto',
+        resource_type: resourceType,
         context: {
           original_name: filename,
           uploaded_by: clientId,
@@ -193,12 +209,14 @@ class CloudinaryStorage {
           return cb(error);
         }
 
+        const finalUrl = ensureSvgUrl(result.secure_url, filename);
+
         try {
           // DB에 파일 정보 저장 시도
           await saveFileInfo({
             fileHash,
             publicId: result.public_id,
-            cloudinaryUrl: result.secure_url,
+            cloudinaryUrl: finalUrl,
             filename: filename,
             contentType: mimetype,
             clientId,
@@ -214,7 +232,7 @@ class CloudinaryStorage {
         cb(null, {
           filename: filename,
           contentType: mimetype,
-          cloudinary_url: result.secure_url,
+          cloudinary_url: finalUrl,
           public_id: result.public_id,
           isExisting: false
         });
@@ -232,11 +250,15 @@ class CloudinaryStorage {
   async _uploadWithoutDuplicateCheck(file, filename, clientId, ext, cb) {
     const uniqueId = shortid.generate();
 
+    // SVG 파일은 브라우저 렌더링을 위해 image 타입으로 강제
+    const isSvg = (file.mimetype && file.mimetype.includes('svg')) || (filename && filename.toLowerCase().endsWith('.svg'));
+    const resourceType = isSvg ? 'image' : 'auto';
+
     const uploadStream = cloudinary.uploader.upload_stream(
       {
         public_id: uniqueId,
         folder: clientId,
-        resource_type: 'auto',
+        resource_type: resourceType,
         context: {
           original_name: filename,
           uploaded_by: clientId,
@@ -251,10 +273,12 @@ class CloudinaryStorage {
 
         // logger.info(`파일 업로드 완료 (중복검사 없음): ${filename} -> ${result.secure_url}`);
 
+        const finalUrl = ensureSvgUrl(result.secure_url, filename);
+
         cb(null, {
           filename: filename,
           contentType: file.mimetype,
-          cloudinary_url: result.secure_url,
+          cloudinary_url: finalUrl,
           public_id: result.public_id,
           isExisting: false
         });
@@ -370,12 +394,16 @@ export async function uploadMultipleFiles(files, clientId) {
         const { filename, fileBuffer, fileHash } = fileData;
         const uniqueId = shortid.generate();
         
+        // SVG 파일은 브라우저 렌더링을 위해 image 타입으로 강제
+        const isSvg = filename && filename.toLowerCase().endsWith('.svg');
+        const resourceType = isSvg ? 'image' : 'auto';
+
         return new Promise((resolve, reject) => {
           const uploadStream = cloudinary.uploader.upload_stream(
             {
               public_id: uniqueId,
               folder: clientId,
-              resource_type: 'auto',
+              resource_type: resourceType,
               context: {
                 original_name: filename,
                 uploaded_by: clientId,
@@ -391,12 +419,13 @@ export async function uploadMultipleFiles(files, clientId) {
               }
 
               // logger.info(`파일 업로드 완료: ${filename} -> ${result.secure_url}`);
+              const finalUrl = ensureSvgUrl(result.secure_url, filename);
               resolve({
                 filename: filename,
                 fileHash: fileHash,
                 cloudinaryInfo: {
                   public_id: result.public_id,
-                  secure_url: result.secure_url,
+                  secure_url: finalUrl,
                   original_name: filename
                 }
               });
@@ -516,6 +545,10 @@ export async function cleanupFiles(keepFiles, clientId, fileContents = {}, db = 
 
         if (existingCloudinaryFile) {
           // 같은 해시가 있으면 해당 파일을 사용 (업로드 제외, DB에는 저장)
+          const finalUrl = ensureSvgUrl(existingCloudinaryFile.secure_url, keepFile);
+          // 기존 정보의 secure_url 업데이트
+          existingCloudinaryFile.secure_url = finalUrl;
+
           filesToKeep.push({
             filename: keepFile,
             fileHash: fileHash,
