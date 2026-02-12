@@ -223,7 +223,7 @@ router.post('/signup/oauth', [
   /*
     #swagger.tags = ['회원']
     #swagger.summary  = 'OAuth 인증 후 자동 회원 가입'
-    #swagger.description = 'OAuth 인증이 완료된 사용자를 자동으로 회원 가입 시킬때 호출합니다.<br>회원 가입을 완료한 후 회원 정보를 반환합니다.<br>회원 가입 여부를 미리 체크할 필요 없이 OAuth 로그인이 완료되면 항상 호출하도록 구현하면 됩니다.'
+    #swagger.description = 'OAuth 인증이 완료된 사용자의 회원 가입을 처리합니다.<br>회원 가입을 완료한 후 회원 정보를 반환합니다.<br>이미 가입된 회원일 경우 409 에러를 반환하므로, 먼저 <a target="_blank" href="/market/apidocs/#/회원/post_users_login_with">로그인(login/with)</a>을 시도하고 실패한 경우에만 호출해야 합니다.'
 
     #swagger.security = [{
       "Client ID": []
