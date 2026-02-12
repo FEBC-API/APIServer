@@ -156,7 +156,9 @@ export default {
         { name: '한정아', role: '발표' }
       ],
       projectName: '유어스(You, Us)',
-      projectTopic: '<strong>선물을 고르기 힘들어하는 사용자들에게 AI를 활용하여 맞춤 상품을 추천해주는 선물 쇼핑몰</strong>',
+      projectTopic: `<strong>유어스(You, Us)는 선물이라는 고민을 해결하기 위해 설계된 AI 기반 선물 추천 쇼핑몰입니다.</strong><br><br>
+        자연어 설문을 분석해 상황과 관계를 이해하고, 복잡한 필터 없이도 맞춤형 선물을 추천해드립니다.<br>
+        단순한 상품 나열을 넘어, 마음을 전하는 과정을 더 쉽고 즐겁게 만드는 쇼핑 경험을 제공합니다.`,
       notionLink: 'https://www.notion.so/8-2e873873401a80089bd0f7610239ecce',
       githubLink: 'https://github.com/FRONTENDBOOTCAMP-15th/final-08-You.us',
       figmaLink: 'https://www.figma.com/design/mGAuTaU6rU68LRmYoHU6yt/%EC%9C%A0%EC%96%B4%EC%8A%A4-You--Us-?node-id=0-1&t=9epO3AIfOqokVkO9-1',
