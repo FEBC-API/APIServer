@@ -32,7 +32,7 @@ export default {
       notionLink: 'https://www.notion.so/1-2e873873401a80d39c53f6cf9dda7e3f',
       githubLink: 'https://github.com/FRONTENDBOOTCAMP-15th/final-01-nameisnull',
       figmaLink: 'https://www.figma.com/design/dtCTexoB1urzE7J4157NJh/1%ED%8C%80---%EC%A3%BC%ED%86%A0%ED%94%BC%EC%95%84?node-id=0-1&p=f&t=8t8PvlsHueUxnxv5-0',
-      deployUrl: 'https://final-01-nameisnull-release.vercel.app/'
+      deployUrl: 'https://fofo-forfour.vercel.app/'
     },
     {
       id: 2,
@@ -109,7 +109,7 @@ export default {
       notionLink: 'https://www.notion.so/5-2e873873401a80978bbecbc871d15761',
       githubLink: 'https://github.com/FRONTENDBOOTCAMP-15th/final-05-project',
       figmaLink: 'https://www.figma.com/design/nid7tK9AvJ1zqkkrUL7xL7/5%ED%8C%80---%EC%98%81%EA%B5%AC-%EC%98%81%EC%96%91%EC%A0%9C-%EA%B5%AC%EB%8F%85-?node-id=60-8&t=8J09WfmP9DbiV4kK-1',
-      deployUrl: 'https://final-05-project-release-nu.vercel.app/'
+      deployUrl: 'https://final-05-project.vercel.app/'
     },
     {
       id: 6,

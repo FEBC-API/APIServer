@@ -51,7 +51,7 @@ if (projectCardsContainer) {
           <h5 class="card-title fw-bold">${team.projectName}</h5>
           <div class="project-topic mb-3">${team.projectTopic || '프로젝트 설명이 없습니다.'}</div>
           <div class="team-members mt-auto mb-1">
-            <div><strong>팀장:</strong> ${team.leader}</div>
+            <div><strong>PM:</strong> ${team.leader}</div>
             <div><strong>팀원:</strong> ${team.members.map(member => `${member.name}(${member.role})`).join(', ')}</div>
           </div>
           <div class="project-links pt-1">
@@ -94,10 +94,11 @@ if (projectCardsContainer) {
         if (header) {
           header.style.backgroundImage = `url('${ogImageUrl}')`;
           header.style.backgroundSize = 'cover';
+          header.style.backgroundRepeat = 'no-repeat';
           header.style.backgroundPosition = 'center';
-          header.style.backgroundColor = 'transparent'; // 기본 배경색 제거
-          header.style.backgroundBlendMode = 'normal';   // 블렌드 모드 제거
-          header.style.filter = 'none';                  // 필터 제거 (원본 선명도 유지)
+          header.style.backgroundColor = 'white'; 
+          header.style.backgroundBlendMode = 'normal';   
+          header.style.filter = 'none';                 
         }
         if (nameText) {
           nameText.style.display = 'none'; // 이미지가 있으므로 텍스트 생략
