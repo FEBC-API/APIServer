@@ -72,7 +72,7 @@ export default {
       notionLink: 'https://www.notion.so/3-Sub-5-2e873873401a8039898ed15b86bcfdd4',
       githubLink: 'https://github.com/FRONTENDBOOTCAMP-15th/final-03-sub5.git',
       figmaLink: 'https://www.figma.com/design/boecGQtOrFGjhoB5eRiAQY/3%ED%8C%80---Sub.5?t=eddhFX46zJQJ6AXh-0',
-      deployUrl: 'https://final-03-sub5-release-nu.vercel.app/'
+      deployUrl: 'https://final-03-sub5-release-three.vercel.app/'
     },
     {
       id: 4,
