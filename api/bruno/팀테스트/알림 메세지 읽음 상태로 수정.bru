@@ -1,0 +1,11 @@
+meta {
+  name: 알림 메세지 읽음 상태로 수정
+  type: http
+  seq: 5
+}
+
+patch {
+  url: {{url}}/notifications/30/read
+  body: json
+  auth: inherit
+}

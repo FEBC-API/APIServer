@@ -1,0 +1,22 @@
+meta {
+  name: 구독 주기 변경
+  type: http
+  seq: 4
+}
+
+patch {
+  url: {{url}}/orders/3
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "term": "2w"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
